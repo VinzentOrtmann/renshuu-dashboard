@@ -1,0 +1,13 @@
+/* Tailwind v4 is configured entirely from CSS — this single import pulls in
+   the reset, the utility classes, and the default theme. There is no
+   tailwind.config.js file; if we later need custom theme values (brand colors,
+   fonts) they go in an `@theme { ... }` block right here.
+   Everything else should be Tailwind utility classes in the components
+   themselves, so the styling lives next to the markup that uses it. */
+@import 'tailwindcss';
+
+/* Tell the browser we render sensibly in both light and dark mode, so it
+   picks matching defaults for scrollbars, form controls, etc. */
+html {
+  color-scheme: light dark;
+}

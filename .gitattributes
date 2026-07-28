@@ -1,0 +1,4 @@
+# Store everything with LF in the repo. Without this, committing from Windows
+# can bake CRLF line endings into files that the Linux CI runner then reads,
+# which breaks shell scripts and makes diffs noisy.
+* text=auto eol=lf

@@ -1,0 +1,64 @@
+# Renshuu Dashboard
+
+A personal Japanese-learning dashboard built on top of the
+[Renshuu](https://app.renshuu.org) API.
+
+> **Status:** step 1 of 9 — scaffolding and deployment pipeline.
+> The README gets its full write-up in step 9.
+
+## Why this exists (and not just Renshuu's own stats page)
+
+Renshuu already shows level/XP, a study heatmap, and accuracy graphs. This
+project is not trying to re-implement those. It adds three things Renshuu
+doesn't give you:
+
+1. **A permanent historical archive.** A daily GitHub Action snapshots the API
+   into `data/history.json`, which is committed to this repo. That history
+   outlives whatever rolling window Renshuu's own UI happens to display.
+2. **Cross-metric analysis.** Projected dates to reach a target vocab/kanji
+   count at current pace, and a unified comparison of pace across kanji vs.
+   grammar vs. vocab — neither of which Renshuu computes natively.
+3. **A public, embeddable badge.** A compact widget that can live outside
+   Renshuu's login-gated UI, e.g. on a personal site or in a GitHub README.
+
+## How it works
+
+```
+GitHub Action (daily cron)
+  └─ scripts/snapshot.ts  →  calls the Renshuu API with a repo-secret key
+       └─ appends a dated entry to data/history.json (committed back to the repo)
+            └─ the React app reads that static JSON at runtime — no backend
+```
+
+## Tech stack
+
+- React 19 + TypeScript, bundled with Vite
+- Tailwind CSS v4 (configured from CSS, no `tailwind.config.js`)
+- Recharts for visualisations
+- GitHub Actions for both the daily data snapshot and the Pages deploy
+
+## Local development
+
+```bash
+npm install
+npm run dev
+```
+
+| Script            | What it does                                  |
+| ----------------- | --------------------------------------------- |
+| `npm run dev`     | Dev server with hot reload                    |
+| `npm run build`   | Type-check, then produce a production `dist/` |
+| `npm run preview` | Serve the built `dist/` locally               |
+| `npm run lint`    | Lint with oxlint                              |
+
+## Deployment
+
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds the app
+and publishes `dist/` to GitHub Pages.
+
+One-time setup in the repo: **Settings → Pages → Build and deployment →
+Source: GitHub Actions**.
+
+Because `vite.config.ts` sets `base: '/renshuu-dashboard/'`, the site expects to
+be served from `https://<username>.github.io/renshuu-dashboard/`. Renaming the
+repo means updating that `base` value too.
