@@ -50,6 +50,18 @@ npm run dev
 | `npm run build`   | Type-check, then produce a production `dist/` |
 | `npm run preview` | Serve the built `dist/` locally               |
 | `npm run lint`    | Lint with oxlint                              |
+| `npm run check-api` | Verify the API types against your real account |
+
+### API access
+
+The Renshuu API needs a key, from **Tools → Renshuu API** in renshuu's menu.
+Copy `.env.example` to `.env` and paste it in — `.env` is gitignored, and CI
+gets the same value from the `RENSHUU_API_KEY` repository secret instead.
+
+`npm run check-api` then confirms the live API matches
+[`src/types/renshuu.ts`](src/types/renshuu.ts). Worth running before trusting a
+field: the types come from renshuu's OpenAPI spec, which hasn't been updated
+since mid-2024.
 
 ## Deployment
 

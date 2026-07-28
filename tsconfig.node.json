@@ -19,5 +19,8 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts"]
+  // `scripts` runs under Node (not the browser), so it type-checks with the
+  // Node config rather than the app one. Including it here means `npm run build`
+  // catches type errors in the snapshot/check scripts too.
+  "include": ["vite.config.ts", "scripts"]
 }
