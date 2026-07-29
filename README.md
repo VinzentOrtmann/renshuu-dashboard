@@ -24,11 +24,28 @@ doesn't give you:
 ## How it works
 
 ```
-GitHub Action (daily cron)
+GitHub Action (daily cron, 21:50 UTC)
   └─ scripts/snapshot.ts  →  calls the Renshuu API with a repo-secret key
-       └─ appends a dated entry to data/history.json (committed back to the repo)
-            └─ the React app reads that static JSON at runtime — no backend
+       └─ upserts a dated entry into public/data/history.json (committed back)
+            └─ triggers a rebuild, and the React app fetches that static
+               JSON at runtime — no backend
 ```
+
+The archive lives under `public/` rather than a top-level `data/` because Vite
+only ships `public/` contents and imported modules to the built site. Importing
+it would bake the whole growing file into the JavaScript bundle; this way it
+stays a separate fetch that costs nothing as it grows.
+
+### Setup for the daily snapshot
+
+Add your API key as a repository secret named `RENSHUU_API_KEY` under
+**Settings → Secrets and variables → Actions**. The workflow reads it from
+there; it is never committed.
+
+`SNAPSHOT_TIMEZONE` (set in the workflow, default `Europe/Berlin`) must match
+renshuu's daily reset boundary, and the cron time is chosen to run late in that
+evening. Change one and you must re-check the other — see the comments in
+[`.github/workflows/snapshot.yml`](.github/workflows/snapshot.yml).
 
 ## Tech stack
 

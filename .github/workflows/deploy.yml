@@ -6,13 +6,17 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Deploy whenever main changes. Note that the daily snapshot workflow commits
-  # to data/history.json on main, which means a fresh snapshot automatically
-  # triggers a redeploy with the new data baked in.
+  # Deploy whenever main changes.
   push:
     branches: [main]
+
   # Allow deploying by hand from the Actions tab.
   workflow_dispatch:
+
+  # Allow snapshot.yml to call this workflow directly after it commits new data.
+  # It has to call it explicitly: pushes made with the built-in GITHUB_TOKEN do
+  # not fire the `push` trigger above, by design.
+  workflow_call:
 
 # Grant the token the permissions the Pages deploy action needs.
 permissions:
@@ -32,11 +36,19 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
+        with:
+          # Take the tip of the branch, not the commit that triggered the run.
+          # When snapshot.yml calls this workflow, the triggering commit is the
+          # one from *before* the snapshot was committed — checking that out
+          # would rebuild the site without the new data, which is the exact
+          # opposite of why it was called.
+          ref: ${{ github.ref_name }}
 
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          # Kept in step with the snapshot workflow, which requires 24+.
+          node-version: 24
           cache: npm
 
       # `npm ci` installs the exact versions from package-lock.json, which is

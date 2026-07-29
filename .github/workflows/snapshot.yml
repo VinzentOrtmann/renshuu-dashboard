@@ -1,0 +1,115 @@
+# Captures one day of renshuu stats and commits it to the archive.
+#
+# This is the workflow that actually builds the permanent history — the thing
+# renshuu's own UI doesn't keep. Everything else in this repo just visualises
+# whatever this has collected.
+name: Daily snapshot
+
+on:
+  schedule:
+    # 21:50 UTC daily. The time is chosen to land shortly *before* midnight in
+    # the study timezone, because renshuu resets its `today_*` counters at local
+    # midnight — so running late in the local evening captures a nearly complete
+    # day, while running after midnight would capture an empty one.
+    #
+    # GitHub cron is always UTC and has no concept of daylight saving, so this
+    # single time has to work year-round for Europe/Berlin:
+    #   summer (CEST, UTC+2) -> 23:50 local
+    #   winter (CET,  UTC+1) -> 22:50 local
+    # Both are late evening on the correct day. If SNAPSHOT_TIMEZONE below
+    # changes, re-check this arithmetic.
+    #
+    # Note that GitHub's scheduler is best-effort and can be delayed by up to an
+    # hour under load. That's survivable here: a delayed run still lands on the
+    # right date in winter, and the cumulative totals mean a wholly missed day
+    # doesn't corrupt the pace maths.
+    - cron: '50 21 * * *'
+
+  # Lets you trigger a snapshot by hand from the Actions tab.
+  workflow_dispatch:
+
+# The snapshot job pushes a commit, so it needs write access to the repo.
+permissions:
+  contents: write
+
+# Never let two snapshot runs race — they'd both try to push to main.
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    outputs:
+      # Tells the deploy job below whether there's anything new to publish.
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          # Must be 24 or newer. scripts/snapshot.ts is run directly as
+          # TypeScript, and Node only strips types without a flag from 23.6
+          # onwards — on Node 22 this step fails with a syntax error.
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch today's stats
+        env:
+          # Set under Settings -> Secrets and variables -> Actions.
+          RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
+          # Must match renshuu's daily reset boundary — see the cron note above.
+          SNAPSHOT_TIMEZONE: Europe/Berlin
+        run: npm run snapshot
+
+      - name: Commit the updated archive
+        id: commit
+        run: |
+          # Stop on any error, and treat an unset variable as an error.
+          set -euo pipefail
+
+          # `git diff --quiet` exits 0 when the file is byte-identical.
+          #
+          # In practice this rarely triggers, because every snapshot stamps a
+          # fresh `capturedAt` — and that's intended, since a daily commit is
+          # what builds the archive and recording when each run happened makes a
+          # delayed cron visible. This guard is a safety net for the case where
+          # the script somehow produces no write at all, so the workflow reports
+          # honestly instead of failing on an empty commit.
+          if git diff --quiet -- public/data/history.json; then
+            echo "No change to the archive today."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # The bot identity GitHub uses for Actions commits.
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add public/data/history.json
+          git commit -m "Snapshot $(date -u +%Y-%m-%d)"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+  # Rebuild and republish the site so the new data is actually visible.
+  #
+  # This has to be an explicit call rather than relying on deploy.yml's own
+  # `on: push` trigger. GitHub deliberately does not fire workflows for pushes
+  # made with the built-in GITHUB_TOKEN — it's how they stop a workflow that
+  # commits from triggering itself forever. Without this job the archive would
+  # grow every day while the deployed dashboard silently stayed stale.
+  deploy:
+    needs: snapshot
+    if: needs.snapshot.outputs.changed == 'true'
+    # A called workflow gets no permissions by default; they must be granted
+    # here, and can only ever be narrower than this workflow's own.
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/deploy.yml

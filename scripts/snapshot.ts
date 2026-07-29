@@ -39,7 +39,18 @@ import type { RenshuuProfile, RenshuuSchedule } from '../src/types/renshuu.ts'
 
 /** Resolve paths relative to this file, so the script works from any cwd. */
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const HISTORY_PATH = resolve(projectRoot, 'data/history.json')
+
+/**
+ * The archive lives under `public/` rather than a top-level `data/`.
+ *
+ * Vite only ships two kinds of file to the built site: modules that something
+ * imports, and the contents of `public/`. Importing the archive would bundle it
+ * into the JavaScript, which gets worse every day it grows. Putting it in
+ * `public/` means it's copied to `dist/` untouched and the dashboard can fetch
+ * it at runtime as `<base>/data/history.json` — one small JSON request, no
+ * effect on bundle size.
+ */
+const HISTORY_PATH = resolve(projectRoot, 'public/data/history.json')
 
 /**
  * Timezone whose midnight defines a "study day".
