@@ -3,6 +3,8 @@
 A personal Japanese-learning dashboard built on top of the
 [Renshuu](https://app.renshuu.org) API.
 
+[![Renshuu progress](https://vinzentortmann.github.io/renshuu-dashboard/badge-light.svg)](https://vinzentortmann.github.io/renshuu-dashboard/)
+
 > **Status:** step 1 of 9 — scaffolding and deployment pipeline.
 > The README gets its full write-up in step 9.
 
