@@ -81,7 +81,10 @@ jobs:
           # delayed cron visible. This guard is a safety net for the case where
           # the script somehow produces no write at all, so the workflow reports
           # honestly instead of failing on an empty commit.
-          if git diff --quiet -- public/data/history.json; then
+          # The badges are regenerated from the archive on every run, so they
+          # are part of the same commit — a badge that disagreed with the
+          # dashboard would be worse than no badge.
+          if git diff --quiet -- public/data/history.json public/badge-*.svg; then
             echo "No change to the archive today."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
@@ -91,7 +94,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add public/data/history.json
+          git add public/data/history.json public/badge-light.svg public/badge-dark.svg
           git commit -m "Snapshot $(date -u +%Y-%m-%d)"
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"

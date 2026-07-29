@@ -15,32 +15,14 @@ import {
   formatLongDate,
   formatShortDate,
 } from '../lib/history.ts'
+import { levelPercent, nextLevel } from '../lib/levels.ts'
+import type { Level } from '../lib/levels.ts'
 import { CATEGORY_LABELS, SERIES_CATEGORIES } from '../lib/palette.ts'
 import { projectToTarget } from '../lib/projections.ts'
 import type { DataPoint, ProjectionResult } from '../lib/projections.ts'
 import type { SeriesCategory } from '../lib/palette.ts'
 import type { DailySnapshot } from '../types/history.ts'
 import { Card } from './ProgressChart.tsx'
-
-/**
- * JLPT levels from easiest to hardest.
- *
- * renshuu also reports `n6`, `kana` and `kata` for vocabulary. Those are its
- * own below-N5 groupings rather than real JLPT levels, so they're left out of
- * the "next level" search — otherwise the headline could read "next: kana"
- * for someone who finished the syllabaries years ago.
- */
-const LEVELS_EASIEST_FIRST = ['n5', 'n4', 'n3', 'n2', 'n1'] as const
-
-type Level = (typeof LEVELS_EASIEST_FIRST)[number]
-
-/** The level a category is currently working through: the easiest unfinished one. */
-function nextLevel(latest: DailySnapshot, category: SeriesCategory): Level | null {
-  const progress = latest.jlptProgress[category] ?? {}
-  return (
-    LEVELS_EASIEST_FIRST.find((level) => (progress[level] ?? 0) < 100) ?? null
-  )
-}
 
 /** Percentage series for one category/level pair, oldest first. */
 function seriesFor(
@@ -116,7 +98,7 @@ function CategoryProjection({
     )
   }
 
-  const percent = latest.jlptProgress[category]?.[level] ?? 0
+  const percent = levelPercent(latest, category, level)
   const result = projectToTarget(seriesFor(snapshots, category, level), 100)
 
   return (

@@ -29,6 +29,8 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { createRenshuuClient, RenshuuApiError } from '../src/api/renshuu.ts'
+import { BADGE_THEMES, renderBadge } from './badge.ts'
+import type { BadgeThemeName } from './badge.ts'
 import { HISTORY_VERSION } from '../src/types/history.ts'
 import type {
   DailySnapshot,
@@ -51,6 +53,19 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
  * effect on bundle size.
  */
 const HISTORY_PATH = resolve(projectRoot, 'public/data/history.json')
+
+/**
+ * Where the embeddable badges are written.
+ *
+ * Two files rather than one because GitHub renders README images through a
+ * caching proxy where CSS media queries inside an SVG are unreliable. Shipping
+ * a light and a dark file and selecting between them with a <picture> element
+ * is the approach GitHub actually documents.
+ */
+const BADGE_PATHS: Record<BadgeThemeName, string> = {
+  light: resolve(projectRoot, 'public/badge-light.svg'),
+  dark: resolve(projectRoot, 'public/badge-dark.svg'),
+}
 
 /**
  * Timezone whose midnight defines a "study day".
@@ -261,6 +276,8 @@ async function main() {
   const history = await readHistory()
   const { snapshots, replaced } = upsertSnapshot(history.snapshots, snapshot)
 
+  const updated = { version: HISTORY_VERSION, snapshots }
+
   if (dryRun) {
     console.log('\n--dry-run: nothing written. Entry would be:')
     console.log(JSON.stringify(snapshot, null, 2))
@@ -269,7 +286,7 @@ async function main() {
 
   // Pretty-printed with a trailing newline: this file is committed daily, so
   // readable one-value-per-line diffs are worth the extra bytes.
-  const contents = `${JSON.stringify({ version: HISTORY_VERSION, snapshots }, null, 2)}\n`
+  const contents = `${JSON.stringify(updated, null, 2)}\n`
   await mkdir(dirname(HISTORY_PATH), { recursive: true })
   await writeFile(HISTORY_PATH, contents, 'utf8')
 
@@ -278,6 +295,13 @@ async function main() {
       ? `Replaced the existing entry for ${date} (${snapshots.length} days archived).`
       : `Appended ${date} (${snapshots.length} days archived).`,
   )
+
+  // Regenerate the badges from the archive we just wrote, so the embeddable
+  // image can never disagree with the dashboard.
+  for (const name of Object.keys(BADGE_THEMES) as BadgeThemeName[]) {
+    await writeFile(BADGE_PATHS[name], `${renderBadge(updated, name)}\n`, 'utf8')
+  }
+  console.log('Wrote badge-light.svg and badge-dark.svg.')
 }
 
 main().catch((error: unknown) => {
