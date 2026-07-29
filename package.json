@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "check-api": "node --env-file-if-exists=.env scripts/check-api.ts"
+    "check-api": "node --env-file-if-exists=.env scripts/check-api.ts",
+    "snapshot": "node --env-file-if-exists=.env scripts/snapshot.ts"
   },
   "dependencies": {
     "react": "^19.2.7",
