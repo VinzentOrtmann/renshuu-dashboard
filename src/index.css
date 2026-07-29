@@ -1,13 +1,137 @@
 /* Tailwind v4 is configured entirely from CSS — this single import pulls in
    the reset, the utility classes, and the default theme. There is no
-   tailwind.config.js file; if we later need custom theme values (brand colors,
-   fonts) they go in an `@theme { ... }` block right here.
+   tailwind.config.js file.
    Everything else should be Tailwind utility classes in the components
    themselves, so the styling lives next to the markup that uses it. */
 @import 'tailwindcss';
 
-/* Tell the browser we render sensibly in both light and dark mode, so it
-   picks matching defaults for scrollbars, form controls, etc. */
-html {
-  color-scheme: light dark;
+/* ---------------------------------------------------------------------------
+   Design tokens
+   ---------------------------------------------------------------------------
+   Every colour in the project lives here — surfaces, ink, and the chart series
+   colours — so light and dark are defined once and components reference a role
+   (`var(--surface-1)`) rather than a raw hex.
+
+   That includes the chart colours, which are handed to Recharts as
+   `stroke="var(--series-vocab)"`. A `var()` inside an SVG presentation
+   attribute *is* resolved by the browser, so charts get dark mode from plain
+   CSS with no JavaScript theme detection at all.
+
+
+   ## The series colours are validated, not chosen by eye
+
+   Colourblind-safety is measured, not judged by looking. This set was checked
+   against the two surfaces below with a palette validator:
+
+     light (on #fcfcfb) — worst adjacent pair yellow<->aqua, CVD dE 9.1
+                          (protan), normal-vision dE 22.9. All checks pass.
+     dark  (on #1a1a19) — worst adjacent pair yellow<->aqua, CVD dE 8.4
+                          (protan), normal-vision dE 19.8. All checks pass.
+
+   One caveat from that check: on the *light* surface, aqua (2.74:1) and yellow
+   (2.11:1) fall below 3:1 contrast. That is only acceptable because colour is
+   never the sole way to read a value — ProgressChart ships direct end-labels, a
+   legend, and a table view. Don't remove those.
+
+   Change a colour or a surface here and the numbers above stop being true;
+   re-run the validation, because contrast is only meaningful against the
+   surface a mark actually sits on.
+--------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+
+  --surface-page: #f9f9f7; /* the page behind the cards */
+  --surface-1: #fcfcfb; /* card / chart surface */
+
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781; /* axis ticks, captions */
+
+  --gridline: #e1e0d9; /* hairline, one step off the surface */
+  --axis: #c3c2b7;
+  --border: rgb(11 11 11 / 0.1);
+
+  /* Categorical series — one hue per category, assigned by fixed slot order.
+     The order is a safety property (it keeps adjacent pairs separable under
+     colour-vision deficiency), not decoration. Don't shuffle it. */
+  --series-vocab: #2a78d6; /* slot 1, blue */
+  --series-kanji: #eb6834; /* slot 2, orange */
+  --series-grammar: #1baf7a; /* slot 3, aqua */
+  --series-sent: #eda100; /* slot 4, yellow */
+
+  /* Sequential ramp for the activity heatmap: one hue, light to dark.
+     A heatmap encodes magnitude, so several hues would wrongly imply the
+     buckets are different kinds of thing rather than more and less of one. */
+  --heat-0: #eceae2;
+  --heat-1: #cde2fb;
+  --heat-2: #86b6ef;
+  --heat-3: #3987e5;
+  --heat-4: #1c5cab;
+}
+
+/* Dark values are declared twice on purpose: the media query follows the OS
+   setting, and the [data-theme] scope lets an explicit in-app toggle win in
+   both directions. */
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme='light'])) {
+    color-scheme: dark;
+
+    --surface-page: #0d0d0d;
+    --surface-1: #1a1a19;
+
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+
+    --gridline: #2c2c2a;
+    --axis: #383835;
+    --border: rgb(255 255 255 / 0.1);
+
+    /* The same four hues re-stepped for a dark surface, not a different
+       palette. An identical hex on both surfaces either glares or vanishes. */
+    --series-vocab: #3987e5;
+    --series-kanji: #d95926;
+    --series-grammar: #199e70;
+    --series-sent: #c98500;
+
+    /* The ramp runs the other way here: on a dark surface it is brightness,
+       not darkness, that reads as "more". */
+    --heat-0: #242423;
+    --heat-1: #184f95;
+    --heat-2: #256abf;
+    --heat-3: #3987e5;
+    --heat-4: #6da7ec;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --surface-page: #0d0d0d;
+  --surface-1: #1a1a19;
+
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted: #898781;
+
+  --gridline: #2c2c2a;
+  --axis: #383835;
+  --border: rgb(255 255 255 / 0.1);
+
+  --series-vocab: #3987e5;
+  --series-kanji: #d95926;
+  --series-grammar: #199e70;
+  --series-sent: #c98500;
+
+  --heat-0: #242423;
+  --heat-1: #184f95;
+  --heat-2: #256abf;
+  --heat-3: #3987e5;
+  --heat-4: #6da7ec;
+}
+
+body {
+  background: var(--surface-page);
+  color: var(--text-secondary);
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
