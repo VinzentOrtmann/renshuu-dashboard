@@ -31,6 +31,20 @@ export const CATEGORY_LABELS: Record<SeriesCategory, string> = {
   sent: 'Sentences',
 }
 
+/**
+ * Labels for every schedule `booktype`, which is a wider set than the four
+ * series above: schedules can also be conjugation drills, for which renshuu
+ * reports no lifetime total.
+ */
+export const BOOKTYPE_LABELS: Record<string, string> = {
+  vocab: 'Vocabulary',
+  kanji: 'Kanji',
+  grammar: 'Grammar',
+  sent: 'Sentences',
+  conj: 'Conjugation',
+  aconj: 'Adjective conjugation',
+}
+
 /** CSS colour reference for each series, for both SVG marks and HTML swatches. */
 export const SERIES_COLOR_VARS: Record<SeriesCategory, string> = {
   vocab: 'var(--series-vocab)',

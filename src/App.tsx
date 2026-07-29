@@ -7,6 +7,7 @@
  */
 
 import { ActivityHeatmap } from './components/ActivityHeatmap.tsx'
+import { CategoryBreakdown } from './components/CategoryBreakdown.tsx'
 import { ProgressChart } from './components/ProgressChart.tsx'
 import { Projection } from './components/Projection.tsx'
 import { formatLongDate, useHistory } from './lib/history.ts'
@@ -76,6 +77,7 @@ function Dashboard({
       />
       <ProgressChart snapshots={snapshots} />
       <Projection snapshots={snapshots} />
+      <CategoryBreakdown snapshots={snapshots} />
       <ActivityHeatmap snapshots={snapshots} />
     </div>
   )
