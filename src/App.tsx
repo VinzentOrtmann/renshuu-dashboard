@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div className="min-h-dvh">
-      <main className="mx-auto max-w-5xl px-6 py-12 sm:py-16">
+      <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-16">
         <Header />
 
         {history.status === 'loading' && <LoadingState />}
@@ -25,8 +25,34 @@ function App() {
         {history.status === 'ready' && (
           <Dashboard snapshots={history.snapshots} />
         )}
+
+        <Footer />
       </main>
     </div>
+  )
+}
+
+function Footer() {
+  return (
+    <footer className="mt-10 border-t border-[var(--gridline)] pt-6 text-sm text-[var(--text-muted)]">
+      <p>
+        Data collected daily from the{' '}
+        <a
+          href="https://api.renshuu.org/docs/"
+          className="underline underline-offset-2 hover:text-[var(--text-secondary)]"
+        >
+          Renshuu API
+        </a>{' '}
+        and archived in this{' '}
+        <a
+          href="https://github.com/VinzentOrtmann/renshuu-dashboard"
+          className="underline underline-offset-2 hover:text-[var(--text-secondary)]"
+        >
+          repository
+        </a>
+        .
+      </p>
+    </footer>
   )
 }
 
@@ -100,7 +126,7 @@ function StatusBar({
   days: number
 }) {
   return (
-    <section className="flex flex-wrap items-baseline gap-x-8 gap-y-3 rounded-xl border border-[var(--border)] bg-[var(--surface-1)] px-6 py-4">
+    <section className="flex flex-wrap items-baseline gap-x-8 gap-y-3 rounded-xl border border-[var(--border)] bg-[var(--surface-1)] px-4 py-4 sm:px-6">
       <div>
         <span className="text-sm text-[var(--text-muted)]">Level</span>{' '}
         <span className="text-lg font-semibold text-[var(--text-primary)]">
@@ -144,7 +170,7 @@ function ErrorState({ error }: { error: Error }) {
 
 function Panel({ children }: { children: React.ReactNode }) {
   return (
-    <section className="rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface-1)] p-12 text-center">
+    <section className="rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface-1)] p-8 text-center sm:p-12">
       {children}
     </section>
   )

@@ -3,14 +3,14 @@
   "snapshots": [
     {
       "date": "2026-07-29",
-      "capturedAt": "2026-07-29T13:08:27.226Z",
+      "capturedAt": "2026-07-29T17:59:43.587Z",
       "adventureLevel": 135,
       "studiedToday": {
-        "all": 166,
-        "vocab": 166,
+        "all": 302,
+        "vocab": 300,
         "kanji": 0,
         "grammar": 0,
-        "sent": 0,
+        "sent": 2,
         "conj": 0,
         "aconj": 0
       },
@@ -69,7 +69,7 @@
           "booktype": "vocab",
           "isFrozen": false,
           "studiedCount": 78,
-          "totalCount": 78,
+          "totalCount": 79,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 56
@@ -83,7 +83,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 224
+          "dueToday": 223
         },
         {
           "id": "8375655",
@@ -94,18 +94,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 103
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 84
+          "dueToday": 47
         },
         {
           "id": "9216681",
@@ -204,7 +193,7 @@
           "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 110
+          "dueToday": 108
         },
         {
           "id": "9178698",
@@ -257,6 +246,17 @@
           "isFrozen": false,
           "studiedCount": 507,
           "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0

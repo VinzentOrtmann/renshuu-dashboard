@@ -304,7 +304,9 @@ export function Card({
   children: React.ReactNode
 }) {
   return (
-    <section className="rounded-xl border border-[var(--border)] bg-[var(--surface-1)] p-6">
+    // Tighter padding on phones: 24px of padding each side costs a quarter of
+    // a 375px screen before any content is drawn.
+    <section className="rounded-xl border border-[var(--border)] bg-[var(--surface-1)] p-4 sm:p-6">
       <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-base font-semibold text-[var(--text-primary)]">
