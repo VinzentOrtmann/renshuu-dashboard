@@ -64,14 +64,17 @@ export interface CategoryStreaks {
 }
 
 /**
- * Terms studied *today*, broken down by category.
+ * Study counts, broken down by category.
  *
- * This is the single most important field for this project: it's the daily
- * activity number that the heatmap and all the pace maths are built on. It
- * resets each day, which is exactly why we snapshot it daily — renshuu does
- * not hand you the historical series.
+ * The `today_*` fields reset every day — which is exactly why we snapshot them
+ * daily, since renshuu doesn't hand you the historical series. They drive the
+ * activity heatmap.
+ *
+ * The `total_*` fields are cumulative lifetime counts. They aren't in renshuu's
+ * OpenAPI spec at all but the server does send them, and they're the best basis
+ * for the pace projections: one number per category that only ever goes up.
  */
-export interface StudiedToday {
+export interface StudiedCounts {
   /** All categories combined. */
   today_all: number
   today_vocab: number
@@ -80,6 +83,28 @@ export interface StudiedToday {
   today_sent: number
   today_conj: number
   today_aconj: number
+
+  /**
+   * Lifetime total across categories. Observed to equal the four `total_*`
+   * fields below summed — note there are no conjugation totals.
+   */
+  total: number
+  total_vocab: number
+  total_kanji: number
+  total_grammar: number
+  total_sent: number
+}
+
+/**
+ * API rate-limit info. Undocumented, but returned on every profile call.
+ *
+ * The allowance is per day and generous (2000 observed), so a once-daily
+ * snapshot is nowhere near it. Worth recording anyway so a runaway loop is
+ * visible in the history rather than silently getting throttled.
+ */
+export interface ApiUsage {
+  calls_today: number
+  daily_allowance: number
 }
 
 /** Response shape of `GET /v1/profile`. */
@@ -92,7 +117,8 @@ export interface RenshuuProfile {
   user_length: string
   /** URL of the user's avatar image. */
   kao: string
-  studied: StudiedToday
+  studied: StudiedCounts
+  api_usage: ApiUsage
   level_progress_percs: {
     vocab: VocabProgressPercentages
     kanji: JlptProgressPercentages
@@ -102,7 +128,13 @@ export interface RenshuuProfile {
   streaks: Record<StudyCategory, CategoryStreaks>
 }
 
-/** How many terms are due in a schedule on some future day. */
+/**
+ * How many terms are due in a schedule on some future day.
+ *
+ * Both fields arrive from the server as strings *sometimes* — "7" and 0 have
+ * been seen in the same array. The API client coerces them to numbers, so by
+ * the time this type is handed to you they really are numbers.
+ */
 export interface UpcomingReviews {
   /** 1 = tomorrow, 2 = the day after, and so on. */
   days_in_future: number
@@ -110,12 +142,14 @@ export interface UpcomingReviews {
 }
 
 /**
- * A single study schedule (renshuu's name for an SRS deck).
+ * Which kind of material a schedule drills. Undocumented but always present.
  *
- * Note that a schedule carries no category label — the API does not tell you
- * whether a given schedule is vocab, kanji or grammar. For per-category
- * numbers use `RenshuuProfile.studied` / `level_progress_percs` instead.
+ * This is what makes a per-schedule category breakdown possible — without it
+ * you'd be guessing from the schedule's name.
  */
+export type ScheduleBookType = StudyCategory
+
+/** A single study schedule (renshuu's name for an SRS deck). */
 export interface RenshuuSchedule {
   /**
    * The spec declares this a string while showing a numeric example, so the
@@ -123,6 +157,11 @@ export interface RenshuuSchedule {
    */
   id: string
   name: string
+  /**
+   * Category of material. Not in the OpenAPI spec; observed values are
+   * vocab, kanji, grammar, sent and conj.
+   */
+  booktype: ScheduleBookType
   /** 0 or 1 — frozen schedules are paused and stop surfacing reviews. */
   is_frozen: number
   today: {
@@ -135,9 +174,13 @@ export interface RenshuuSchedule {
   terms: {
     total_count: number
     /**
-     * Terms encountered at least once. Summed across schedules this is the
-     * closest thing the API gives to "how much do I know", so it's what the
-     * projection maths extrapolates.
+     * Terms encountered at least once.
+     *
+     * Don't sum this across schedules to get a lifetime total — use
+     * `RenshuuProfile.studied.total_*` for that. The two disagree (4166 vs
+     * 3890 on a real account) because a term can sit in several schedules and
+     * gets counted once per schedule here. This field is per-deck progress;
+     * `studied.total_*` is the account-wide truth.
      */
     studied_count: number
     unstudied_count: number

@@ -29,6 +29,7 @@ const EXPECTED = {
     'studied',
     'level_progress_percs',
     'streaks',
+    'api_usage',
   ],
   studied: [
     'today_all',
@@ -38,10 +39,16 @@ const EXPECTED = {
     'today_sent',
     'today_conj',
     'today_aconj',
+    'total',
+    'total_vocab',
+    'total_kanji',
+    'total_grammar',
+    'total_sent',
   ],
   schedule: [
     'id',
     'name',
+    'booktype',
     'is_frozen',
     'today',
     'upcoming',
@@ -112,6 +119,14 @@ async function main() {
   // details in CI logs or a screenshot.
   console.log(`  adventure_level: ${profile.adventure_level}`)
   console.log(`  studied today (all): ${profile.studied?.today_all}`)
+  console.log(
+    `  lifetime totals: ${profile.studied?.total} ` +
+      `(vocab ${profile.studied?.total_vocab}, kanji ${profile.studied?.total_kanji}, ` +
+      `grammar ${profile.studied?.total_grammar}, sentences ${profile.studied?.total_sent})`,
+  )
+  console.log(
+    `  api usage: ${profile.api_usage?.calls_today} of ${profile.api_usage?.daily_allowance} calls today`,
+  )
   allMatched = compareKeys('profile', profile, EXPECTED.profile) && allMatched
   allMatched = compareKeys('profile.studied', profile.studied, EXPECTED.studied) && allMatched
   console.log(
@@ -143,9 +158,22 @@ async function main() {
     for (const s of schedules) {
       const frozen = s.is_frozen ? ' [frozen]' : ''
       console.log(
-        `    ${s.name}${frozen}: ${s.terms?.studied_count ?? '?'}/${s.terms?.total_count ?? '?'} studied, ${s.today?.review ?? '?'} due today`,
+        `    [${s.booktype}] ${s.name}${frozen}: ${s.terms?.studied_count ?? '?'}/${s.terms?.total_count ?? '?'} studied, ${s.today?.review ?? '?'} due today`,
       )
     }
+
+    // Guards against the mixed string/number problem regressing: if the client
+    // ever stops coercing, these sums turn into concatenated strings.
+    const upcomingValues = schedules.flatMap((s) =>
+      (s.upcoming ?? []).flatMap((u) => [u.days_in_future, u.terms_to_review]),
+    )
+    const badTypes = upcomingValues.filter((v) => typeof v !== 'number')
+    console.log(
+      badTypes.length === 0
+        ? `\n  Numeric coercion: OK (${upcomingValues.length} upcoming values all numbers)`
+        : `\n  Numeric coercion: FAILED — ${badTypes.length} non-number values`,
+    )
+    if (badTypes.length > 0) allMatched = false
   }
 
   console.log(

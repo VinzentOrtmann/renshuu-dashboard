@@ -12,7 +12,14 @@
  * that would let a browser call it from another origin anyway.
  */
 
-import type { RenshuuProfile, RenshuuScheduleList } from '../types/renshuu.ts'
+import type {
+  ApiUsage,
+  RenshuuProfile,
+  RenshuuSchedule,
+  RenshuuScheduleList,
+  StudiedCounts,
+  UpcomingReviews,
+} from '../types/renshuu.ts'
 
 /** Base URL, straight from the `servers` block of the OpenAPI spec. */
 const DEFAULT_BASE_URL = 'https://api.renshuu.org/v1'
@@ -45,6 +52,34 @@ export class RenshuuApiError extends Error {
     this.path = details.path
     this.body = details.body
   }
+}
+
+/**
+ * Coerces a value to a number, defaulting to 0 for anything unusable.
+ *
+ * The Renshuu API is inconsistent about this: numeric fields come back as JSON
+ * strings some of the time (`"7"`) and as real numbers other times (`0`) —
+ * sometimes both within a single array. Left alone that bites later in ways
+ * that are annoying to trace, because `"7" + 1` is `"71"` in JavaScript, so a
+ * chart or a sum silently produces nonsense instead of failing.
+ */
+function toNumber(value: unknown): number {
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : 0
+}
+
+/**
+ * Runs every value of an object through {@link toNumber}, keeping the keys.
+ *
+ * Used for the flat all-numeric objects the API returns (study counts, streaks,
+ * JLPT percentages) so a stringly-typed value anywhere in them is neutralised.
+ */
+function toNumberRecord<T>(source: unknown): T {
+  const result: Record<string, number> = {}
+  for (const [key, value] of Object.entries((source ?? {}) as object)) {
+    result[key] = toNumber(value)
+  }
+  return result as T
 }
 
 export interface RenshuuClientOptions {
@@ -136,7 +171,30 @@ export function createRenshuuClient(
      * Despite the name this is the "stats" endpoint; there is no `/v1/stats`.
      */
     async getProfile(): Promise<RenshuuProfile> {
-      return request<RenshuuProfile>('/profile')
+      const data = await request<RenshuuProfile>('/profile')
+
+      // Normalise every numeric group, since the API mixes strings and numbers.
+      const levels = data.level_progress_percs
+      return {
+        ...data,
+        adventure_level: toNumber(data.adventure_level),
+        studied: toNumberRecord<StudiedCounts>(data.studied),
+        api_usage: toNumberRecord<ApiUsage>(data.api_usage),
+        level_progress_percs: {
+          vocab: toNumberRecord(levels?.vocab),
+          kanji: toNumberRecord(levels?.kanji),
+          grammar: toNumberRecord(levels?.grammar),
+          sent: toNumberRecord(levels?.sent),
+        },
+        streaks: {
+          vocab: toNumberRecord(data.streaks?.vocab),
+          kanji: toNumberRecord(data.streaks?.kanji),
+          grammar: toNumberRecord(data.streaks?.grammar),
+          sent: toNumberRecord(data.streaks?.sent),
+          conj: toNumberRecord(data.streaks?.conj),
+          aconj: toNumberRecord(data.streaks?.aconj),
+        },
+      }
     },
 
     /**
@@ -147,13 +205,28 @@ export function createRenshuuClient(
     async getSchedules(): Promise<RenshuuScheduleList> {
       const data = await request<RenshuuScheduleList>('/schedule')
 
-      // The spec types `id` as a string but shows a number in its example, so
-      // the server may send either. Normalise now, so downstream code (which
-      // uses these ids as object keys in history.json) always sees a string.
-      const schedules = (data.schedules ?? []).map((schedule) => ({
-        ...schedule,
-        id: String(schedule.id),
-      }))
+      // Normalise ids to strings (they're used as keys in history.json) and
+      // every count to a real number.
+      const schedules: RenshuuSchedule[] = (data.schedules ?? []).map(
+        (schedule) => ({
+          ...schedule,
+          id: String(schedule.id),
+          is_frozen: toNumber(schedule.is_frozen),
+          today: {
+            review: toNumber(schedule.today?.review),
+            new: toNumber(schedule.today?.new),
+          },
+          // This array is the worst offender for mixed string/number values.
+          upcoming: (schedule.upcoming ?? []).map(
+            (entry): UpcomingReviews => ({
+              days_in_future: toNumber(entry.days_in_future),
+              terms_to_review: toNumber(entry.terms_to_review),
+            }),
+          ),
+          terms: toNumberRecord(schedule.terms),
+          new_terms: toNumberRecord(schedule.new_terms),
+        }),
+      )
 
       return { schedules }
     },
