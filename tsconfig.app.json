@@ -22,5 +22,8 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  // Tests are excluded here and picked up by tsconfig.node.json instead: they
+  // import node:test, which needs Node types rather than the browser's.
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts"]
 }

@@ -9,7 +9,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "check-api": "node --env-file-if-exists=.env scripts/check-api.ts",
-    "snapshot": "node --env-file-if-exists=.env scripts/snapshot.ts"
+    "snapshot": "node --env-file-if-exists=.env scripts/snapshot.ts",
+    "test": "node --test \"src/**/*.test.ts\""
   },
   "dependencies": {
     "react": "^19.2.7",

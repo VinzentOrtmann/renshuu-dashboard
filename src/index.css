@@ -67,6 +67,11 @@
   --heat-2: #86b6ef;
   --heat-3: #3987e5;
   --heat-4: #1c5cab;
+
+  /* Progress meters. The unfilled track is a lighter step of the fill's own
+     ramp rather than a neutral grey, so the whole bar reads as one scale. */
+  --meter-fill: #2a78d6;
+  --meter-track: #cde2fb;
 }
 
 /* Dark values are declared twice on purpose: the media query follows the OS
@@ -128,6 +133,9 @@
   --heat-2: #256abf;
   --heat-3: #3987e5;
   --heat-4: #6da7ec;
+
+  --meter-fill: #3987e5;
+  --meter-track: #184f95;
 }
 
 body {
