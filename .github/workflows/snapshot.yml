@@ -1,29 +1,35 @@
-# Captures one day of renshuu stats and commits it to the archive.
+# Captures renshuu stats and commits them to the archive.
 #
 # This is the workflow that actually builds the permanent history — the thing
 # renshuu's own UI doesn't keep. Everything else in this repo just visualises
 # whatever this has collected.
-name: Daily snapshot
+#
+# It runs several times a day and keeps one entry per study day, refreshing that
+# entry as the day goes on. See the cron comment below for why once a day was
+# not good enough.
+name: Snapshot
 
 on:
   schedule:
-    # 21:50 UTC daily. The time is chosen to land shortly *before* midnight in
-    # the study timezone, because renshuu resets its `today_*` counters at local
-    # midnight — so running late in the local evening captures a nearly complete
-    # day, while running after midnight would capture an empty one.
+    # Every three hours, not once a day.
     #
-    # GitHub cron is always UTC and has no concept of daylight saving, so this
-    # single time has to work year-round for Europe/Berlin:
-    #   summer (CEST, UTC+2) -> 23:50 local
-    #   winter (CET,  UTC+1) -> 22:50 local
-    # Both are late evening on the correct day. If SNAPSHOT_TIMEZONE below
-    # changes, re-check this arithmetic.
+    # renshuu resets its `today_*` counters at local midnight, so the useful
+    # capture is the last one before that boundary. A single nightly run cannot
+    # be relied on to be it: GitHub's scheduler is best-effort and routinely
+    # runs late. This originally fired at 21:50 UTC — 23:50 in Berlin, only ten
+    # minutes of headroom — and on 29 July 2026 it ran 51 minutes late, at 00:41
+    # local. By then the counter had reset, so that day was never captured at
+    # its full value and is understated in the archive permanently.
     #
-    # Note that GitHub's scheduler is best-effort and can be delayed by up to an
-    # hour under load. That's survivable here: a delayed run still lands on the
-    # right date in winter, and the cumulative totals mean a wholly missed day
-    # doesn't corrupt the pace maths.
-    - cron: '50 21 * * *'
+    # Running repeatedly fixes this because a same-day run replaces the entry
+    # rather than appending: each run refreshes the day with a fuller count, and
+    # whichever run lands last before local midnight is the one that sticks. A
+    # delayed run is no longer a lost day, just a slightly earlier cutoff.
+    #
+    # Cost is negligible — 8 runs x 2 calls against a 2000/day allowance — and
+    # scripts/snapshot.ts leaves the file untouched when nothing has changed, so
+    # quiet windows produce no commit and no redeploy.
+    - cron: '50 */3 * * *'
 
   # Lets you trigger a snapshot by hand from the Actions tab.
   workflow_dispatch:
@@ -75,12 +81,10 @@ jobs:
 
           # `git diff --quiet` exits 0 when the file is byte-identical.
           #
-          # In practice this rarely triggers, because every snapshot stamps a
-          # fresh `capturedAt` — and that's intended, since a daily commit is
-          # what builds the archive and recording when each run happened makes a
-          # delayed cron visible. This guard is a safety net for the case where
-          # the script somehow produces no write at all, so the workflow reports
-          # honestly instead of failing on an empty commit.
+          # This is the common path now, not an edge case: the script leaves the
+          # file untouched when a run finds nothing new, so the several runs a
+          # day that land in windows where you weren't studying produce no
+          # commit and no redeploy.
           # The badges are regenerated from the archive on every run, so they
           # are part of the same commit — a badge that disagreed with the
           # dashboard would be worse than no badge.

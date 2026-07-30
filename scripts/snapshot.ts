@@ -208,19 +208,60 @@ async function readHistory(): Promise<History> {
   return parsed
 }
 
+/** Structural equality, used to tell a real change from a fresh timestamp. */
+function deepEqual(a: unknown, b: unknown): boolean {
+  if (a === b) return true
+  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) {
+    return false
+  }
+  if (Array.isArray(a) !== Array.isArray(b)) return false
+
+  const aKeys = Object.keys(a)
+  const bKeys = Object.keys(b)
+  if (aKeys.length !== bKeys.length) return false
+
+  return aKeys.every(
+    (key) =>
+      Object.hasOwn(b, key) &&
+      deepEqual(
+        (a as Record<string, unknown>)[key],
+        (b as Record<string, unknown>)[key],
+      ),
+  )
+}
+
+/**
+ * True when two snapshots differ only by when they were captured.
+ *
+ * The script runs several times a day, and most runs find nothing new — you
+ * weren't studying in that particular three-hour window. Without this check
+ * every run would rewrite the file, because `capturedAt` is always new, and the
+ * archive would collect eight empty commits a day.
+ */
+function sameExceptCapturedAt(a: DailySnapshot, b: DailySnapshot): boolean {
+  const { capturedAt: _a, ...restA } = a
+  const { capturedAt: _b, ...restB } = b
+  return deepEqual(restA, restB)
+}
+
 /**
  * Inserts a snapshot, replacing any existing entry for the same date.
  *
  * Replace rather than skip on a same-day re-run: a later run has seen more of
  * the day, so its `studiedToday` counts are strictly better. Skipping would
- * permanently freeze the day at whatever the first run happened to catch.
+ * permanently freeze the day at whatever the first run happened to catch —
+ * which is exactly how 29 July 2026 ended up recorded as an afternoon total.
  */
 function upsertSnapshot(
   snapshots: DailySnapshot[],
   snapshot: DailySnapshot,
-): { snapshots: DailySnapshot[]; replaced: boolean } {
+): { snapshots: DailySnapshot[]; replaced: boolean; unchanged: boolean } {
   const existingIndex = snapshots.findIndex((s) => s.date === snapshot.date)
   const next = [...snapshots]
+
+  const unchanged =
+    existingIndex >= 0 &&
+    sameExceptCapturedAt(snapshots[existingIndex], snapshot)
 
   if (existingIndex >= 0) {
     next[existingIndex] = snapshot
@@ -232,7 +273,7 @@ function upsertSnapshot(
   // so a day arriving late (after a failed run) still lands in order.
   next.sort((a, b) => a.date.localeCompare(b.date))
 
-  return { snapshots: next, replaced: existingIndex >= 0 }
+  return { snapshots: next, replaced: existingIndex >= 0, unchanged }
 }
 
 async function main() {
@@ -274,13 +315,23 @@ async function main() {
   )
 
   const history = await readHistory()
-  const { snapshots, replaced } = upsertSnapshot(history.snapshots, snapshot)
+  const { snapshots, replaced, unchanged } = upsertSnapshot(
+    history.snapshots,
+    snapshot,
+  )
 
   const updated = { version: HISTORY_VERSION, snapshots }
 
   if (dryRun) {
     console.log('\n--dry-run: nothing written. Entry would be:')
     console.log(JSON.stringify(snapshot, null, 2))
+    return
+  }
+
+  // Nothing studied since the last run in this window. Leave the file alone so
+  // the workflow sees a clean tree and skips the commit and the redeploy.
+  if (unchanged) {
+    console.log(`No change since the last run — ${date} left as it was.`)
     return
   }
 

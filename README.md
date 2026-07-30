@@ -61,7 +61,7 @@ The dashboard is careful about the difference between *no data* and *zero*:
 ## How it works
 
 ```
-GitHub Action (daily cron, 21:50 UTC)
+GitHub Action (cron, every 3 hours)
   └─ scripts/snapshot.ts   fetches /v1/profile and /v1/schedule
        ├─ upserts a dated entry into public/data/history.json
        └─ regenerates public/badge-{light,dark}.svg
@@ -79,8 +79,14 @@ Two things about it are non-obvious and worth preserving:
 - **Snapshots are date-stamped in a study timezone, not UTC.** Renshuu resets its
   `today_*` counters at local midnight while Actions runners are on UTC. A naive
   00:00 UTC cron would record ~0 terms studied every single day and never capture
-  the day that just ended. The cron runs at 21:50 UTC, which is late evening in
-  `Europe/Berlin` year-round.
+  the day that just ended.
+- **It runs every three hours, not once nightly.** Keeping one entry per study
+  day and refreshing it as the day goes on means whichever run lands last before
+  local midnight is the one that sticks. A single nightly run isn't reliable:
+  GitHub's scheduler is best-effort, and a run that slips past midnight finds the
+  counter already reset — which is how 29 July 2026 came to be understated in
+  this archive permanently. Runs that find nothing new write nothing, so quiet
+  windows cost no commit and no redeploy.
 - **The snapshot workflow calls the deploy workflow explicitly.** GitHub does not
   fire workflows for pushes made with the built-in `GITHUB_TOKEN`. Relying on
   `on: push` would mean the archive grew daily while the deployed site silently
