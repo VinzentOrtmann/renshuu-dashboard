@@ -527,7 +527,7 @@
     },
     {
       "date": "2026-07-31",
-      "capturedAt": "2026-07-31T09:33:57.949Z",
+      "capturedAt": "2026-07-31T11:49:45.126Z",
       "adventureLevel": 137,
       "studiedToday": {
         "all": 101,
@@ -593,7 +593,7 @@
           "booktype": "vocab",
           "isFrozen": false,
           "studiedCount": 78,
-          "totalCount": 85,
+          "totalCount": 87,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 70
