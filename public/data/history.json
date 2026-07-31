@@ -527,11 +527,11 @@
     },
     {
       "date": "2026-07-31",
-      "capturedAt": "2026-07-31T15:10:36.699Z",
-      "adventureLevel": 137,
+      "capturedAt": "2026-07-31T17:11:57.472Z",
+      "adventureLevel": 138,
       "studiedToday": {
-        "all": 218,
-        "vocab": 218,
+        "all": 273,
+        "vocab": 273,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -574,7 +574,7 @@
           "n1": 0,
           "n2": 0,
           "n3": 0,
-          "n4": 54,
+          "n4": 57,
           "n5": 95
         }
       },
@@ -618,7 +618,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 142
+          "dueToday": 87
         },
         {
           "id": "9216681",
