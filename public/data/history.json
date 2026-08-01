@@ -789,12 +789,12 @@
     },
     {
       "date": "2026-08-01",
-      "capturedAt": "2026-08-01T14:15:49.953Z",
+      "capturedAt": "2026-08-01T16:39:36.683Z",
       "adventureLevel": 140,
       "studiedToday": {
-        "all": 323,
+        "all": 403,
         "vocab": 317,
-        "kanji": 6,
+        "kanji": 86,
         "grammar": 0,
         "sent": 0,
         "conj": 0,
@@ -811,7 +811,7 @@
         "vocab": {
           "n1": 2,
           "n2": 6,
-          "n3": 22,
+          "n3": 23,
           "n4": 100,
           "n5": 100,
           "n6": 100,
@@ -821,7 +821,7 @@
         "kanji": {
           "n1": 1,
           "n2": 2,
-          "n3": 8,
+          "n3": 13,
           "n4": 100,
           "n5": 100
         },
@@ -891,18 +891,7 @@
           "totalCount": 84,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 36
-        },
-        {
-          "id": "8277523",
-          "name": "Pre-Intermediate Kanji (N4)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 168,
-          "totalCount": 168,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 80
+          "dueToday": 26
         },
         {
           "id": "8983957",
@@ -1032,6 +1021,17 @@
           "isFrozen": false,
           "studiedCount": 80,
           "totalCount": 80,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8277523",
+          "name": "Pre-Intermediate Kanji (N4)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 168,
+          "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
