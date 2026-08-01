@@ -789,20 +789,20 @@
     },
     {
       "date": "2026-08-01",
-      "capturedAt": "2026-08-01T16:39:36.683Z",
+      "capturedAt": "2026-08-01T19:58:32.866Z",
       "adventureLevel": 140,
       "studiedToday": {
-        "all": 403,
-        "vocab": 317,
+        "all": 466,
+        "vocab": 357,
         "kanji": 86,
         "grammar": 0,
-        "sent": 0,
+        "sent": 23,
         "conj": 0,
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 3974,
-        "vocab": 2664,
+        "all": 3985,
+        "vocab": 2675,
         "kanji": 313,
         "grammar": 234,
         "sent": 763
@@ -858,18 +858,18 @@
           "totalCount": 90,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 68
+          "dueToday": 60
         },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 315,
+          "studiedCount": 326,
           "totalCount": 2473,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 223
+          "newToday": 10,
+          "newThisWeek": 10,
+          "dueToday": 193
         },
         {
           "id": "9216681",
@@ -935,7 +935,7 @@
           "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 71
+          "dueToday": 48
         },
         {
           "id": "9178698",
