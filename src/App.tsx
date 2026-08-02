@@ -69,6 +69,12 @@ function Header() {
         A permanent archive of my Renshuu study history, with pace analysis and
         progress projections the native stats page doesn&apos;t compute.
       </p>
+      <a
+        href={`${import.meta.env.BASE_URL}kanji.html`}
+        className="mt-5 inline-block rounded-md border border-[var(--border)] px-3 py-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+      >
+        Kanji wall →
+      </a>
     </header>
   )
 }

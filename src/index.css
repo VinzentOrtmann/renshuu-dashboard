@@ -68,6 +68,16 @@
   --heat-3: #3987e5;
   --heat-4: #1c5cab;
 
+  /* Ink for text sitting *inside* a ramp fill (the kanji wall's tiles).
+     Picked per step by the fill's luminance — the one place a label may take a
+     colour other than a text token, because it has to clear contrast against
+     the mark it sits on rather than against the surface. */
+  --heat-0-ink: #0b0b0b;
+  --heat-1-ink: #0d366b;
+  --heat-2-ink: #042c53;
+  --heat-3-ink: #ffffff;
+  --heat-4-ink: #ffffff;
+
   /* Progress meters. The unfilled track is a lighter step of the fill's own
      ramp rather than a neutral grey, so the whole bar reads as one scale. */
   --meter-fill: #2a78d6;
@@ -133,6 +143,12 @@
   --heat-2: #256abf;
   --heat-3: #3987e5;
   --heat-4: #6da7ec;
+
+  --heat-0-ink: #c3c2b7;
+  --heat-1-ink: #ffffff;
+  --heat-2-ink: #ffffff;
+  --heat-3-ink: #042c53;
+  --heat-4-ink: #042c53;
 
   --meter-fill: #3987e5;
   --meter-track: #184f95;

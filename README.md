@@ -36,7 +36,23 @@ range derived from the fit's own uncertainty. The same pace maths drives a
 side-by-side comparison of kanji vs. vocabulary vs. grammar vs. sentences, which
 Renshuu presents only as separate, unrelated screens.
 
-### 3. A public, embeddable badge
+### 3. A kanji wall
+
+[`kanji.html`](https://vinzentortmann.github.io/renshuu-dashboard/kanji.html)
+shows every kanji in the study schedules — 660 of them — shaded by mastery and
+filterable by JLPT level. Renshuu can tell you a percentage; this shows you
+*which* characters make up the gap, because unstudied kanji are drawn alongside
+studied ones rather than omitted.
+
+Refreshed weekly rather than with each snapshot: mastery moves slowly and the
+file is two orders of magnitude larger than the daily archive.
+
+Coverage is exactly the schedules that exist in Renshuu — currently N5, N4 and
+N3 complete, plus whatever N1/N2 characters appear in the mining deck. Renshuu
+has no endpoint that hands over a global dictionary, so adding N2 or N1 means
+adding those schedules in Renshuu.
+
+### 4. A public, embeddable badge
 
 Renshuu's stats live behind a login. The badge above is a static SVG, regenerated
 nightly, that renders anywhere — a GitHub profile, a personal site, a README.
@@ -116,6 +132,7 @@ npm run dev
 | `npm test`          | Run the projection unit tests                   |
 | `npm run lint`      | Lint with oxlint                                |
 | `npm run snapshot`  | Fetch and archive today (`-- --dry-run` to peek) |
+| `npm run kanji`     | Rebuild the kanji wall's data                   |
 | `npm run check-api` | Verify the API types against your real account  |
 
 ### API access

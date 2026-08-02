@@ -198,3 +198,52 @@ export interface RenshuuSchedule {
 export interface RenshuuScheduleList {
   schedules: RenshuuSchedule[]
 }
+
+/** Per-term study record. Numbers here arrive as JSON strings quite often. */
+export interface TermUserData {
+  correct_count: number
+  missed_count: number
+  /** Average mastery across every way the term is quizzed, 0-100. */
+  mastery_avg_perc: number
+}
+
+/**
+ * A kanji as returned inside a schedule's term list.
+ *
+ * Only the fields this project uses are typed. The API also returns radicals,
+ * marked-up readings and a per-quiz-type `study_vectors` breakdown.
+ */
+export interface RenshuuKanjiTerm {
+  id: string
+  /** The character itself. */
+  kanji: string
+  /** Stroke count. */
+  scount: number
+  definition: string
+  onyomi: string
+  kunyomi: string
+  /** JLPT level as a label, e.g. "N3". Absent for kanji outside the JLPT sets. */
+  jlpt?: string
+  /** Kanji Kentei level, e.g. "7級". */
+  kanken?: string
+  /** Absent when the term has never been studied. */
+  user_data?: TermUserData
+}
+
+/**
+ * One page of a schedule's terms.
+ *
+ * Which terms are included depends on the `group` filter — `all` returns
+ * everything in the schedule, studied or not.
+ */
+export interface RenshuuTermPage<T> {
+  contents: {
+    /** 1-based page number. */
+    pg: number
+    total_pg: number
+    /** Total across all pages, not the length of `terms`. */
+    result_count: number
+    per_pg: number
+    terms: T[]
+  }
+}

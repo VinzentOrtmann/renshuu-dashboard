@@ -14,10 +14,13 @@
 
 import type {
   ApiUsage,
+  RenshuuKanjiTerm,
   RenshuuProfile,
   RenshuuSchedule,
   RenshuuScheduleList,
+  RenshuuTermPage,
   StudiedCounts,
+  TermUserData,
   UpcomingReviews,
 } from '../types/renshuu.ts'
 
@@ -229,6 +232,52 @@ export function createRenshuuClient(
       )
 
       return { schedules }
+    },
+
+    /**
+     * `GET /v1/schedule/{id}/list` — one page of a schedule's terms.
+     *
+     * `group` selects which terms come back. `all` includes ones never studied,
+     * which is what the kanji wall needs: a grid showing only what you already
+     * know can't show you what's left.
+     *
+     * Pages are 50 terms; `contents.total_pg` says how many there are.
+     */
+    async getKanjiPage(
+      scheduleId: string,
+      page: number,
+      group: 'all' | 'studied' = 'all',
+    ): Promise<RenshuuTermPage<RenshuuKanjiTerm>['contents']> {
+      const data = await request<RenshuuTermPage<RenshuuKanjiTerm>>(
+        `/schedule/${scheduleId}/list?group=${group}&pg=${page}`,
+      )
+      const contents = data.contents
+
+      return {
+        pg: toNumber(contents?.pg),
+        total_pg: toNumber(contents?.total_pg),
+        result_count: toNumber(contents?.result_count),
+        per_pg: toNumber(contents?.per_pg),
+        terms: (contents?.terms ?? []).map((term) => ({
+          ...term,
+          id: String(term.id),
+          scount: toNumber(term.scount),
+          // `user_data` is absent entirely for a term never studied — that is
+          // meaningfully different from studied-with-zero-mastery, so it stays
+          // undefined rather than being filled in with zeroes.
+          //
+          // The three fields are picked out by hand rather than mapped over,
+          // because the response also carries a nested `study_vectors` object
+          // that a blanket number-coercion would flatten to 0.
+          user_data: term.user_data
+            ? ({
+                correct_count: toNumber(term.user_data.correct_count),
+                missed_count: toNumber(term.user_data.missed_count),
+                mastery_avg_perc: toNumber(term.user_data.mastery_avg_perc),
+              } satisfies TermUserData)
+            : undefined,
+        })),
+      }
     },
   }
 }
