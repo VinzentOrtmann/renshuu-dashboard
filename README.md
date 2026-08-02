@@ -76,10 +76,12 @@ nightly Action.
 
 Two things about it are non-obvious and worth preserving:
 
-- **Snapshots are date-stamped in a study timezone, not UTC.** Renshuu resets its
-  `today_*` counters at local midnight while Actions runners are on UTC. A naive
-  00:00 UTC cron would record ~0 terms studied every single day and never capture
-  the day that just ended.
+- **Snapshots are attributed to a study day, not a calendar date.** Renshuu
+  resets its `today_*` counters at **03:00 local time** while Actions runners are
+  on UTC — so between midnight and 03:00 it is still reporting the previous day's
+  numbers. Getting either half of that wrong silently misfiles data:
+  [`src/lib/studyDay.ts`](src/lib/studyDay.ts) handles it and is unit tested,
+  because these few lines have already been wrong twice.
 - **It runs every three hours, not once nightly.** Keeping one entry per study
   day and refreshing it as the day goes on means whichever run lands last before
   local midnight is the one that sticks. A single nightly run isn't reliable:

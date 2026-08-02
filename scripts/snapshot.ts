@@ -31,6 +31,7 @@ import { fileURLToPath } from 'node:url'
 import { createRenshuuClient, RenshuuApiError } from '../src/api/renshuu.ts'
 import { BADGE_THEMES, renderBadge } from './badge.ts'
 import type { BadgeThemeName } from './badge.ts'
+import { DEFAULT_DAY_START_HOUR, studyDate } from '../src/lib/studyDay.ts'
 import { HISTORY_VERSION } from '../src/types/history.ts'
 import type {
   DailySnapshot,
@@ -77,25 +78,18 @@ const BADGE_PATHS: Record<BadgeThemeName, string> = {
 const TIMEZONE = process.env.SNAPSHOT_TIMEZONE ?? 'Europe/Berlin'
 
 /**
- * Formats an instant as YYYY-MM-DD in the given timezone.
+ * Local hour at which renshuu rolls over to a new study day.
  *
- * Built from parts rather than string-slicing an ISO date, because
- * `toISOString()` is always UTC and would give the wrong date for anyone not on
- * UTC for part of the day.
+ * renshuu resets its `today_*` counters at 03:00, not midnight — so between
+ * midnight and 03:00 it is still reporting *yesterday's* numbers. Override with
+ * SNAPSHOT_DAY_START_HOUR if you change that setting in renshuu.
+ *
+ * The attribution logic itself lives in src/lib/studyDay.ts, where it is unit
+ * tested — it is a few lines that have already been wrong twice.
  */
-function formatDate(instant: Date, timeZone: string): string {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).formatToParts(instant)
-
-  const find = (type: string) =>
-    parts.find((part) => part.type === type)?.value ?? '00'
-
-  return `${find('year')}-${find('month')}-${find('day')}`
-}
+const DAY_START_HOUR = Number(
+  process.env.SNAPSHOT_DAY_START_HOUR ?? DEFAULT_DAY_START_HOUR,
+)
 
 /** Converts one API schedule into the leaner archive form. */
 function toScheduleSnapshot(schedule: RenshuuSchedule): ScheduleSnapshot {
@@ -288,8 +282,11 @@ async function main() {
   }
 
   const capturedAt = new Date()
-  const date = formatDate(capturedAt, TIMEZONE)
-  console.log(`Snapshot for ${date} (timezone ${TIMEZONE})`)
+  const date = studyDate(capturedAt, TIMEZONE, DAY_START_HOUR)
+  console.log(
+    `Snapshot for study day ${date} ` +
+      `(timezone ${TIMEZONE}, day starts at ${DAY_START_HOUR}:00)`,
+  )
 
   const client = createRenshuuClient(apiKey)
 

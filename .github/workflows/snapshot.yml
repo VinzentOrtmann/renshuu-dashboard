@@ -13,13 +13,16 @@ on:
   schedule:
     # Every three hours, not once a day.
     #
-    # renshuu resets its `today_*` counters at local midnight, so the useful
+    # renshuu resets its `today_*` counters at 03:00 local, so the useful
     # capture is the last one before that boundary. A single nightly run cannot
     # be relied on to be it: GitHub's scheduler is best-effort and routinely
-    # runs late. This originally fired at 21:50 UTC — 23:50 in Berlin, only ten
-    # minutes of headroom — and on 29 July 2026 it ran 51 minutes late, at 00:41
-    # local. By then the counter had reset, so that day was never captured at
-    # its full value and is understated in the archive permanently.
+    # runs late. This originally fired at 21:50 UTC and assumed a midnight
+    # boundary; on 29 July 2026 it ran 51 minutes late and that day was never
+    # captured at its full value, and is understated in the archive permanently.
+    #
+    # With a 03:00 rollover the runs land at 02:50, 05:50, 08:50 ... 23:50 local
+    # in summer. The 23:50 and 02:50 runs bracket the end of the study day, so
+    # late-evening and after-midnight studying are both picked up.
     #
     # Running repeatedly fixes this because a same-day run replaces the entry
     # rather than appending: each run refreshes the day with a fuller count, and
@@ -71,6 +74,9 @@ jobs:
           RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
           # Must match renshuu's daily reset boundary — see the cron note above.
           SNAPSHOT_TIMEZONE: Europe/Berlin
+          # renshuu rolls over to a new study day at this local hour, not at
+          # midnight. Change it here if you change it in renshuu.
+          SNAPSHOT_DAY_START_HOUR: '3'
         run: npm run snapshot
 
       - name: Commit the updated archive
