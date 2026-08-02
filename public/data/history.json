@@ -1051,11 +1051,11 @@
     },
     {
       "date": "2026-08-02",
-      "capturedAt": "2026-08-02T04:16:32.071Z",
+      "capturedAt": "2026-08-02T09:01:48.016Z",
       "adventureLevel": 141,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
+        "all": 25,
+        "vocab": 25,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -1103,36 +1103,14 @@
         }
       },
       "dayStreaks": {
-        "vocab": 58,
-        "kanji": 2,
-        "grammar": 1,
-        "sent": 10,
+        "vocab": 59,
+        "kanji": 3,
+        "grammar": 0,
+        "sent": 11,
         "conj": 0,
         "aconj": 0
       },
       "schedules": [
-        {
-          "id": "8260190",
-          "name": "Hiragana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 1
-        },
-        {
-          "id": "8187284",
-          "name": "Katakana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 3
-        },
         {
           "id": "9179005",
           "name": "Mining",
@@ -1153,7 +1131,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 187
+          "dueToday": 186
         },
         {
           "id": "8260191",
@@ -1164,7 +1142,7 @@
           "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 42
+          "dueToday": 21
         },
         {
           "id": "8375655",
@@ -1186,7 +1164,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 66
+          "dueToday": 61
         },
         {
           "id": "9216681",
@@ -1297,6 +1275,28 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 37
+        },
+        {
+          "id": "8260190",
+          "name": "Hiragana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8187284",
+          "name": "Katakana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
         },
         {
           "id": "8260192",
