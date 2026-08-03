@@ -1313,20 +1313,20 @@
     },
     {
       "date": "2026-08-03",
-      "capturedAt": "2026-08-03T04:21:12.255Z",
+      "capturedAt": "2026-08-03T10:28:13.334Z",
       "adventureLevel": 142,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
-        "kanji": 0,
+        "all": 119,
+        "vocab": 100,
+        "kanji": 7,
         "grammar": 0,
-        "sent": 0,
+        "sent": 12,
         "conj": 0,
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 4063,
-        "vocab": 2710,
+        "all": 4067,
+        "vocab": 2714,
         "kanji": 313,
         "grammar": 234,
         "sent": 806
@@ -1374,17 +1374,6 @@
       },
       "schedules": [
         {
-          "id": "8187284",
-          "name": "Katakana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 3
-        },
-        {
           "id": "9179005",
           "name": "Mining",
           "booktype": "vocab",
@@ -1415,7 +1404,7 @@
           "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 60
+          "dueToday": 17
         },
         {
           "id": "8375655",
@@ -1426,18 +1415,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 123
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 62
+          "dueToday": 117
         },
         {
           "id": "9216681",
@@ -1459,18 +1437,7 @@
           "totalCount": 84,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 31
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 7
+          "dueToday": 30
         },
         {
           "id": "8277523",
@@ -1525,7 +1492,7 @@
           "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 119
+          "dueToday": 107
         },
         {
           "id": "9178698",
@@ -1556,6 +1523,39 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8187284",
+          "name": "Katakana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 80,
+          "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
