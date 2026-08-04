@@ -92,19 +92,21 @@ nightly Action.
 
 Two things about it are non-obvious and worth preserving:
 
-- **Snapshots are attributed to a study day, not a calendar date.** Renshuu
-  resets its `today_*` counters at **03:00 local time** while Actions runners are
-  on UTC — so between midnight and 03:00 it is still reporting the previous day's
-  numbers. Getting either half of that wrong silently misfiles data:
-  [`src/lib/studyDay.ts`](src/lib/studyDay.ts) handles it and is unit tested,
-  because these few lines have already been wrong twice.
-- **It runs every three hours, not once nightly.** Keeping one entry per study
-  day and refreshing it as the day goes on means whichever run lands last before
-  local midnight is the one that sticks. A single nightly run isn't reliable:
-  GitHub's scheduler is best-effort, and a run that slips past midnight finds the
-  counter already reset — which is how 29 July 2026 came to be understated in
-  this archive permanently. Runs that find nothing new write nothing, so quiet
-  windows cost no commit and no redeploy.
+- **Snapshots are attributed to a study day in local time, not UTC.** Renshuu's
+  `today_*` counters reset at local midnight while Actions runners are on UTC.
+  [`src/lib/studyDay.ts`](src/lib/studyDay.ts) handles this and is unit tested —
+  these few lines have been wrong twice, and both times the data looked
+  plausible until a number was noticed by eye.
+- **A later reading may never lower a day's count.** Within one day the counter
+  only climbs, so a smaller number means it has reset and the reading belongs to
+  a different day. [`src/lib/archive.ts`](src/lib/archive.ts) refuses it. This
+  guard exists because a run captured at 00:40 once overwrote a completed day
+  with zero, destroying it; correctness no longer depends on getting the day
+  boundary exactly right.
+- **It runs hourly.** A day is only as complete as its last capture before
+  midnight, and everything after that is lost permanently. Three-hourly left too
+  wide a gap in practice. Runs that find nothing new write nothing, so quiet
+  hours cost no commit and no redeploy.
 - **The snapshot workflow calls the deploy workflow explicitly.** GitHub does not
   fire workflows for pushes made with the built-in `GITHUB_TOKEN`. Relying on
   `on: push` would mean the archive grew daily while the deployed site silently

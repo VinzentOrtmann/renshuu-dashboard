@@ -1,22 +1,27 @@
 /**
  * Tests for study-day attribution.
  *
- * The cases that matter are the boundaries — just before and just after the
- * 03:00 rollover, and across a daylight-saving change. Those are exactly the
- * ones that were wrong in production, and none of them are obvious by reading
- * the code.
+ * The boundary cases are the ones that matter — they are exactly what was wrong
+ * in production twice, and neither failure was visible by reading the code.
+ *
+ * Note the default is midnight, established by observation: a run at 00:40
+ * Berlin found renshuu's counters already reset, so the day cannot roll over
+ * later than that. The offset mechanism is still tested with an explicit hour,
+ * because it stays configurable.
  */
 
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
 
-import { formatDateInZone, studyDate } from './studyDay.ts'
+import { DEFAULT_DAY_START_HOUR, formatDateInZone, studyDate } from './studyDay.ts'
 
 const BERLIN = 'Europe/Berlin'
 
 /** Builds an instant from a Berlin wall-clock time, given the UTC offset. */
 function berlin(iso: string, offsetHours: number): Date {
-  return new Date(`${iso}${offsetHours >= 0 ? '+' : '-'}0${Math.abs(offsetHours)}:00`)
+  return new Date(
+    `${iso}${offsetHours >= 0 ? '+' : '-'}0${Math.abs(offsetHours)}:00`,
+  )
 }
 
 describe('formatDateInZone', () => {
@@ -29,85 +34,77 @@ describe('formatDateInZone', () => {
 })
 
 describe('studyDate', () => {
-  it('treats 02:59 local as still the previous study day', () => {
-    // This is the case that was wrong: renshuu is still reporting the 30th's
-    // counters here, so the snapshot must not be filed under the 31st.
-    assert.equal(
-      studyDate(berlin('2026-07-31T02:59:00', 2), BERLIN),
-      '2026-07-30',
-    )
-  })
-
-  it('rolls over exactly at 03:00 local', () => {
-    assert.equal(
-      studyDate(berlin('2026-07-31T03:00:00', 2), BERLIN),
-      '2026-07-31',
-    )
+  it('defaults to a midnight boundary', () => {
+    assert.equal(DEFAULT_DAY_START_HOUR, 0)
   })
 
   it('files a late-evening capture under that same day', () => {
     assert.equal(
-      studyDate(berlin('2026-07-31T22:10:00', 2), BERLIN),
-      '2026-07-31',
+      studyDate(berlin('2026-08-02T21:58:00', 2), BERLIN),
+      '2026-08-02',
     )
   })
 
-  it('files a just-before-midnight capture under that same day', () => {
+  it('files a just-after-midnight capture under the new day', () => {
+    // The case that broke the archive when it was attributed to the old day:
+    // renshuu's counters have already reset by here, so this reading describes
+    // the new day, not the one that just ended.
     assert.equal(
-      studyDate(berlin('2026-07-31T23:59:00', 2), BERLIN),
-      '2026-07-31',
+      studyDate(berlin('2026-08-03T00:40:00', 2), BERLIN),
+      '2026-08-03',
     )
   })
 
-  it('files a just-after-midnight capture under the previous day', () => {
-    assert.equal(
-      studyDate(berlin('2026-08-01T00:47:00', 2), BERLIN),
-      '2026-07-31',
-    )
+  it('uses local time, not UTC', () => {
+    // 22:40 UTC is still 2 August in UTC but already 3 August in Berlin.
+    assert.equal(studyDate(new Date('2026-08-02T22:40:00Z'), BERLIN), '2026-08-03')
+    assert.equal(studyDate(new Date('2026-08-02T22:40:00Z'), 'UTC'), '2026-08-02')
   })
 
-  it('handles the winter offset too', () => {
-    // CET is UTC+1; the rollover is still 03:00 local.
+  it('is stable across a day of captures', () => {
+    const samples = [
+      berlin('2026-08-02T00:10:00', 2),
+      berlin('2026-08-02T11:01:00', 2),
+      berlin('2026-08-02T18:39:00', 2),
+      berlin('2026-08-02T23:59:00', 2),
+    ]
+    for (const sample of samples) {
+      assert.equal(studyDate(sample, BERLIN), '2026-08-02')
+    }
+  })
+
+  it('handles the winter offset', () => {
     assert.equal(
-      studyDate(berlin('2026-12-01T02:30:00', 1), BERLIN),
-      '2026-11-30',
-    )
-    assert.equal(
-      studyDate(berlin('2026-12-01T03:30:00', 1), BERLIN),
+      studyDate(berlin('2026-12-01T00:30:00', 1), BERLIN),
       '2026-12-01',
+    )
+    assert.equal(
+      studyDate(berlin('2026-11-30T23:30:00', 1), BERLIN),
+      '2026-11-30',
     )
   })
 
   it('does not drift across the spring daylight-saving change', () => {
-    // Europe/Berlin springs forward 02:00 -> 03:00 on 29 March 2026, so 02:30
-    // local does not exist that night. 01:30 CET is before the jump.
+    // Europe/Berlin springs forward 02:00 -> 03:00 on 29 March 2026.
     assert.equal(
       studyDate(new Date('2026-03-29T00:30:00Z'), BERLIN),
-      '2026-03-28',
+      '2026-03-29',
     )
   })
 
-  it('respects a custom rollover hour', () => {
-    // With a midnight boundary the same instant belongs to the next day.
-    assert.equal(
-      studyDate(berlin('2026-07-31T02:59:00', 2), BERLIN, 0),
-      '2026-07-31',
-    )
-  })
+  describe('with a non-midnight boundary', () => {
+    it('maps the pre-dawn window onto the previous day', () => {
+      assert.equal(
+        studyDate(berlin('2026-07-31T02:59:00', 2), BERLIN, 3),
+        '2026-07-30',
+      )
+    })
 
-  it('is stable across a whole day of captures', () => {
-    // Every capture from 03:00 through 02:59 the next morning must agree.
-    const expected = '2026-07-31'
-    const samples = [
-      berlin('2026-07-31T03:00:00', 2),
-      berlin('2026-07-31T09:50:00', 2),
-      berlin('2026-07-31T17:50:00', 2),
-      berlin('2026-07-31T23:50:00', 2),
-      berlin('2026-08-01T01:15:00', 2),
-      berlin('2026-08-01T02:59:00', 2),
-    ]
-    for (const sample of samples) {
-      assert.equal(studyDate(sample, BERLIN), expected, `failed for ${sample.toISOString()}`)
-    }
+    it('rolls over exactly at the configured hour', () => {
+      assert.equal(
+        studyDate(berlin('2026-07-31T03:00:00', 2), BERLIN, 3),
+        '2026-07-31',
+      )
+    })
   })
 })

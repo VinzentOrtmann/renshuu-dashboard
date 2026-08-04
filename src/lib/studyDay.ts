@@ -15,8 +15,19 @@
  * permanent record.
  */
 
-/** renshuu's default rollover: a new study day begins at 03:00 local time. */
-export const DEFAULT_DAY_START_HOUR = 3
+/**
+ * Local hour at which the API's `today_*` counters reset.
+ *
+ * Midnight, established by observation rather than assumption. renshuu has a
+ * 03:00 day-change setting, and this was briefly set to 3 on the strength of
+ * it — which corrupted two days of the archive, because a run at 00:40 local
+ * was attributed to the previous day and found the counters already back at
+ * zero. Whatever that setting governs, it is not this field.
+ *
+ * The archive no longer depends on getting this exactly right: see the
+ * monotonicity guard in src/lib/archive.ts.
+ */
+export const DEFAULT_DAY_START_HOUR = 0
 
 /**
  * Formats an instant as YYYY-MM-DD in the given timezone.

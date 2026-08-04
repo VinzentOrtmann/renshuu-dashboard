@@ -31,6 +31,7 @@ import { fileURLToPath } from 'node:url'
 import { createRenshuuClient, RenshuuApiError } from '../src/api/renshuu.ts'
 import { BADGE_THEMES, renderBadge } from './badge.ts'
 import type { BadgeThemeName } from './badge.ts'
+import { mergeSnapshot } from '../src/lib/archive.ts'
 import { DEFAULT_DAY_START_HOUR, studyDate } from '../src/lib/studyDay.ts'
 import { HISTORY_VERSION } from '../src/types/history.ts'
 import type {
@@ -80,12 +81,13 @@ const TIMEZONE = process.env.SNAPSHOT_TIMEZONE ?? 'Europe/Berlin'
 /**
  * Local hour at which renshuu rolls over to a new study day.
  *
- * renshuu resets its `today_*` counters at 03:00, not midnight — so between
- * midnight and 03:00 it is still reporting *yesterday's* numbers. Override with
- * SNAPSHOT_DAY_START_HOUR if you change that setting in renshuu.
+ * Observed to be midnight. renshuu has a 03:00 day-change setting and this was
+ * briefly set to 3 on that basis, which corrupted two days of the archive —
+ * whatever that setting governs, it is not the `today_*` counters.
  *
- * The attribution logic itself lives in src/lib/studyDay.ts, where it is unit
- * tested — it is a few lines that have already been wrong twice.
+ * Override with SNAPSHOT_DAY_START_HOUR. The attribution logic lives in
+ * src/lib/studyDay.ts, and the guard that stops a wrong value here destroying
+ * data lives in src/lib/archive.ts. Both are unit tested.
  */
 const DAY_START_HOUR = Number(
   process.env.SNAPSHOT_DAY_START_HOUR ?? DEFAULT_DAY_START_HOUR,
@@ -202,73 +204,8 @@ async function readHistory(): Promise<History> {
   return parsed
 }
 
-/** Structural equality, used to tell a real change from a fresh timestamp. */
-function deepEqual(a: unknown, b: unknown): boolean {
-  if (a === b) return true
-  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) {
-    return false
-  }
-  if (Array.isArray(a) !== Array.isArray(b)) return false
-
-  const aKeys = Object.keys(a)
-  const bKeys = Object.keys(b)
-  if (aKeys.length !== bKeys.length) return false
-
-  return aKeys.every(
-    (key) =>
-      Object.hasOwn(b, key) &&
-      deepEqual(
-        (a as Record<string, unknown>)[key],
-        (b as Record<string, unknown>)[key],
-      ),
-  )
-}
-
-/**
- * True when two snapshots differ only by when they were captured.
- *
- * The script runs several times a day, and most runs find nothing new — you
- * weren't studying in that particular three-hour window. Without this check
- * every run would rewrite the file, because `capturedAt` is always new, and the
- * archive would collect eight empty commits a day.
- */
-function sameExceptCapturedAt(a: DailySnapshot, b: DailySnapshot): boolean {
-  const { capturedAt: _a, ...restA } = a
-  const { capturedAt: _b, ...restB } = b
-  return deepEqual(restA, restB)
-}
-
-/**
- * Inserts a snapshot, replacing any existing entry for the same date.
- *
- * Replace rather than skip on a same-day re-run: a later run has seen more of
- * the day, so its `studiedToday` counts are strictly better. Skipping would
- * permanently freeze the day at whatever the first run happened to catch —
- * which is exactly how 29 July 2026 ended up recorded as an afternoon total.
- */
-function upsertSnapshot(
-  snapshots: DailySnapshot[],
-  snapshot: DailySnapshot,
-): { snapshots: DailySnapshot[]; replaced: boolean; unchanged: boolean } {
-  const existingIndex = snapshots.findIndex((s) => s.date === snapshot.date)
-  const next = [...snapshots]
-
-  const unchanged =
-    existingIndex >= 0 &&
-    sameExceptCapturedAt(snapshots[existingIndex], snapshot)
-
-  if (existingIndex >= 0) {
-    next[existingIndex] = snapshot
-  } else {
-    next.push(snapshot)
-  }
-
-  // Keep the archive oldest-first so charts can read it without sorting, and
-  // so a day arriving late (after a failed run) still lands in order.
-  next.sort((a, b) => a.date.localeCompare(b.date))
-
-  return { snapshots: next, replaced: existingIndex >= 0, unchanged }
-}
+// Merge logic lives in src/lib/archive.ts, where it is unit tested — it is the
+// one place a run can destroy data rather than merely record it badly.
 
 async function main() {
   const dryRun = process.argv.includes('--dry-run')
@@ -312,23 +249,33 @@ async function main() {
   )
 
   const history = await readHistory()
-  const { snapshots, replaced, unchanged } = upsertSnapshot(
-    history.snapshots,
-    snapshot,
-  )
+  const { snapshots, action } = mergeSnapshot(history.snapshots, snapshot)
 
   const updated = { version: HISTORY_VERSION, snapshots }
 
   if (dryRun) {
-    console.log('\n--dry-run: nothing written. Entry would be:')
+    console.log(`\n--dry-run: nothing written. Merge action: ${action}.`)
     console.log(JSON.stringify(snapshot, null, 2))
     return
   }
 
-  // Nothing studied since the last run in this window. Leave the file alone so
-  // the workflow sees a clean tree and skips the commit and the redeploy.
-  if (unchanged) {
+  if (action === 'unchanged') {
+    // Nothing studied since the last run in this window. Leave the file alone
+    // so the workflow sees a clean tree and skips the commit and the redeploy.
     console.log(`No change since the last run — ${date} left as it was.`)
+    return
+  }
+
+  if (action === 'rejected-lower') {
+    // The counters have reset, so this reading belongs to a day other than the
+    // one it was labelled with. Refusing it protects a completed day; the next
+    // run, on the far side of the boundary, will file it correctly.
+    const stored = snapshots.find((s) => s.date === date)
+    console.log(
+      `Refused: read ${snapshot.studiedToday.all} studied for ${date}, but ` +
+        `${stored?.studiedToday.all} is already recorded. The counter has ` +
+        `reset, so this reading is not for ${date}. Nothing written.`,
+    )
     return
   }
 
@@ -339,8 +286,8 @@ async function main() {
   await writeFile(HISTORY_PATH, contents, 'utf8')
 
   console.log(
-    replaced
-      ? `Replaced the existing entry for ${date} (${snapshots.length} days archived).`
+    action === 'replaced'
+      ? `Updated ${date} (${snapshots.length} days archived).`
       : `Appended ${date} (${snapshots.length} days archived).`,
   )
 

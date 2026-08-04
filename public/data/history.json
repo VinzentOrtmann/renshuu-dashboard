@@ -1054,11 +1054,11 @@
       "capturedAt": "2026-08-02T22:40:31.885Z",
       "adventureLevel": 142,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
-        "kanji": 0,
+        "all": 255,
+        "vocab": 241,
+        "kanji": 3,
         "grammar": 0,
-        "sent": 0,
+        "sent": 11,
         "conj": 0,
         "aconj": 0
       },
@@ -1316,11 +1316,11 @@
       "capturedAt": "2026-08-03T22:42:55.389Z",
       "adventureLevel": 142,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
-        "kanji": 0,
+        "all": 362,
+        "vocab": 197,
+        "kanji": 46,
         "grammar": 0,
-        "sent": 0,
+        "sent": 119,
         "conj": 0,
         "aconj": 0
       },

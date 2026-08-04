@@ -11,28 +11,27 @@ name: Snapshot
 
 on:
   schedule:
-    # Every three hours, not once a day.
+    # Hourly.
     #
-    # renshuu resets its `today_*` counters at 03:00 local, so the useful
-    # capture is the last one before that boundary. A single nightly run cannot
-    # be relied on to be it: GitHub's scheduler is best-effort and routinely
-    # runs late. This originally fired at 21:50 UTC and assumed a midnight
-    # boundary; on 29 July 2026 it ran 51 minutes late and that day was never
-    # captured at its full value, and is understated in the archive permanently.
+    # renshuu's `today_*` counters reset at local midnight, so a day is only as
+    # complete as its last capture before that. Anything studied between the
+    # final run and midnight is lost permanently — the counter resets and no
+    # later run can recover it.
     #
-    # With a 03:00 rollover the runs land at 02:50, 05:50, 08:50 ... 23:50 local
-    # in summer. The 23:50 and 02:50 runs bracket the end of the study day, so
-    # late-evening and after-midnight studying are both picked up.
+    # Three-hourly left that window much too wide. On 4 August 2026 the last run
+    # before midnight landed at 22:13 local, studying continued after it, and
+    # the day is stuck at 73 against a figure that is certainly higher. Aiming a
+    # run at 23:50 doesn't help either: GitHub's scheduler is best-effort and
+    # routinely runs 20-60 minutes late, so it frequently arrives after midnight
+    # and is no use for the day that just ended.
     #
-    # Running repeatedly fixes this because a same-day run replaces the entry
-    # rather than appending: each run refreshes the day with a fuller count, and
-    # whichever run lands last before local midnight is the one that sticks. A
-    # delayed run is no longer a lost day, just a slightly earlier cutoff.
+    # Hourly narrows the worst case to about an hour plus the scheduler's drift.
+    # It cannot be closed entirely without a scheduler that runs on time.
     #
-    # Cost is negligible — 8 runs x 2 calls against a 2000/day allowance — and
-    # scripts/snapshot.ts leaves the file untouched when nothing has changed, so
-    # quiet windows produce no commit and no redeploy.
-    - cron: '50 */3 * * *'
+    # The cost is small: 24 runs x 2 calls against a 2000/day allowance, and
+    # scripts/snapshot.ts writes nothing when a run finds no change, so hours
+    # when you weren't studying produce no commit and no redeploy.
+    - cron: '50 * * * *'
 
   # Lets you trigger a snapshot by hand from the Actions tab.
   workflow_dispatch:
@@ -74,9 +73,11 @@ jobs:
           RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
           # Must match renshuu's daily reset boundary — see the cron note above.
           SNAPSHOT_TIMEZONE: Europe/Berlin
-          # renshuu rolls over to a new study day at this local hour, not at
-          # midnight. Change it here if you change it in renshuu.
-          SNAPSHOT_DAY_START_HOUR: '3'
+          # The local hour at which renshuu's today_* counters reset. Observed
+          # to be midnight — a run at 00:40 local already read zero. renshuu's
+          # own 03:00 day-change setting governs something else; setting this
+          # to 3 on that basis corrupted two days of the archive.
+          SNAPSHOT_DAY_START_HOUR: '0'
         run: npm run snapshot
 
       - name: Commit the updated archive
