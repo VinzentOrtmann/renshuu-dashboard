@@ -2110,7 +2110,7 @@
     },
     {
       "date": "2026-08-06",
-      "capturedAt": "2026-08-05T22:00:30.115Z",
+      "capturedAt": "2026-08-05T23:41:30.776Z",
       "adventureLevel": 143,
       "studiedToday": {
         "all": 0,
@@ -2122,8 +2122,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 4186,
-        "vocab": 2771,
+        "all": 4201,
+        "vocab": 2786,
         "kanji": 334,
         "grammar": 234,
         "sent": 847
@@ -2175,22 +2175,22 @@
           "name": "Mining",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 78,
+          "studiedCount": 88,
           "totalCount": 92,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 62
+          "newToday": 10,
+          "newThisWeek": 10,
+          "dueToday": 32
         },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 422,
+          "studiedCount": 437,
           "totalCount": 2473,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 273
+          "newToday": 10,
+          "newThisWeek": 10,
+          "dueToday": 230
         },
         {
           "id": "9216681",
@@ -2208,22 +2208,11 @@
           "name": "Kanji for Mining",
           "booktype": "kanji",
           "isFrozen": false,
-          "studiedCount": 52,
-          "totalCount": 84,
+          "studiedCount": 57,
+          "totalCount": 95,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 42
-        },
-        {
-          "id": "8277523",
-          "name": "Pre-Intermediate Kanji (N4)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 168,
-          "totalCount": 168,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 110
+          "dueToday": 26
         },
         {
           "id": "8983957",
@@ -2259,17 +2248,6 @@
           "dueToday": 135
         },
         {
-          "id": "8376486",
-          "name": "Beginner Sentences (N5)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 672,
-          "totalCount": 672,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 47
-        },
-        {
           "id": "9275775",
           "name": "Intermediate Sentences (N3)",
           "booktype": "sent",
@@ -2279,17 +2257,6 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
-        },
-        {
-          "id": "9178698",
-          "name": "Pre-Intermediate Sentences (N4)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 158,
-          "totalCount": 158,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 18
         },
         {
           "id": "9066023",
@@ -2369,12 +2336,45 @@
           "dueToday": 0
         },
         {
+          "id": "8277523",
+          "name": "Pre-Intermediate Kanji (N4)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 168,
+          "totalCount": 168,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
           "id": "8260192",
           "name": "Japanese Basics",
           "booktype": "grammar",
           "isFrozen": false,
           "studiedCount": 35,
           "totalCount": 35,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8376486",
+          "name": "Beginner Sentences (N5)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 672,
+          "totalCount": 672,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9178698",
+          "name": "Pre-Intermediate Sentences (N4)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 158,
+          "totalCount": 158,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
