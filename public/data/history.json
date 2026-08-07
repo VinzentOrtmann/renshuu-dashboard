@@ -2656,7 +2656,7 @@
     },
     {
       "date": "2026-08-08",
-      "capturedAt": "2026-08-07T22:20:15.541Z",
+      "capturedAt": "2026-08-07T23:19:58.488Z",
       "adventureLevel": 144,
       "studiedToday": {
         "all": 0,
@@ -2813,7 +2813,7 @@
           "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 63
+          "dueToday": 45
         },
         {
           "id": "9275775",
