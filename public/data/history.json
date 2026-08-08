@@ -2656,7 +2656,7 @@
     },
     {
       "date": "2026-08-08",
-      "capturedAt": "2026-08-08T02:45:32.260Z",
+      "capturedAt": "2026-08-08T05:30:58.998Z",
       "adventureLevel": 145,
       "studiedToday": {
         "all": 0,
@@ -2708,10 +2708,10 @@
         }
       },
       "dayStreaks": {
-        "vocab": 64,
-        "kanji": 2,
+        "vocab": 65,
+        "kanji": 3,
         "grammar": 0,
-        "sent": 16,
+        "sent": 17,
         "conj": 0,
         "aconj": 0
       },
