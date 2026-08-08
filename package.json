@@ -11,6 +11,7 @@
     "check-api": "node --env-file-if-exists=.env scripts/check-api.ts",
     "snapshot": "node --env-file-if-exists=.env scripts/snapshot.ts",
     "kanji": "node --env-file-if-exists=.env scripts/kanji.ts",
+    "ceilings": "node --env-file-if-exists=.env scripts/ceilings.ts",
     "test": "node --test \"src/**/*.test.ts\""
   },
   "dependencies": {

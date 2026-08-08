@@ -101,13 +101,13 @@ async function main() {
 
   for (const schedule of kanjiSchedules) {
     // Fetch page 1 first, since only the response says how many pages exist.
-    let page = await client.getKanjiPage(schedule.id, 1)
+    let page = await client.getSchedulePage(schedule.id, 1)
     requests++
     const totalPages = Math.max(1, page.total_pg)
 
     for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
       if (pageNumber > 1) {
-        page = await client.getKanjiPage(schedule.id, pageNumber)
+        page = await client.getSchedulePage(schedule.id, pageNumber)
         requests++
       }
 

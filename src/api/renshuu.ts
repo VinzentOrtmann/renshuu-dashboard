@@ -237,16 +237,23 @@ export function createRenshuuClient(
     /**
      * `GET /v1/schedule/{id}/list` — one page of a schedule's terms.
      *
-     * `group` selects which terms come back. `all` includes ones never studied,
-     * which is what the kanji wall needs: a grid showing only what you already
-     * know can't show you what's left.
+     * `group` selects which terms come back:
+     *   - `all` includes terms never studied, which is what the kanji wall
+     *     needs — a grid of only what you know can't show what's left.
+     *   - `cannot_study` returns terms that can never be studied, which is how
+     *     a level's reachable ceiling is worked out.
      *
      * Pages are 50 terms; `contents.total_pg` says how many there are.
+     *
+     * Terms are typed as kanji because that is the only term type this project
+     * reads in detail. Other types share the same envelope but carry different
+     * fields, so callers wanting sentences or vocabulary should read only
+     * `result_count` unless the term type is widened.
      */
-    async getKanjiPage(
+    async getSchedulePage(
       scheduleId: string,
       page: number,
-      group: 'all' | 'studied' = 'all',
+      group: 'all' | 'studied' | 'cannot_study' = 'all',
     ): Promise<RenshuuTermPage<RenshuuKanjiTerm>['contents']> {
       const data = await request<RenshuuTermPage<RenshuuKanjiTerm>>(
         `/schedule/${scheduleId}/list?group=${group}&pg=${page}`,

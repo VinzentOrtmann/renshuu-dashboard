@@ -15,6 +15,8 @@ import {
   formatLongDate,
   formatShortDate,
 } from '../lib/history.ts'
+import { ceilingFor, isLevelComplete, useCeilings } from '../lib/ceilings.ts'
+import type { CeilingsState } from '../lib/ceilings.ts'
 import { levelPercent, nextLevel } from '../lib/levels.ts'
 import type { Level } from '../lib/levels.ts'
 import { CATEGORY_LABELS, SERIES_CATEGORIES } from '../lib/palette.ts'
@@ -46,6 +48,7 @@ interface ProjectionProps {
 }
 
 export function Projection({ snapshots }: ProjectionProps) {
+  const ceilings = useCeilings()
   const latest = snapshots.at(-1)
   if (!latest) return null
 
@@ -61,6 +64,7 @@ export function Projection({ snapshots }: ProjectionProps) {
               category={category}
               snapshots={snapshots}
               latest={latest}
+              ceilings={ceilings}
             />
           </li>
         ))}
@@ -80,31 +84,51 @@ function CategoryProjection({
   category,
   snapshots,
   latest,
+  ceilings,
 }: {
   category: SeriesCategory
   snapshots: DailySnapshot[]
   latest: DailySnapshot
+  ceilings: CeilingsState
 }) {
-  const level = nextLevel(latest, category)
+  // A level counts as finished once everything studiable in it is studied,
+  // which may be below 100%. Skipping those is what stops a finished level
+  // hiding the one actually being worked on.
+  const level = nextLevel(latest, category, (candidate, percent) =>
+    isLevelComplete(percent, ceilingFor(ceilings, category, candidate)),
+  )
 
-  // Every level at 100% — nothing left to project toward.
   if (!level) {
     return (
       <Row title={`${CATEGORY_LABELS[category]} — all levels complete`}>
         <p className="text-sm text-[var(--text-secondary)]">
-          Every JLPT level is at 100%.
+          Nothing left that can be studied.
         </p>
       </Row>
     )
   }
 
   const percent = levelPercent(latest, category, level)
-  const result = projectToTarget(seriesFor(snapshots, category, level), 100)
+  const ceiling = ceilingFor(ceilings, category, level)
+
+  // Project toward what is actually reachable. Aiming at 100 when 3% of the
+  // level can never be studied produces a date that never arrives.
+  const target = ceiling && ceiling.blocked > 0 ? ceiling.ceilingPercent : 100
+  const result = projectToTarget(seriesFor(snapshots, category, level), target)
 
   return (
     <Row title={`${CATEGORY_LABELS[category]} — ${level.toUpperCase()}`}>
-      <Meter percent={percent} label={`${level.toUpperCase()} ${CATEGORY_LABELS[category].toLowerCase()}`} />
+      <Meter
+        percent={percent}
+        label={`${level.toUpperCase()} ${CATEGORY_LABELS[category].toLowerCase()}`}
+      />
       <Outcome result={result} percent={percent} />
+      {ceiling && ceiling.blocked > 0 && (
+        <p className="text-sm text-[var(--text-muted)]">
+          Tops out at {ceiling.ceilingPercent}%: {ceiling.blocked} of{' '}
+          {ceiling.total} terms can&apos;t be studied.
+        </p>
+      )}
     </Row>
   )
 }

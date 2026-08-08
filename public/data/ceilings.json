@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-08T21:06:01.076Z",
+  "ceilings": {
+    "kanji": {
+      "n3": {
+        "total": 379,
+        "blocked": 0,
+        "ceilingPercent": 100,
+        "sources": [
+          "Intermediate Kanji (N3)"
+        ]
+      },
+      "n5": {
+        "total": 80,
+        "blocked": 0,
+        "ceilingPercent": 100,
+        "sources": [
+          "Kanji für Anfänger (N5)"
+        ]
+      },
+      "n4": {
+        "total": 168,
+        "blocked": 0,
+        "ceilingPercent": 100,
+        "sources": [
+          "Pre-Intermediate Kanji (N4)"
+        ]
+      }
+    },
+    "grammar": {
+      "n5": {
+        "total": 63,
+        "blocked": 0,
+        "ceilingPercent": 100,
+        "sources": [
+          "Japanisch für Anfänger/N5"
+        ]
+      }
+    },
+    "sent": {
+      "n5": {
+        "total": 689,
+        "blocked": 17,
+        "ceilingPercent": 97,
+        "sources": [
+          "Beginner Sentences (N5)"
+        ]
+      },
+      "n3": {
+        "total": 97,
+        "blocked": 0,
+        "ceilingPercent": 100,
+        "sources": [
+          "Intermediate Sentences (N3)"
+        ]
+      },
+      "n4": {
+        "total": 160,
+        "blocked": 2,
+        "ceilingPercent": 98,
+        "sources": [
+          "Pre-Intermediate Sentences (N4)"
+        ]
+      }
+    }
+  }
+}

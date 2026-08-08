@@ -67,6 +67,12 @@ The dashboard is careful about the difference between *no data* and *zero*:
 - A projection is **refused** rather than guessed when there are fewer than five
   days of history, or when the trend is flat. A straight line through two points
   is exact by construction and means nothing.
+- **Some levels can never reach 100%,** and are treated as finished when they
+  reach the figure they actually can. Renshuu's N5 sentence deck contains 17 set
+  phrases — はじめまして, ありがとう！ — whose "Structure" quiz can't be generated,
+  because a fixed greeting has no structure to analyse. They stay in the
+  denominator forever, capping that level at 97%. Projecting toward 100 would
+  produce a date that never arrives.
 - Per-schedule term counts sum higher than the lifetime total, because a term in
   two schedules is counted in both. The UI says so rather than quietly picking
   one number.
@@ -135,6 +141,7 @@ npm run dev
 | `npm run lint`      | Lint with oxlint                                |
 | `npm run snapshot`  | Fetch and archive today (`-- --dry-run` to peek) |
 | `npm run kanji`     | Rebuild the kanji wall's data                   |
+| `npm run ceilings`  | Recompute the reachable maximum per JLPT level  |
 | `npm run check-api` | Verify the API types against your real account  |
 
 ### API access

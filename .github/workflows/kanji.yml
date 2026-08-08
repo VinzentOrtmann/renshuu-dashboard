@@ -1,10 +1,12 @@
-# Refreshes the kanji wall's data.
+# Refreshes the slow-moving data: the kanji wall, and the reachable ceiling for
+# each JLPT level.
 #
-# Separate from the snapshot workflow, and far less frequent, because this file
-# is two orders of magnitude larger than the daily archive (~67 KB against a few
-# KB) and mastery moves slowly. Rewriting it every three hours alongside the
-# snapshot would bloat the repository to no benefit.
-name: Kanji collection
+# Separate from the snapshot workflow, and far less frequent. The kanji file is
+# two orders of magnitude larger than the hourly archive and mastery moves
+# slowly; the ceilings change only when decks are added or renshuu fixes its
+# content. Collecting either hourly would cost ~40 extra API calls an hour to
+# rewrite files that almost never differ.
+name: Weekly collection
 
 on:
   schedule:
@@ -49,13 +51,21 @@ jobs:
           RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
         run: npm run kanji
 
-      - name: Commit the updated collection
+      # Which levels contain terms that can never be studied, so the dashboard
+      # can treat a level as finished at its real ceiling rather than projecting
+      # forever toward a 100% it cannot reach.
+      - name: Collect level ceilings
+        env:
+          RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
+        run: npm run ceilings
+
+      - name: Commit the updated collections
         id: commit
         run: |
           set -euo pipefail
 
-          if git diff --quiet -- public/data/kanji.json; then
-            echo "No change to the kanji collection this week."
+          if git diff --quiet -- public/data/kanji.json public/data/ceilings.json; then
+            echo "No change to the weekly collections."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -63,8 +73,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add public/data/kanji.json
-          git commit -m "Kanji collection $(date -u +%Y-%m-%d)"
+          git add public/data/kanji.json public/data/ceilings.json
+          git commit -m "Weekly collection $(date -u +%Y-%m-%d)"
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"
 

@@ -20,14 +20,26 @@ export const LEVELS_EASIEST_FIRST = ['n5', 'n4', 'n3', 'n2', 'n1'] as const
 
 export type Level = (typeof LEVELS_EASIEST_FIRST)[number]
 
-/** The level a category is working through: the easiest one not yet at 100%. */
+/**
+ * The level a category is working through: the easiest one not yet finished.
+ *
+ * "Finished" defaults to 100%, but callers can supply their own test. The
+ * dashboard passes one that also accepts a level which has reached its
+ * reachable ceiling — some levels contain terms that can never be studied and
+ * so can never hit 100. Without that, a completed level would sit at 97%
+ * forever and hide the level actually being worked on behind it.
+ */
 export function nextLevel(
   snapshot: DailySnapshot,
   category: SeriesCategory,
+  isComplete: (level: Level, percent: number) => boolean = (_level, percent) =>
+    percent >= 100,
 ): Level | null {
   const progress = snapshot.jlptProgress[category] ?? {}
   return (
-    LEVELS_EASIEST_FIRST.find((level) => (progress[level] ?? 0) < 100) ?? null
+    LEVELS_EASIEST_FIRST.find(
+      (level) => !isComplete(level, progress[level] ?? 0),
+    ) ?? null
   )
 }
 
