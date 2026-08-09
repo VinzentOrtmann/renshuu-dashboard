@@ -2929,11 +2929,11 @@
     },
     {
       "date": "2026-08-09",
-      "capturedAt": "2026-08-09T07:41:35.875Z",
+      "capturedAt": "2026-08-09T08:25:12.619Z",
       "adventureLevel": 146,
       "studiedToday": {
-        "all": 37,
-        "vocab": 37,
+        "all": 92,
+        "vocab": 92,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -3001,17 +3001,6 @@
           "dueToday": 260
         },
         {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 11
-        },
-        {
           "id": "8375655",
           "name": "Words for Pre-Intermediate",
           "booktype": "vocab",
@@ -3020,7 +3009,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 97
+          "dueToday": 90
         },
         {
           "id": "7932506",
@@ -3031,7 +3020,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 57
+          "dueToday": 11
         },
         {
           "id": "9216681",
@@ -3183,6 +3172,17 @@
           "isFrozen": false,
           "studiedCount": 94,
           "totalCount": 94,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
