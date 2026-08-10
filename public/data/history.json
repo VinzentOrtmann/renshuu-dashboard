@@ -3202,11 +3202,11 @@
     },
     {
       "date": "2026-08-10",
-      "capturedAt": "2026-08-10T16:37:15.971Z",
+      "capturedAt": "2026-08-10T21:27:11.708Z",
       "adventureLevel": 147,
       "studiedToday": {
-        "all": 281,
-        "vocab": 261,
+        "all": 320,
+        "vocab": 300,
         "kanji": 3,
         "grammar": 0,
         "sent": 17,
@@ -3267,11 +3267,11 @@
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 522,
+          "studiedCount": 532,
           "totalCount": 2473,
-          "newToday": 1,
-          "newThisWeek": 1,
-          "dueToday": 234
+          "newToday": 11,
+          "newThisWeek": 11,
+          "dueToday": 204
         },
         {
           "id": "9216681",
