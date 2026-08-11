@@ -3475,11 +3475,11 @@
     },
     {
       "date": "2026-08-11",
-      "capturedAt": "2026-08-11T02:54:56.669Z",
-      "adventureLevel": 147,
+      "capturedAt": "2026-08-11T07:58:31.912Z",
+      "adventureLevel": 148,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
+        "all": 32,
+        "vocab": 32,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -3536,39 +3536,6 @@
       },
       "schedules": [
         {
-          "id": "8260190",
-          "name": "Hiragana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 4
-        },
-        {
-          "id": "8187284",
-          "name": "Katakana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 4
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 94,
-          "totalCount": 94,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 15
-        },
-        {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
@@ -3577,7 +3544,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 247
+          "dueToday": 242
         },
         {
           "id": "8260191",
@@ -3588,7 +3555,7 @@
           "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 46
+          "dueToday": 37
         },
         {
           "id": "8375655",
@@ -3732,6 +3699,39 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 37
+        },
+        {
+          "id": "8260190",
+          "name": "Hiragana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8187284",
+          "name": "Katakana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 94,
+          "totalCount": 94,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
         },
         {
           "id": "8260192",
