@@ -4840,12 +4840,12 @@
     },
     {
       "date": "2026-08-16",
-      "capturedAt": "2026-08-16T05:13:58.892Z",
+      "capturedAt": "2026-08-16T07:19:38.299Z",
       "adventureLevel": 151,
       "studiedToday": {
-        "all": 5,
-        "vocab": 5,
-        "kanji": 0,
+        "all": 61,
+        "vocab": 59,
+        "kanji": 2,
         "grammar": 0,
         "sent": 0,
         "conj": 0,
@@ -4923,17 +4923,6 @@
           "dueToday": 365
         },
         {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 40
-        },
-        {
           "id": "8375655",
           "name": "Words for Pre-Intermediate",
           "booktype": "vocab",
@@ -4942,7 +4931,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 171
+          "dueToday": 170
         },
         {
           "id": "7932506",
@@ -4953,7 +4942,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 33
+          "dueToday": 12
         },
         {
           "id": "9216681",
@@ -4976,17 +4965,6 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 36
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 2
         },
         {
           "id": "8277523",
@@ -5105,6 +5083,28 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 80,
+          "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
