@@ -4840,11 +4840,11 @@
     },
     {
       "date": "2026-08-16",
-      "capturedAt": "2026-08-16T02:11:51.059Z",
+      "capturedAt": "2026-08-16T05:13:58.892Z",
       "adventureLevel": 151,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
+        "all": 5,
+        "vocab": 5,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -4900,28 +4900,6 @@
         "aconj": 0
       },
       "schedules": [
-        {
-          "id": "8260190",
-          "name": "Hiragana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 2
-        },
-        {
-          "id": "8187284",
-          "name": "Katakana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 3
-        },
         {
           "id": "9179005",
           "name": "Mining",
@@ -5108,6 +5086,28 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 37
+        },
+        {
+          "id": "8260190",
+          "name": "Hiragana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8187284",
+          "name": "Katakana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
         }
       ]
     }
