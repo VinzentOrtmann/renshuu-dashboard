@@ -4840,11 +4840,11 @@
     },
     {
       "date": "2026-08-16",
-      "capturedAt": "2026-08-16T07:19:38.299Z",
+      "capturedAt": "2026-08-16T17:03:02.210Z",
       "adventureLevel": 151,
       "studiedToday": {
-        "all": 61,
-        "vocab": 59,
+        "all": 73,
+        "vocab": 71,
         "kanji": 2,
         "grammar": 0,
         "sent": 0,
@@ -4931,18 +4931,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 170
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 12
+          "dueToday": 167
         },
         {
           "id": "9216681",
@@ -5094,6 +5083,17 @@
           "isFrozen": false,
           "studiedCount": 507,
           "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
