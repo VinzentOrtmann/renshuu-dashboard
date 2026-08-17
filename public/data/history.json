@@ -5113,14 +5113,14 @@
     },
     {
       "date": "2026-08-17",
-      "capturedAt": "2026-08-17T14:12:16.218Z",
+      "capturedAt": "2026-08-17T15:10:50.810Z",
       "adventureLevel": 152,
       "studiedToday": {
-        "all": 319,
+        "all": 437,
         "vocab": 195,
-        "kanji": 4,
+        "kanji": 59,
         "grammar": 0,
-        "sent": 120,
+        "sent": 183,
         "conj": 0,
         "aconj": 0
       },
@@ -5204,7 +5204,7 @@
           "totalCount": 105,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 38
+          "dueToday": 29
         },
         {
           "id": "8277523",
@@ -5215,7 +5215,7 @@
           "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 59
+          "dueToday": 4
         },
         {
           "id": "8983957",
@@ -5260,17 +5260,6 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 136
-        },
-        {
-          "id": "8376486",
-          "name": "Beginner Sentences (N5)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 672,
-          "totalCount": 672,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 63
         },
         {
           "id": "9275775",
@@ -5378,6 +5367,17 @@
           "isFrozen": false,
           "studiedCount": 80,
           "totalCount": 80,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8376486",
+          "name": "Beginner Sentences (N5)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 672,
+          "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
