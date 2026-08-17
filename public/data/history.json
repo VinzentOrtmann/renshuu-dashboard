@@ -5113,14 +5113,14 @@
     },
     {
       "date": "2026-08-17",
-      "capturedAt": "2026-08-17T09:25:19.354Z",
+      "capturedAt": "2026-08-17T13:28:30.849Z",
       "adventureLevel": 152,
       "studiedToday": {
-        "all": 78,
-        "vocab": 78,
+        "all": 239,
+        "vocab": 195,
         "kanji": 0,
         "grammar": 0,
-        "sent": 0,
+        "sent": 44,
         "conj": 0,
         "aconj": 0
       },
@@ -5182,29 +5182,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 375
-        },
-        {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 21
-        },
-        {
-          "id": "8375655",
-          "name": "Words for Pre-Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1074,
-          "totalCount": 1074,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 98
+          "dueToday": 374
         },
         {
           "id": "9216681",
@@ -5303,7 +5281,7 @@
           "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 183
+          "dueToday": 139
         },
         {
           "id": "9275775",
@@ -5367,6 +5345,28 @@
           "isFrozen": false,
           "studiedCount": 98,
           "totalCount": 98,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8375655",
+          "name": "Words for Pre-Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1074,
+          "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
