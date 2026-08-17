@@ -5113,20 +5113,20 @@
     },
     {
       "date": "2026-08-17",
-      "capturedAt": "2026-08-17T15:10:50.810Z",
-      "adventureLevel": 152,
+      "capturedAt": "2026-08-17T21:10:28.891Z",
+      "adventureLevel": 153,
       "studiedToday": {
-        "all": 437,
-        "vocab": 195,
-        "kanji": 59,
+        "all": 595,
+        "vocab": 322,
+        "kanji": 63,
         "grammar": 0,
-        "sent": 183,
+        "sent": 210,
         "conj": 0,
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 4454,
-        "vocab": 3007,
+        "all": 4476,
+        "vocab": 3029,
         "kanji": 366,
         "grammar": 234,
         "sent": 847
@@ -5178,11 +5178,11 @@
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 643,
+          "studiedCount": 665,
           "totalCount": 2473,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 374
+          "newToday": 20,
+          "newThisWeek": 20,
+          "dueToday": 267
         },
         {
           "id": "9216681",
@@ -5205,17 +5205,6 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 29
-        },
-        {
-          "id": "8277523",
-          "name": "Pre-Intermediate Kanji (N4)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 168,
-          "totalCount": 168,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 4
         },
         {
           "id": "8983957",
@@ -5281,7 +5270,7 @@
           "totalCount": 158,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 78
+          "dueToday": 51
         },
         {
           "id": "9066023",
@@ -5367,6 +5356,17 @@
           "isFrozen": false,
           "studiedCount": 80,
           "totalCount": 80,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8277523",
+          "name": "Pre-Intermediate Kanji (N4)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 168,
+          "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
