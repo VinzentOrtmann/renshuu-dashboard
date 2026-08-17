@@ -5113,11 +5113,11 @@
     },
     {
       "date": "2026-08-17",
-      "capturedAt": "2026-08-17T03:35:37.670Z",
+      "capturedAt": "2026-08-17T08:26:00.086Z",
       "adventureLevel": 152,
       "studiedToday": {
-        "all": 2,
-        "vocab": 2,
+        "all": 42,
+        "vocab": 42,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -5174,17 +5174,6 @@
       },
       "schedules": [
         {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 98,
-          "totalCount": 98,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 40
-        },
-        {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
@@ -5193,7 +5182,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 385
+          "dueToday": 376
         },
         {
           "id": "8260191",
@@ -5378,6 +5367,17 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 98,
+          "totalCount": 98,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
