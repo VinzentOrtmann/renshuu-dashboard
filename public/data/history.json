@@ -5113,14 +5113,14 @@
     },
     {
       "date": "2026-08-17",
-      "capturedAt": "2026-08-17T13:28:30.849Z",
+      "capturedAt": "2026-08-17T14:12:16.218Z",
       "adventureLevel": 152,
       "studiedToday": {
-        "all": 239,
+        "all": 319,
         "vocab": 195,
-        "kanji": 0,
+        "kanji": 4,
         "grammar": 0,
-        "sent": 44,
+        "sent": 120,
         "conj": 0,
         "aconj": 0
       },
@@ -5207,17 +5207,6 @@
           "dueToday": 38
         },
         {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 4
-        },
-        {
           "id": "8277523",
           "name": "Pre-Intermediate Kanji (N4)",
           "booktype": "kanji",
@@ -5281,7 +5270,7 @@
           "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 139
+          "dueToday": 63
         },
         {
           "id": "9275775",
@@ -5378,6 +5367,17 @@
           "isFrozen": false,
           "studiedCount": 685,
           "totalCount": 685,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 80,
+          "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
