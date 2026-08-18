@@ -5386,14 +5386,14 @@
     },
     {
       "date": "2026-08-18",
-      "capturedAt": "2026-08-18T09:16:40.594Z",
+      "capturedAt": "2026-08-18T10:12:05.342Z",
       "adventureLevel": 153,
       "studiedToday": {
-        "all": 126,
+        "all": 130,
         "vocab": 86,
         "kanji": 0,
         "grammar": 0,
-        "sent": 40,
+        "sent": 44,
         "conj": 0,
         "aconj": 0
       },
@@ -5565,7 +5565,7 @@
           "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 53
+          "dueToday": 49
         },
         {
           "id": "9275775",
