@@ -5386,14 +5386,14 @@
     },
     {
       "date": "2026-08-18",
-      "capturedAt": "2026-08-18T11:10:31.204Z",
+      "capturedAt": "2026-08-18T12:14:20.243Z",
       "adventureLevel": 154,
       "studiedToday": {
-        "all": 179,
-        "vocab": 86,
+        "all": 273,
+        "vocab": 123,
         "kanji": 0,
         "grammar": 0,
-        "sent": 93,
+        "sent": 150,
         "conj": 0,
         "aconj": 0
       },
@@ -5466,7 +5466,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 52
+          "dueToday": 15
         },
         {
           "id": "9216681",
@@ -5568,17 +5568,6 @@
           "dueToday": 0
         },
         {
-          "id": "9178698",
-          "name": "Pre-Intermediate Sentences (N4)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 158,
-          "totalCount": 158,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 57
-        },
-        {
           "id": "9066023",
           "name": "Verb Conjugations",
           "booktype": "conj",
@@ -5651,6 +5640,17 @@
           "isFrozen": false,
           "studiedCount": 672,
           "totalCount": 672,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9178698",
+          "name": "Pre-Intermediate Sentences (N4)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 158,
+          "totalCount": 158,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
