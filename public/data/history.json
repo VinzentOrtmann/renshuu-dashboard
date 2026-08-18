@@ -5386,14 +5386,14 @@
     },
     {
       "date": "2026-08-18",
-      "capturedAt": "2026-08-18T10:12:05.342Z",
-      "adventureLevel": 153,
+      "capturedAt": "2026-08-18T11:10:31.204Z",
+      "adventureLevel": 154,
       "studiedToday": {
-        "all": 130,
+        "all": 179,
         "vocab": 86,
         "kanji": 0,
         "grammar": 0,
-        "sent": 44,
+        "sent": 93,
         "conj": 0,
         "aconj": 0
       },
@@ -5557,17 +5557,6 @@
           "dueToday": 136
         },
         {
-          "id": "8376486",
-          "name": "Beginner Sentences (N5)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 672,
-          "totalCount": 672,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 49
-        },
-        {
           "id": "9275775",
           "name": "Intermediate Sentences (N3)",
           "booktype": "sent",
@@ -5651,6 +5640,17 @@
           "isFrozen": false,
           "studiedCount": 685,
           "totalCount": 685,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8376486",
+          "name": "Beginner Sentences (N5)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 672,
+          "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
