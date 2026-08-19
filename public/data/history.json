@@ -5659,11 +5659,11 @@
     },
     {
       "date": "2026-08-19",
-      "capturedAt": "2026-08-19T12:13:39.295Z",
+      "capturedAt": "2026-08-19T13:33:03.975Z",
       "adventureLevel": 155,
       "studiedToday": {
-        "all": 2,
-        "vocab": 2,
+        "all": 28,
+        "vocab": 28,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -5720,28 +5720,6 @@
       },
       "schedules": [
         {
-          "id": "8260190",
-          "name": "Hiragana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 1
-        },
-        {
-          "id": "8187284",
-          "name": "Katakana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 4
-        },
-        {
           "id": "9179005",
           "name": "Mining",
           "booktype": "vocab",
@@ -5750,7 +5728,7 @@
           "totalCount": 98,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 26
+          "dueToday": 6
         },
         {
           "id": "8983851",
@@ -5761,7 +5739,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 233
+          "dueToday": 227
         },
         {
           "id": "8260191",
@@ -5927,6 +5905,28 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 37
+        },
+        {
+          "id": "8260190",
+          "name": "Hiragana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8187284",
+          "name": "Katakana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
         }
       ]
     }
