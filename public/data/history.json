@@ -5932,11 +5932,11 @@
     },
     {
       "date": "2026-08-20",
-      "capturedAt": "2026-08-20T02:07:47.271Z",
+      "capturedAt": "2026-08-20T09:18:40.274Z",
       "adventureLevel": 156,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
+        "all": 60,
+        "vocab": 60,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -5993,28 +5993,6 @@
       },
       "schedules": [
         {
-          "id": "8260190",
-          "name": "Hiragana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 2
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 98,
-          "totalCount": 98,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 27
-        },
-        {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
@@ -6023,18 +6001,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 285
-        },
-        {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 31
+          "dueToday": 272
         },
         {
           "id": "8375655",
@@ -6045,7 +6012,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 73
+          "dueToday": 70
         },
         {
           "id": "7932506",
@@ -6056,7 +6023,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 25
+          "dueToday": 19
         },
         {
           "id": "9216681",
@@ -6191,12 +6158,45 @@
           "dueToday": 37
         },
         {
+          "id": "8260190",
+          "name": "Hiragana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
           "id": "8187284",
           "name": "Katakana",
           "booktype": "vocab",
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 98,
+          "totalCount": 98,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
