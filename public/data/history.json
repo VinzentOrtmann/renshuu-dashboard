@@ -6205,11 +6205,11 @@
     },
     {
       "date": "2026-08-21",
-      "capturedAt": "2026-08-21T09:20:40.557Z",
+      "capturedAt": "2026-08-21T16:13:44.700Z",
       "adventureLevel": 157,
       "studiedToday": {
-        "all": 108,
-        "vocab": 108,
+        "all": 188,
+        "vocab": 188,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -6217,8 +6217,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 4562,
-        "vocab": 3102,
+        "all": 4563,
+        "vocab": 3103,
         "kanji": 379,
         "grammar": 234,
         "sent": 847
@@ -6237,7 +6237,7 @@
         "kanji": {
           "n1": 1,
           "n2": 2,
-          "n3": 27,
+          "n3": 30,
           "n4": 100,
           "n5": 100
         },
@@ -6270,22 +6270,11 @@
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 738,
+          "studiedCount": 746,
           "totalCount": 2473,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 309
-        },
-        {
-          "id": "8375655",
-          "name": "Words for Pre-Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1074,
-          "totalCount": 1074,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 53
+          "newToday": 7,
+          "newThisWeek": 7,
+          "dueToday": 293
         },
         {
           "id": "9216681",
@@ -6459,6 +6448,17 @@
           "isFrozen": false,
           "studiedCount": 507,
           "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8375655",
+          "name": "Words for Pre-Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1074,
+          "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
