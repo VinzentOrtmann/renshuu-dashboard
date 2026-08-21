@@ -6205,7 +6205,7 @@
     },
     {
       "date": "2026-08-21",
-      "capturedAt": "2026-08-20T22:07:14.719Z",
+      "capturedAt": "2026-08-21T00:03:06.531Z",
       "adventureLevel": 156,
       "studiedToday": {
         "all": 0,
@@ -6217,9 +6217,9 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 4549,
+        "all": 4557,
         "vocab": 3102,
-        "kanji": 366,
+        "kanji": 374,
         "grammar": 234,
         "sent": 847
       },
@@ -6274,18 +6274,51 @@
           "totalCount": 2473,
           "newToday": 20,
           "newThisWeek": 20,
-          "dueToday": 32
+          "dueToday": 11
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 3
+        },
+        {
+          "id": "8375655",
+          "name": "Words for Pre-Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1074,
+          "totalCount": 1074,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 6
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 4
         },
         {
           "id": "9216681",
           "name": "Intermediate Kanji (N3)",
           "booktype": "kanji",
           "isFrozen": false,
-          "studiedCount": 102,
+          "studiedCount": 115,
           "totalCount": 379,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 99
+          "newToday": 11,
+          "newThisWeek": 11,
+          "dueToday": 89
         },
         {
           "id": "9179012",
@@ -6296,29 +6329,7 @@
           "totalCount": 105,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 32
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 4
-        },
-        {
-          "id": "8277523",
-          "name": "Pre-Intermediate Kanji (N4)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 168,
-          "totalCount": 168,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 38
+          "dueToday": 28
         },
         {
           "id": "8983957",
@@ -6442,34 +6453,23 @@
           "dueToday": 0
         },
         {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
           "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
+          "studiedCount": 80,
+          "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
         },
         {
-          "id": "8375655",
-          "name": "Words for Pre-Intermediate",
-          "booktype": "vocab",
+          "id": "8277523",
+          "name": "Pre-Intermediate Kanji (N4)",
+          "booktype": "kanji",
           "isFrozen": false,
-          "studiedCount": 1074,
-          "totalCount": 1074,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
+          "studiedCount": 168,
+          "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
