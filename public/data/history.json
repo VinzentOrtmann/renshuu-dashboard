@@ -6478,11 +6478,11 @@
     },
     {
       "date": "2026-08-22",
-      "capturedAt": "2026-08-22T02:05:51.969Z",
+      "capturedAt": "2026-08-22T08:03:46.565Z",
       "adventureLevel": 157,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
+        "all": 43,
+        "vocab": 43,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -6539,17 +6539,6 @@
       },
       "schedules": [
         {
-          "id": "8187284",
-          "name": "Katakana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 1
-        },
-        {
           "id": "9179005",
           "name": "Mining",
           "booktype": "vocab",
@@ -6580,7 +6569,7 @@
           "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 35
+          "dueToday": 29
         },
         {
           "id": "8375655",
@@ -6591,18 +6580,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 103
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 40
+          "dueToday": 102
         },
         {
           "id": "9216681",
@@ -6743,6 +6721,28 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8187284",
+          "name": "Katakana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
