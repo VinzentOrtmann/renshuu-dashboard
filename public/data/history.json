@@ -6751,7 +6751,7 @@
     },
     {
       "date": "2026-08-23",
-      "capturedAt": "2026-08-23T00:00:09.059Z",
+      "capturedAt": "2026-08-23T02:14:24.967Z",
       "adventureLevel": 158,
       "studiedToday": {
         "all": 0,
@@ -6803,14 +6803,36 @@
         }
       },
       "dayStreaks": {
-        "vocab": 79,
-        "kanji": 1,
-        "grammar": 0,
-        "sent": 0,
+        "vocab": 80,
+        "kanji": 2,
+        "grammar": 1,
+        "sent": 1,
         "conj": 0,
         "aconj": 0
       },
       "schedules": [
+        {
+          "id": "8260190",
+          "name": "Hiragana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 1
+        },
+        {
+          "id": "8187284",
+          "name": "Katakana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 3
+        },
         {
           "id": "9179005",
           "name": "Mining",
@@ -6818,9 +6840,9 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
-          "newToday": 6,
-          "newThisWeek": 6,
-          "dueToday": 1
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 36
         },
         {
           "id": "8983851",
@@ -6829,9 +6851,9 @@
           "isFrozen": false,
           "studiedCount": 787,
           "totalCount": 2473,
-          "newToday": 20,
-          "newThisWeek": 20,
-          "dueToday": 12
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 270
         },
         {
           "id": "8260191",
@@ -6842,7 +6864,7 @@
           "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 4
+          "dueToday": 31
         },
         {
           "id": "8375655",
@@ -6853,7 +6875,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 18
+          "dueToday": 119
         },
         {
           "id": "7932506",
@@ -6864,7 +6886,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 9
+          "dueToday": 43
         },
         {
           "id": "9216681",
@@ -6873,9 +6895,9 @@
           "isFrozen": false,
           "studiedCount": 141,
           "totalCount": 379,
-          "newToday": 20,
-          "newThisWeek": 20,
-          "dueToday": 85
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 112
         },
         {
           "id": "9179012",
@@ -6886,7 +6908,29 @@
           "totalCount": 108,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 24
+          "dueToday": 28
+        },
+        {
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 80,
+          "totalCount": 80,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 4
+        },
+        {
+          "id": "8277523",
+          "name": "Pre-Intermediate Kanji (N4)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 168,
+          "totalCount": 168,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 23
         },
         {
           "id": "8983957",
@@ -6922,6 +6966,17 @@
           "dueToday": 136
         },
         {
+          "id": "8376486",
+          "name": "Beginner Sentences (N5)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 672,
+          "totalCount": 672,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 89
+        },
+        {
           "id": "9275775",
           "name": "Intermediate Sentences (N3)",
           "booktype": "sent",
@@ -6955,67 +7010,12 @@
           "dueToday": 37
         },
         {
-          "id": "8260190",
-          "name": "Hiragana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8187284",
-          "name": "Katakana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8277523",
-          "name": "Pre-Intermediate Kanji (N4)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 168,
-          "totalCount": 168,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
           "id": "8260192",
           "name": "Japanese Basics",
           "booktype": "grammar",
           "isFrozen": false,
           "studiedCount": 35,
           "totalCount": 35,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8376486",
-          "name": "Beginner Sentences (N5)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 672,
-          "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
