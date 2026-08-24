@@ -7024,11 +7024,11 @@
     },
     {
       "date": "2026-08-24",
-      "capturedAt": "2026-08-24T14:27:40.781Z",
+      "capturedAt": "2026-08-24T15:24:15.648Z",
       "adventureLevel": 160,
       "studiedToday": {
-        "all": 378,
-        "vocab": 378,
+        "all": 445,
+        "vocab": 445,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -7036,8 +7036,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 4697,
-        "vocab": 3211,
+        "all": 4707,
+        "vocab": 3221,
         "kanji": 405,
         "grammar": 234,
         "sent": 847
@@ -7093,7 +7093,7 @@
           "totalCount": 2473,
           "newToday": 20,
           "newThisWeek": 20,
-          "dueToday": 234
+          "dueToday": 167
         },
         {
           "id": "9216681",
