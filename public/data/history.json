@@ -7297,21 +7297,21 @@
     },
     {
       "date": "2026-08-25",
-      "capturedAt": "2026-08-25T19:19:17.354Z",
+      "capturedAt": "2026-08-25T20:09:58.905Z",
       "adventureLevel": 163,
       "studiedToday": {
-        "all": 907,
+        "all": 924,
         "vocab": 621,
-        "kanji": 203,
+        "kanji": 220,
         "grammar": 0,
         "sent": 83,
         "conj": 0,
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 4826,
+        "all": 4853,
         "vocab": 3249,
-        "kanji": 456,
+        "kanji": 483,
         "grammar": 234,
         "sent": 887
       },
@@ -7363,10 +7363,10 @@
           "booktype": "vocab",
           "isFrozen": false,
           "studiedCount": 105,
-          "totalCount": 105,
+          "totalCount": 106,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 3
+          "dueToday": 12
         },
         {
           "id": "8983851",
@@ -7377,7 +7377,7 @@
           "totalCount": 2473,
           "newToday": 20,
           "newThisWeek": 20,
-          "dueToday": 8
+          "dueToday": 27
         },
         {
           "id": "8260191",
@@ -7388,7 +7388,7 @@
           "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1
+          "dueToday": 3
         },
         {
           "id": "8375655",
@@ -7399,7 +7399,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 4
+          "dueToday": 11
         },
         {
           "id": "7932506",
@@ -7410,17 +7410,17 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1
+          "dueToday": 3
         },
         {
           "id": "9179012",
           "name": "Kanji for Mining",
           "booktype": "kanji",
           "isFrozen": false,
-          "studiedCount": 81,
+          "studiedCount": 99,
           "totalCount": 108,
-          "newToday": 13,
-          "newThisWeek": 13,
+          "newToday": 30,
+          "newThisWeek": 30,
           "dueToday": 0
         },
         {
@@ -7516,7 +7516,7 @@
           "name": "Intermediate Kanji (N3)",
           "booktype": "kanji",
           "isFrozen": false,
-          "studiedCount": 194,
+          "studiedCount": 200,
           "totalCount": 379,
           "newToday": 20,
           "newThisWeek": 20,
