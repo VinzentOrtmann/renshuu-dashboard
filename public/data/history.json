@@ -7297,21 +7297,21 @@
     },
     {
       "date": "2026-08-25",
-      "capturedAt": "2026-08-25T18:16:51.314Z",
-      "adventureLevel": 162,
+      "capturedAt": "2026-08-25T19:19:17.354Z",
+      "adventureLevel": 163,
       "studiedToday": {
-        "all": 779,
-        "vocab": 589,
-        "kanji": 107,
+        "all": 907,
+        "vocab": 621,
+        "kanji": 203,
         "grammar": 0,
         "sent": 83,
         "conj": 0,
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 4821,
-        "vocab": 3248,
-        "kanji": 452,
+        "all": 4826,
+        "vocab": 3249,
+        "kanji": 456,
         "grammar": 234,
         "sent": 887
       },
@@ -7362,11 +7362,11 @@
           "name": "Mining",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 104,
+          "studiedCount": 105,
           "totalCount": 105,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 0
+          "dueToday": 3
         },
         {
           "id": "8983851",
@@ -7377,7 +7377,7 @@
           "totalCount": 2473,
           "newToday": 20,
           "newThisWeek": 20,
-          "dueToday": 13
+          "dueToday": 8
         },
         {
           "id": "8260191",
@@ -7388,7 +7388,7 @@
           "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 8
+          "dueToday": 1
         },
         {
           "id": "8375655",
@@ -7399,7 +7399,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 11
+          "dueToday": 4
         },
         {
           "id": "7932506",
@@ -7410,29 +7410,18 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 5
-        },
-        {
-          "id": "9216681",
-          "name": "Intermediate Kanji (N3)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 188,
-          "totalCount": 379,
-          "newToday": 20,
-          "newThisWeek": 20,
-          "dueToday": 67
+          "dueToday": 1
         },
         {
           "id": "9179012",
           "name": "Kanji for Mining",
           "booktype": "kanji",
           "isFrozen": false,
-          "studiedCount": 68,
+          "studiedCount": 81,
           "totalCount": 108,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 19
+          "newToday": 13,
+          "newThisWeek": 13,
+          "dueToday": 0
         },
         {
           "id": "8983957",
@@ -7520,6 +7509,17 @@
           "totalCount": 104,
           "newToday": 0,
           "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9216681",
+          "name": "Intermediate Kanji (N3)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 194,
+          "totalCount": 379,
+          "newToday": 20,
+          "newThisWeek": 20,
           "dueToday": 0
         },
         {
