@@ -7297,20 +7297,20 @@
     },
     {
       "date": "2026-08-25",
-      "capturedAt": "2026-08-25T11:12:10.292Z",
+      "capturedAt": "2026-08-25T12:16:29.554Z",
       "adventureLevel": 162,
       "studiedToday": {
-        "all": 347,
-        "vocab": 347,
-        "kanji": 0,
+        "all": 462,
+        "vocab": 458,
+        "kanji": 4,
         "grammar": 0,
         "sent": 0,
         "conj": 0,
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 4770,
-        "vocab": 3238,
+        "all": 4780,
+        "vocab": 3248,
         "kanji": 431,
         "grammar": 234,
         "sent": 867
@@ -7362,11 +7362,11 @@
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 870,
+          "studiedCount": 878,
           "totalCount": 2473,
-          "newToday": 12,
-          "newThisWeek": 12,
-          "dueToday": 234
+          "newToday": 20,
+          "newThisWeek": 20,
+          "dueToday": 131
         },
         {
           "id": "9216681",
@@ -7389,17 +7389,6 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 34
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 4
         },
         {
           "id": "8277523",
@@ -7562,6 +7551,17 @@
           "isFrozen": false,
           "studiedCount": 685,
           "totalCount": 685,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 80,
+          "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
