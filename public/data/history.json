@@ -7297,23 +7297,23 @@
     },
     {
       "date": "2026-08-25",
-      "capturedAt": "2026-08-25T14:29:44.405Z",
+      "capturedAt": "2026-08-25T15:28:41.076Z",
       "adventureLevel": 162,
       "studiedToday": {
-        "all": 659,
+        "all": 662,
         "vocab": 589,
         "kanji": 27,
         "grammar": 0,
-        "sent": 43,
+        "sent": 46,
         "conj": 0,
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 4780,
+        "all": 4783,
         "vocab": 3248,
         "kanji": 431,
         "grammar": 234,
-        "sent": 867
+        "sent": 870
       },
       "jlptProgress": {
         "vocab": {
@@ -7428,10 +7428,10 @@
           "name": "Intermediate Sentences (N3)",
           "booktype": "sent",
           "isFrozen": false,
-          "studiedCount": 20,
+          "studiedCount": 23,
           "totalCount": 97,
-          "newToday": 0,
-          "newThisWeek": 0,
+          "newToday": 3,
+          "newThisWeek": 3,
           "dueToday": 20
         },
         {
