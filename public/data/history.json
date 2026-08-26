@@ -7570,14 +7570,14 @@
     },
     {
       "date": "2026-08-26",
-      "capturedAt": "2026-08-26T18:28:16.791Z",
+      "capturedAt": "2026-08-26T21:16:47.516Z",
       "adventureLevel": 164,
       "studiedToday": {
-        "all": 461,
-        "vocab": 461,
+        "all": 576,
+        "vocab": 564,
         "kanji": 0,
         "grammar": 0,
-        "sent": 0,
+        "sent": 12,
         "conj": 0,
         "aconj": 0
       },
@@ -7630,17 +7630,6 @@
         "aconj": 0
       },
       "schedules": [
-        {
-          "id": "8983851",
-          "name": "Words for Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 900,
-          "totalCount": 2473,
-          "newToday": 20,
-          "newThisWeek": 20,
-          "dueToday": 104
-        },
         {
           "id": "9216681",
           "name": "Intermediate Kanji (N3)",
@@ -7727,7 +7716,7 @@
           "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 21
+          "dueToday": 9
         },
         {
           "id": "9275775",
@@ -7782,6 +7771,17 @@
           "totalCount": 106,
           "newToday": 0,
           "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8983851",
+          "name": "Words for Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 900,
+          "totalCount": 2473,
+          "newToday": 20,
+          "newThisWeek": 20,
           "dueToday": 0
         },
         {
