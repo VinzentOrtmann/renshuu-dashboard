@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-24T04:44:00.801Z",
+  "generatedAt": "2026-08-31T10:37:05.781Z",
   "ceilings": {
     "kanji": {
       "n3": {
@@ -48,7 +48,7 @@
         ]
       },
       "n3": {
-        "total": 97,
+        "total": 196,
         "blocked": 0,
         "ceilingPercent": 100,
         "sources": [
