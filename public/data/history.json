@@ -9481,7 +9481,7 @@
     },
     {
       "date": "2026-09-02",
-      "capturedAt": "2026-09-02T00:34:51.906Z",
+      "capturedAt": "2026-09-02T05:08:11.799Z",
       "adventureLevel": 169,
       "studiedToday": {
         "all": 0,
@@ -9493,8 +9493,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 5122,
-        "vocab": 3394,
+        "all": 5132,
+        "vocab": 3404,
         "kanji": 550,
         "grammar": 234,
         "sent": 944
@@ -9533,14 +9533,25 @@
         }
       },
       "dayStreaks": {
-        "vocab": 89,
-        "kanji": 0,
+        "vocab": 90,
+        "kanji": 1,
         "grammar": 0,
-        "sent": 0,
+        "sent": 1,
         "conj": 0,
         "aconj": 0
       },
       "schedules": [
+        {
+          "id": "8260190",
+          "name": "Hiragana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 1
+        },
         {
           "id": "9179005",
           "name": "Mining",
@@ -9548,9 +9559,9 @@
           "isFrozen": false,
           "studiedCount": 139,
           "totalCount": 140,
-          "newToday": 10,
-          "newThisWeek": 10,
-          "dueToday": 18
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 63
         },
         {
           "id": "8983851",
@@ -9559,9 +9570,42 @@
           "isFrozen": false,
           "studiedCount": 999,
           "totalCount": 2473,
-          "newToday": 20,
-          "newThisWeek": 20,
-          "dueToday": 543
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 639
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 37
+        },
+        {
+          "id": "8375655",
+          "name": "Words for Pre-Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1074,
+          "totalCount": 1074,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 111
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 44
         },
         {
           "id": "9216681",
@@ -9572,7 +9616,7 @@
           "totalCount": 379,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 241
+          "dueToday": 242
         },
         {
           "id": "9179012",
@@ -9583,7 +9627,18 @@
           "totalCount": 142,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 85
+          "dueToday": 86
+        },
+        {
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 80,
+          "totalCount": 80,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 4
         },
         {
           "id": "8277523",
@@ -9594,7 +9649,7 @@
           "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 56
+          "dueToday": 58
         },
         {
           "id": "8983957",
@@ -9616,7 +9671,7 @@
           "totalCount": 35,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 8
+          "dueToday": 9
         },
         {
           "id": "7932507",
@@ -9627,7 +9682,7 @@
           "totalCount": 63,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 4
+          "dueToday": 5
         },
         {
           "id": "8375656",
@@ -9638,7 +9693,7 @@
           "totalCount": 138,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 109
+          "dueToday": 111
         },
         {
           "id": "8376486",
@@ -9671,7 +9726,7 @@
           "totalCount": 158,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 17
+          "dueToday": 20
         },
         {
           "id": "9066023",
@@ -9685,67 +9740,12 @@
           "dueToday": 37
         },
         {
-          "id": "8260190",
-          "name": "Hiragana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
           "id": "8187284",
           "name": "Katakana",
           "booktype": "vocab",
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8375655",
-          "name": "Words for Pre-Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1074,
-          "totalCount": 1074,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
