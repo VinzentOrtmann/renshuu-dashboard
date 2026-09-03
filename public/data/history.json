@@ -9754,11 +9754,11 @@
     },
     {
       "date": "2026-09-03",
-      "capturedAt": "2026-09-03T11:44:54.618Z",
+      "capturedAt": "2026-09-03T15:14:23.450Z",
       "adventureLevel": 170,
       "studiedToday": {
-        "all": 73,
-        "vocab": 73,
+        "all": 78,
+        "vocab": 78,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -9845,7 +9845,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 47
+          "dueToday": 42
         },
         {
           "id": "9216681",
