@@ -10322,14 +10322,14 @@
     },
     {
       "date": "2026-09-05",
-      "capturedAt": "2026-09-05T19:34:51.965Z",
+      "capturedAt": "2026-09-05T21:44:16.396Z",
       "adventureLevel": 173,
       "studiedToday": {
-        "all": 480,
-        "vocab": 463,
+        "all": 537,
+        "vocab": 506,
         "kanji": 4,
         "grammar": 0,
-        "sent": 13,
+        "sent": 27,
         "conj": 0,
         "aconj": 0
       },
@@ -10382,17 +10382,6 @@
         "aconj": 0
       },
       "schedules": [
-        {
-          "id": "8983851",
-          "name": "Words for Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1156,
-          "totalCount": 2473,
-          "newToday": 20,
-          "newThisWeek": 20,
-          "dueToday": 43
-        },
         {
           "id": "9216681",
           "name": "Intermediate Kanji (N3)",
@@ -10469,17 +10458,6 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 102
-        },
-        {
-          "id": "8376486",
-          "name": "Beginner Sentences (N5)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 672,
-          "totalCount": 672,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 14
         },
         {
           "id": "9275775",
@@ -10559,6 +10537,17 @@
           "dueToday": 0
         },
         {
+          "id": "8983851",
+          "name": "Words for Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1156,
+          "totalCount": 2473,
+          "newToday": 20,
+          "newThisWeek": 20,
+          "dueToday": 0
+        },
+        {
           "id": "8260191",
           "name": "Words for Japanese Basics",
           "booktype": "vocab",
@@ -10598,6 +10587,17 @@
           "isFrozen": false,
           "studiedCount": 80,
           "totalCount": 80,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8376486",
+          "name": "Beginner Sentences (N5)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 672,
+          "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
