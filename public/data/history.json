@@ -10606,7 +10606,7 @@
     },
     {
       "date": "2026-09-06",
-      "capturedAt": "2026-09-06T17:21:55.916Z",
+      "capturedAt": "2026-09-06T21:46:03.228Z",
       "adventureLevel": 173,
       "studiedToday": {
         "all": 437,
@@ -10666,6 +10666,17 @@
         "aconj": 0
       },
       "schedules": [
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 140,
+          "totalCount": 141,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
@@ -10816,17 +10827,6 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 140,
-          "totalCount": 140,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
