@@ -10890,11 +10890,11 @@
     },
     {
       "date": "2026-09-07",
-      "capturedAt": "2026-09-07T18:25:34.433Z",
+      "capturedAt": "2026-09-07T21:47:54.221Z",
       "adventureLevel": 174,
       "studiedToday": {
-        "all": 276,
-        "vocab": 271,
+        "all": 309,
+        "vocab": 304,
         "kanji": 5,
         "grammar": 0,
         "sent": 0,
@@ -10902,8 +10902,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 5391,
-        "vocab": 3663,
+        "all": 5402,
+        "vocab": 3674,
         "kanji": 550,
         "grammar": 234,
         "sent": 944
@@ -10955,22 +10955,33 @@
           "name": "Kaishi1.5K",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1195,
+          "studiedCount": 1197,
           "totalCount": 1479,
           "newToday": 20,
           "newThisWeek": 20,
-          "dueToday": 78
+          "dueToday": 70
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 141,
+          "totalCount": 143,
+          "newToday": 1,
+          "newThisWeek": 1,
+          "dueToday": 0
         },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1208,
+          "studiedCount": 1219,
           "totalCount": 2473,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 308
+          "newToday": 10,
+          "newThisWeek": 10,
+          "dueToday": 282
         },
         {
           "id": "9216681",
@@ -11102,17 +11113,6 @@
           "totalCount": 104,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 141,
-          "totalCount": 141,
-          "newToday": 1,
-          "newThisWeek": 1,
           "dueToday": 0
         },
         {
