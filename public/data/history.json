@@ -11458,11 +11458,11 @@
     },
     {
       "date": "2026-09-09",
-      "capturedAt": "2026-09-09T10:08:44.171Z",
+      "capturedAt": "2026-09-09T14:49:14.362Z",
       "adventureLevel": 176,
       "studiedToday": {
-        "all": 102,
-        "vocab": 102,
+        "all": 230,
+        "vocab": 230,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -11470,8 +11470,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 5486,
-        "vocab": 3758,
+        "all": 5508,
+        "vocab": 3780,
         "kanji": 550,
         "grammar": 234,
         "sent": 944
@@ -11523,33 +11523,22 @@
           "name": "Kaishi1.5K",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1230,
+          "studiedCount": 1251,
           "totalCount": 1479,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 170
+          "newToday": 20,
+          "newThisWeek": 20,
+          "dueToday": 94
         },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1286,
+          "studiedCount": 1301,
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 452
-        },
-        {
-          "id": "8375655",
-          "name": "Words for Pre-Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1074,
-          "totalCount": 1074,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 49
+          "dueToday": 406
         },
         {
           "id": "9216681",
@@ -11593,7 +11582,7 @@
           "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 36
+          "dueToday": 37
         },
         {
           "id": "8983957",
@@ -11723,6 +11712,17 @@
           "isFrozen": false,
           "studiedCount": 507,
           "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8375655",
+          "name": "Words for Pre-Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1074,
+          "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
