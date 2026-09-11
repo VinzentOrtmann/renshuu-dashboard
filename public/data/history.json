@@ -12026,11 +12026,11 @@
     },
     {
       "date": "2026-09-11",
-      "capturedAt": "2026-09-11T05:19:39.991Z",
+      "capturedAt": "2026-09-11T10:01:49.697Z",
       "adventureLevel": 177,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
+        "all": 37,
+        "vocab": 37,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -12095,18 +12095,7 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 321
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 145,
-          "totalCount": 145,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 36
+          "dueToday": 313
         },
         {
           "id": "8983851",
@@ -12117,7 +12106,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 714
+          "dueToday": 709
         },
         {
           "id": "8260191",
@@ -12128,7 +12117,7 @@
           "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 30
+          "dueToday": 29
         },
         {
           "id": "8375655",
@@ -12302,6 +12291,17 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 145,
+          "totalCount": 145,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
