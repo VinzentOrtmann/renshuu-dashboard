@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-07T08:59:25.536Z",
+  "generatedAt": "2026-09-14T09:37:20.364Z",
   "ceilings": {
     "kanji": {
       "n3": {
@@ -39,6 +39,14 @@
       }
     },
     "sent": {
+      "n5": {
+        "total": 689,
+        "blocked": 17,
+        "ceilingPercent": 97,
+        "sources": [
+          "Beginner Sentences (N5)"
+        ]
+      },
       "n3": {
         "total": 196,
         "blocked": 0,
@@ -53,14 +61,6 @@
         "ceilingPercent": 98,
         "sources": [
           "Pre-Intermediate Sentences (N4)"
-        ]
-      },
-      "n5": {
-        "total": 689,
-        "blocked": 17,
-        "ceilingPercent": 97,
-        "sources": [
-          "Beginner Sentences (N5)"
         ]
       }
     }
