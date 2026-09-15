@@ -13162,7 +13162,7 @@
     },
     {
       "date": "2026-09-15",
-      "capturedAt": "2026-09-14T22:46:01.827Z",
+      "capturedAt": "2026-09-15T00:59:04.662Z",
       "adventureLevel": 179,
       "studiedToday": {
         "all": 0,
@@ -13174,8 +13174,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 5685,
-        "vocab": 3957,
+        "all": 5695,
+        "vocab": 3967,
         "kanji": 550,
         "grammar": 234,
         "sent": 944
@@ -13227,7 +13227,7 @@
           "name": "Kaishi1.5K",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1348,
+          "studiedCount": 1349,
           "totalCount": 1479,
           "newToday": 20,
           "newThisWeek": 20,
@@ -13238,11 +13238,11 @@
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1433,
+          "studiedCount": 1443,
           "totalCount": 2473,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 783
+          "newToday": 10,
+          "newThisWeek": 10,
+          "dueToday": 761
         },
         {
           "id": "9216681",
