@@ -13446,20 +13446,20 @@
     },
     {
       "date": "2026-09-16",
-      "capturedAt": "2026-09-16T12:51:14.372Z",
-      "adventureLevel": 180,
+      "capturedAt": "2026-09-16T17:45:54.978Z",
+      "adventureLevel": 181,
       "studiedToday": {
-        "all": 50,
-        "vocab": 50,
-        "kanji": 0,
+        "all": 191,
+        "vocab": 188,
+        "kanji": 3,
         "grammar": 0,
         "sent": 0,
         "conj": 0,
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 5740,
-        "vocab": 4012,
+        "all": 5755,
+        "vocab": 4027,
         "kanji": 550,
         "grammar": 234,
         "sent": 944
@@ -13511,44 +13511,22 @@
           "name": "Kaishi1.5K",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1373,
+          "studiedCount": 1388,
           "totalCount": 1479,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 263
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 147,
-          "totalCount": 147,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 19
+          "newToday": 12,
+          "newThisWeek": 12,
+          "dueToday": 187
         },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1474,
+          "studiedCount": 1484,
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 828
-        },
-        {
-          "id": "8375655",
-          "name": "Words for Pre-Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1074,
-          "totalCount": 1074,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 75
+          "dueToday": 802
         },
         {
           "id": "9216681",
@@ -13570,7 +13548,7 @@
           "totalCount": 150,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 95
+          "dueToday": 94
         },
         {
           "id": "7932508",
@@ -13581,7 +13559,7 @@
           "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 6
+          "dueToday": 4
         },
         {
           "id": "8277523",
@@ -13705,12 +13683,34 @@
           "dueToday": 0
         },
         {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 147,
+          "totalCount": 147,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
           "id": "8260191",
           "name": "Words for Japanese Basics",
           "booktype": "vocab",
           "isFrozen": false,
           "studiedCount": 507,
           "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8375655",
+          "name": "Words for Pre-Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1074,
+          "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
