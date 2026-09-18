@@ -14,8 +14,10 @@ import {
   PAPER,
   INFO_ROW_MM,
   columnsFor,
+  layoutSections,
   layoutWorksheet,
   pageSize,
+  parseSections,
   parseWords,
 } from './worksheet.ts'
 import type { WorksheetOptions } from './worksheet.ts'
@@ -381,5 +383,66 @@ describe('info line', () => {
     const bottom = PAPER.a4.height - o.marginMm
     assert.ok(last.y + last.height <= bottom + 1e-9)
     assert.ok(last.y + last.height + o.boxMm > bottom)
+  })
+})
+
+describe('page breaks', () => {
+  it('splits the input into sections at a line of hyphens', () => {
+    assert.deepEqual(parseSections('緊\n張\n緊張\n---\n緊'), [
+      [['緊'], ['張'], ['緊', '張']],
+      [['緊']],
+    ])
+  })
+
+  it('accepts longer runs of hyphens and surrounding spaces', () => {
+    assert.equal(parseSections('漢\n  -----  \n字').length, 2)
+  })
+
+  it('never treats hyphens as a word to practise', () => {
+    const words = parseSections('漢\n---\n字').flat().flat()
+    assert.ok(!words.includes('-'))
+  })
+
+  it('does not break on the katakana long-vowel mark', () => {
+    // ー is part of words like コーヒー; only ASCII hyphens are a break.
+    assert.deepEqual(parseSections('ーーー'), [[['ー', 'ー', 'ー']]])
+  })
+
+  it('drops empty sections instead of making blank pages', () => {
+    assert.equal(parseSections('---\n漢\n---\n---\n字\n---').length, 2)
+  })
+
+  it('without a break, is exactly the ordinary layout', () => {
+    const o = opts({ fillPage: true })
+    assert.deepEqual(
+      layoutSections(parseSections('緊\n張'), o),
+      layoutWorksheet(parseWords('緊\n張'), o),
+    )
+  })
+
+  it('starts each section on a new page', () => {
+    const pages = layoutSections(parseSections('緊\n張\n---\n緊'), opts())
+    assert.equal(pages.length, 2)
+    const firstRowOf = (page: (typeof pages)[number]) =>
+      page.rows[0].groups[0].cells.map((c) => c.char).join('')
+    assert.equal(firstRowOf(pages[1]), '緊')
+  })
+
+  it('fills each section on its own, so a lone kanji gets a whole page', () => {
+    const o = opts({ fillPage: true })
+    const pages = layoutSections(parseSections('緊\n張\n緊張\n---\n緊'), o)
+    const bottom = PAPER.a4.height - o.marginMm
+    for (const page of pages) {
+      const last = page.rows.at(-1)!
+      // Each page is full: its last row fits and one more would not.
+      assert.ok(last.y + last.height <= bottom + 1e-9)
+      assert.ok(last.y + last.height + o.boxMm > bottom)
+    }
+    // The second page is all 緊.
+    assert.ok(
+      pages[1].rows.every((r) =>
+        r.groups.every((g) => g.cells.every((c) => c.char === '緊')),
+      ),
+    )
   })
 })

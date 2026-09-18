@@ -12,7 +12,7 @@
  * multi-megabyte Japanese font inside the site.
  */
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { loadKanji, masteryBand } from '../lib/kanji.ts'
 import { loadKanjidic } from '../lib/kanjidic.ts'
@@ -25,9 +25,10 @@ import {
   INFO_FONT_MM,
   INFO_ROW_MM,
   columnsFor,
-  layoutWorksheet,
+  PAGE_BREAK_TEXT,
+  layoutSections,
   pageSize,
-  parseWords,
+  parseSections,
 } from '../lib/worksheet.ts'
 import type { KanjiEntry } from '../types/kanji.ts'
 import type { VocabEntry } from '../types/vocab.ts'
@@ -142,7 +143,13 @@ export function WorksheetPage() {
   const [loadingDictionary, setLoadingDictionary] = useState(false)
 
   const { text, options, cross, printCredit } = settings
-  const words = useMemo(() => parseWords(text), [text])
+  // Sections are separated by page-break lines; `words` is every word across
+  // them, for the loaders that only care which characters are on the sheet.
+  const sections = useMemo(() => parseSections(text), [text])
+  const words = useMemo(() => sections.flat(), [sections])
+  const textarea = useRef<HTMLTextAreaElement>(null)
+  /** Where to put the cursor once an inserted page break has rendered. */
+  const pendingCursor = useRef<number | null>(null)
 
   useEffect(() => {
     try {
@@ -248,8 +255,8 @@ export function WorksheetPage() {
 
   const pages = useMemo(
     () =>
-      layoutWorksheet(
-        words,
+      layoutSections(
+        sections,
         options,
         (char) => strokes.get(char)?.length,
         (word) =>
@@ -257,13 +264,12 @@ export function WorksheetPage() {
             ? infoLine(word, {
                 word: (written) => labels.words[written],
                 // Your renshuu data first; the dictionary only fills gaps.
-                kanji: (char) =>
-                  labels.kanji.get(char) ?? dictionary.get(char),
+                kanji: (char) => labels.kanji.get(char) ?? dictionary.get(char),
                 strokes: (char) => strokes.get(char)?.length,
               })
             : undefined,
       ),
-    [words, options, strokes, labels, dictionary],
+    [sections, options, strokes, labels, dictionary],
   )
 
   // Printing waits for every load, so a sheet can't go to paper with labels or
@@ -298,6 +304,37 @@ export function WorksheetPage() {
       setStatus(error instanceof Error ? error.message : String(error))
     }
   }
+
+  /**
+   * Inserts a page break at the cursor, always on a line of its own — a `---`
+   * typed onto the end of a word's line would be read as part of that word.
+   */
+  function insertPageBreak() {
+    const field = textarea.current
+    const at = field?.selectionStart ?? text.length
+    const before = text.slice(0, at)
+    const after = text.slice(at)
+    const lead = before === '' || before.endsWith('\n') ? '' : '\n'
+    const trail = after.startsWith('\n') ? '' : '\n'
+    const inserted = `${lead}${PAGE_BREAK_TEXT}${trail}`
+
+    setSettings((s) => ({ ...s, text: before + inserted + after }))
+
+    // Cursor goes to the start of the line after the break, ready for the next
+    // word. When a newline already followed, that's one character further on.
+    pendingCursor.current = at + inserted.length + (trail === '' ? 1 : 0)
+  }
+
+  // Applied after React has committed the new text. Setting it straight away
+  // doesn't stick: the re-render replaces the textarea's value, which moves the
+  // cursor to the end.
+  useLayoutEffect(() => {
+    const cursor = pendingCursor.current
+    if (cursor === null) return
+    pendingCursor.current = null
+    textarea.current?.focus()
+    textarea.current?.setSelectionRange(cursor, cursor)
+  }, [text])
 
   async function print() {
     // Wait for the font. Printing before it loads silently substitutes a
@@ -344,6 +381,7 @@ export function WorksheetPage() {
             </label>
             <textarea
               id="words"
+              ref={textarea}
               value={text}
               onChange={(e) =>
                 setSettings((s) => ({ ...s, text: e.target.value }))
@@ -352,7 +390,14 @@ export function WorksheetPage() {
               className="mt-2 w-full rounded-md border border-[var(--border)] bg-[var(--surface-page)] p-3 text-lg text-[var(--text-primary)]"
               style={{ fontFamily: WORKSHEET_FONT }}
             />
+            <p className="mt-1 text-sm text-[var(--text-muted)]">
+              A line of <code>{PAGE_BREAK_TEXT}</code> starts a new page. Each
+              page group is filled out on its own.
+            </p>
             <div className="mt-2 flex flex-wrap gap-2">
+              <SmallButton onClick={insertPageBreak}>
+                Insert page break
+              </SmallButton>
               <SmallButton onClick={() => prefill('weakest')}>
                 My 20 weakest kanji
               </SmallButton>

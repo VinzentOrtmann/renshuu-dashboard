@@ -143,6 +143,30 @@ export function parseWords(input: string): string[][] {
     .filter((chars) => chars.length > 0)
 }
 
+/**
+ * A line of three or more hyphens, and nothing else: a manual page break.
+ *
+ * ASCII hyphens only. The katakana long-vowel mark ー looks similar but is part
+ * of real words (コーヒー), so treating it as a break would split words apart.
+ */
+const PAGE_BREAK = /^\s*-{3,}\s*$/m
+
+/** The text a page break is written as, for inserting one into the input. */
+export const PAGE_BREAK_TEXT = '---'
+
+/**
+ * Splits the input at page-break lines into sections, each a list of words.
+ *
+ * Sections that end up empty — a break at the very start, or two breaks in a
+ * row — are dropped, so a stray break never produces a blank page.
+ */
+export function parseSections(input: string): string[][][] {
+  return input
+    .split(new RegExp(PAGE_BREAK.source, 'gm'))
+    .map(parseWords)
+    .filter((words) => words.length > 0)
+}
+
 /** Page dimensions for the chosen paper and orientation. */
 export function pageSize(options: WorksheetOptions): {
   width: number
@@ -334,6 +358,28 @@ function layoutOnce(
 
   if (page.rows.length > 0) pages.push(page)
   return pages
+}
+
+/**
+ * Lays out several sections, each starting on a fresh page.
+ *
+ * Every section is laid out on its own, so page filling applies to each
+ * section's last page separately: a group of words shares its pages, and a
+ * lone kanji after a break gets a whole page to itself rather than whatever
+ * space the group before it left over.
+ *
+ * `words` passed to the callbacks are the words of the current section; the
+ * callbacks only look at the characters, so that makes no difference to them.
+ */
+export function layoutSections(
+  sections: string[][][],
+  options: WorksheetOptions,
+  strokeCounts: StrokeCounts = () => undefined,
+  infoFor: InfoFor = () => undefined,
+): Page[] {
+  return sections.flatMap((words) =>
+    layoutWorksheet(words, options, strokeCounts, infoFor),
+  )
 }
 
 /**
