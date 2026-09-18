@@ -14,26 +14,7 @@
  * once from a pinned release and served from here.
  */
 
-import { bucketFor } from './strokeData.ts'
-import type { StrokeBucket } from './strokeData.ts'
-
-const STROKES_URL = `${import.meta.env.BASE_URL}data/strokes/`
-
-/** One request per bucket, shared by every character that needs it. */
-const bucketCache = new Map<string, Promise<StrokeBucket>>()
-
-function loadBucket(bucket: string): Promise<StrokeBucket> {
-  let pending = bucketCache.get(bucket)
-  if (!pending) {
-    pending = fetch(`${STROKES_URL}${bucket}.json`)
-      // A missing bucket means no character in that block has data (Latin
-      // letters, say). That's an empty result, not an error.
-      .then((response) => (response.ok ? response.json() : {}))
-      .catch(() => ({}))
-    bucketCache.set(bucket, pending)
-  }
-  return pending
-}
+import { loadByCharacter } from './buckets.ts'
 
 /**
  * Stroke paths for every character given. Characters KanjiVG doesn't cover are
@@ -42,15 +23,9 @@ function loadBucket(bucket: string): Promise<StrokeBucket> {
 export async function loadStrokes(
   chars: Iterable<string>,
 ): Promise<Map<string, string[]>> {
-  const unique = [...new Set(chars)]
-  const buckets = [...new Set(unique.map(bucketFor))]
-  const loaded = await Promise.all(buckets.map(loadBucket))
-
-  const byBucket = new Map(buckets.map((bucket, i) => [bucket, loaded[i]]))
-  const result = new Map<string, string[]>()
-  for (const char of unique) {
-    const strokes = byBucket.get(bucketFor(char))?.[char]
-    if (strokes?.length) result.set(char, strokes)
+  const loaded = await loadByCharacter<string[]>('strokes', chars)
+  for (const [char, paths] of loaded) {
+    if (!paths.length) loaded.delete(char)
   }
-  return result
+  return loaded
 }

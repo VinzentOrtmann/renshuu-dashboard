@@ -14,7 +14,8 @@
     "ceilings": "node --env-file-if-exists=.env scripts/ceilings.ts",
     "vocab": "node --env-file-if-exists=.env scripts/vocab.ts",
     "test": "node --test --test-timeout=10000 \"src/**/*.test.ts\"",
-    "strokes": "node scripts/strokes.ts"
+    "strokes": "node scripts/strokes.ts",
+    "kanjidic": "node scripts/kanjidic.ts"
   },
   "dependencies": {
     "react": "^19.2.7",

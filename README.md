@@ -73,6 +73,14 @@ first sense only, trimmed to what fits on one printed line) — so they read the
 way Renshuu shows them. A word outside your schedules falls back to the meaning
 of each of its kanji.
 
+Kanji outside your kanji decks — 929 of the 1,615 kanji in your vocabulary —
+fall back to [KANJIDIC2](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project)
+(EDRDG, CC BY-SA 4.0), extracted into
+[`public/data/kanjidic/`](public/data/kanjidic/) by `npm run kanjidic`. Your
+Renshuu data is always used first. The two agree closely: the first meaning
+matches Renshuu's on 685 of 687 kanji, since Renshuu appears to draw its kanji
+meanings from the same dictionary.
+
 The PDF comes from the browser's Print → Save as PDF, so the output is vector
 and no Japanese font has to ship inside the site. Tracing uses
 [Klee One](https://fonts.google.com/specimen/Klee+One), a textbook-style font,
@@ -176,6 +184,7 @@ npm run dev
 | `npm run ceilings`  | Recompute the reachable maximum per JLPT level  |
 | `npm run vocab`     | Rebuild word readings and meanings for labels   |
 | `npm run strokes`   | Rebuild stroke-order data from KanjiVG          |
+| `npm run kanjidic`  | Rebuild fallback kanji labels from KANJIDIC2    |
 | `npm run check-api` | Verify the API types against your real account  |
 
 ### API access

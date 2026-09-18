@@ -15,6 +15,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { loadKanji, masteryBand } from '../lib/kanji.ts'
+import { loadKanjidic } from '../lib/kanjidic.ts'
 import { KANJIVG_SIZE } from '../lib/strokeData.ts'
 import { loadStrokes } from '../lib/strokes.ts'
 import { loadVocab } from '../lib/vocab.ts'
@@ -134,6 +135,11 @@ export function WorksheetPage() {
     kanji: Map<string, KanjiEntry>
     words: Record<string, VocabEntry>
   } | null>(null)
+  // KANJIDIC2 entries for kanji your own data doesn't cover.
+  const [dictionary, setDictionary] = useState<Map<string, KanjiEntry>>(
+    new Map(),
+  )
+  const [loadingDictionary, setLoadingDictionary] = useState(false)
 
   const { text, options, cross, printCredit } = settings
   const words = useMemo(() => parseWords(text), [text])
@@ -200,6 +206,46 @@ export function WorksheetPage() {
     }
   }, [options.showInfo, labels])
 
+  // Fallback labels: any kanji on the sheet that isn't in your kanji decks is
+  // looked up in KANJIDIC2. Only kanji are fetched — kana have no entries — and
+  // only once your own data has loaded, so it always takes precedence.
+  useEffect(() => {
+    const chars =
+      options.showInfo && labels
+        ? words
+            .flat()
+            .filter(
+              (char) =>
+                /\p{Script=Han}/u.test(char) &&
+                !labels.kanji.has(char) &&
+                !dictionary.has(char),
+            )
+        : []
+    if (chars.length === 0) {
+      // Reset here as well as in `finally`, for the same reason as the stroke
+      // loader above: a cancelled load never reaches its own reset.
+      setLoadingDictionary(false)
+      return
+    }
+
+    let cancelled = false
+    setLoadingDictionary(true)
+    loadKanjidic(chars)
+      .then((loaded) => {
+        if (cancelled || loaded.size === 0) return
+        setDictionary((previous) => new Map([...previous, ...loaded]))
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingDictionary(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+    // `dictionary` is left out on purpose, as with `strokes` above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [words, options.showInfo, labels])
+
   const pages = useMemo(
     () =>
       layoutWorksheet(
@@ -210,15 +256,19 @@ export function WorksheetPage() {
           labels
             ? infoLine(word, {
                 word: (written) => labels.words[written],
-                kanji: (char) => labels.kanji.get(char),
+                // Your renshuu data first; the dictionary only fills gaps.
+                kanji: (char) =>
+                  labels.kanji.get(char) ?? dictionary.get(char),
                 strokes: (char) => strokes.get(char)?.length,
               })
             : undefined,
       ),
-    [words, options, strokes, labels],
+    [words, options, strokes, labels, dictionary],
   )
 
-  const busy = loadingStrokes || loadingLabels
+  // Printing waits for every load, so a sheet can't go to paper with labels or
+  // stroke order that simply hadn't arrived yet.
+  const busy = loadingStrokes || loadingLabels || loadingDictionary
 
   const setOption = <K extends keyof WorksheetOptions>(
     key: K,
@@ -435,7 +485,14 @@ export function WorksheetPage() {
             >
               KanjiVG
             </a>{' '}
-            by Ulrich Apel, CC BY-SA 3.0.
+            by Ulrich Apel, CC BY-SA 3.0. Kanji labels outside your decks from{' '}
+            <a
+              href="https://www.edrdg.org/wiki/index.php/KANJIDIC_Project"
+              className="underline underline-offset-2"
+            >
+              KANJIDIC2
+            </a>{' '}
+            (EDRDG), CC BY-SA 4.0.
           </p>
         )}
 
