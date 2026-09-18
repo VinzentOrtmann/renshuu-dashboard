@@ -12,7 +12,8 @@
     "snapshot": "node --env-file-if-exists=.env scripts/snapshot.ts",
     "kanji": "node --env-file-if-exists=.env scripts/kanji.ts",
     "ceilings": "node --env-file-if-exists=.env scripts/ceilings.ts",
-    "test": "node --test \"src/**/*.test.ts\""
+    "test": "node --test --test-timeout=10000 \"src/**/*.test.ts\"",
+    "strokes": "node scripts/strokes.ts"
   },
   "dependencies": {
     "react": "^19.2.7",

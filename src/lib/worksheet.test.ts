@@ -14,12 +14,23 @@ import {
   PAPER,
   columnsFor,
   layoutWorksheet,
+  pageSize,
   parseWords,
 } from './worksheet.ts'
 import type { WorksheetOptions } from './worksheet.ts'
 
+/**
+ * Test options: a fixed baseline rather than whatever the app's defaults happen
+ * to be, so changing a default can't silently change what a test measures.
+ * Page filling and stroke order are off unless a test turns them on, so each
+ * test measures one behaviour instead of all of them at once.
+ */
 const opts = (overrides: Partial<WorksheetOptions> = {}): WorksheetOptions => ({
   ...DEFAULT_OPTIONS,
+  tracing: 'first-row',
+  tracedCopies: 3,
+  fillPage: false,
+  strokeOrder: false,
   ...overrides,
 })
 
@@ -152,5 +163,162 @@ describe('layoutWorksheet', () => {
 
   it('returns no pages for no words', () => {
     assert.deepEqual(layoutWorksheet([], opts()), [])
+  })
+})
+
+describe('tracing amount', () => {
+  const kindsOfFirstRow = (o: WorksheetOptions) =>
+    layoutWorksheet([['漢']], o)[0].rows[0].groups.map((g) => g.cells[0].kind)
+
+  it('fills half the row with "half"', () => {
+    // 15 copies fit; half of 15 rounds to 8 filled: the model plus 7 grey.
+    const kinds = kindsOfFirstRow(opts({ tracedCopies: 'half' }))
+    assert.equal(kinds.filter((k) => k !== 'blank').length, 8)
+    assert.equal(kinds[0], 'model')
+  })
+
+  it('fills the whole row with "all"', () => {
+    const kinds = kindsOfFirstRow(opts({ tracedCopies: 'all' }))
+    assert.ok(!kinds.includes('blank'))
+    assert.equal(kinds.filter((k) => k === 'model').length, 1)
+  })
+
+  it('traces whole later rows with "all" on every row', () => {
+    const [page] = layoutWorksheet(
+      [['漢']],
+      opts({ tracedCopies: 'all', tracing: 'all-rows', rowsPerWord: 2 }),
+    )
+    assert.ok(page.rows[1].groups.every((g) => g.cells[0].kind === 'trace'))
+  })
+
+  it('never asks for more grey copies than fit', () => {
+    const kinds = kindsOfFirstRow(opts({ tracedCopies: 99 }))
+    assert.equal(kinds.length, 15)
+  })
+})
+
+describe('orientation', () => {
+  it('swaps the page dimensions for landscape', () => {
+    assert.deepEqual(pageSize(opts({ orientation: 'landscape' })), {
+      width: 297,
+      height: 210,
+    })
+  })
+
+  it('fits more boxes across a landscape page', () => {
+    // 297 - 24 = 273 mm / 12 = 22 columns, against 15 in portrait.
+    assert.equal(columnsFor(opts({ orientation: 'landscape' })), 22)
+  })
+
+  it('keeps landscape rows inside the shorter page height', () => {
+    const o = opts({ orientation: 'landscape' })
+    const words = Array.from({ length: 40 }, () => ['漢'])
+    for (const page of layoutWorksheet(words, o)) {
+      for (const row of page.rows) {
+        assert.ok(row.y + o.boxMm <= 210 - o.marginMm + 1e-9)
+      }
+    }
+  })
+})
+
+describe('fill page', () => {
+  it('turns a single kanji into a full page of practice', () => {
+    const o = opts({ fillPage: true })
+    const pages = layoutWorksheet([['漢']], o)
+    assert.equal(pages.length, 1)
+
+    const last = pages[0].rows.at(-1)!
+    const bottom = PAPER.a4.height - o.marginMm
+    // Full means exactly this: the last row fits and one more would not.
+    assert.ok(last.y + o.boxMm <= bottom)
+    assert.ok(last.y + 2 * o.boxMm > bottom, `page not full: last row at ${last.y}`)
+  })
+
+  it('never adds a page', () => {
+    const words = Array.from({ length: 30 }, (_, i) => [String(i)])
+    const without = layoutWorksheet(words, opts())
+    const withFill = layoutWorksheet(words, opts({ fillPage: true }))
+    assert.equal(withFill.length, without.length)
+  })
+
+  it('leaves earlier pages exactly as they were', () => {
+    const words = Array.from({ length: 30 }, (_, i) => [String(i)])
+    const without = layoutWorksheet(words, opts())
+    const withFill = layoutWorksheet(words, opts({ fillPage: true }))
+    assert.deepEqual(withFill.slice(0, -1), without.slice(0, -1))
+  })
+
+  it('shares the extra rows between the words on the last page', () => {
+    const [page] = layoutWorksheet([['漢'], ['字']], opts({ fillPage: true }))
+    const rowsFor = (w: number) => page.rows.filter((r) => r.word === w).length
+    assert.ok(Math.abs(rowsFor(0) - rowsFor(1)) <= 1)
+    assert.ok(rowsFor(0) > DEFAULT_OPTIONS.rowsPerWord)
+  })
+})
+
+describe('stroke order', () => {
+  // 飛 has 9 strokes, 行 has 6; anything else has no data.
+  const STROKES: Record<string, number> = { 飛: 9, 行: 6 }
+  const counts = (char: string): number | undefined => STROKES[char]
+
+  it('builds each character up one stroke per box', () => {
+    const [page] = layoutWorksheet([['飛']], opts({ strokeOrder: true }), counts)
+    const cells = page.rows[0].groups.flatMap((g) => g.cells)
+    assert.deepEqual(
+      cells.map((c) => c.step),
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    )
+    assert.ok(cells.every((c) => c.kind === 'stroke'))
+  })
+
+  it('puts stroke order above the practice rows', () => {
+    const [page] = layoutWorksheet([['飛']], opts({ strokeOrder: true }), counts)
+    assert.equal(page.rows[0].groups[0].cells[0].kind, 'stroke')
+    assert.equal(page.rows[1].groups[0].cells[0].kind, 'model')
+  })
+
+  it('outlines each character of a word as its own sequence', () => {
+    const [page] = layoutWorksheet(
+      [['飛', '行']],
+      opts({ strokeOrder: true }),
+      counts,
+    )
+    // 9 + 6 = 15 strokes fill exactly one 15-column row, as two groups.
+    assert.deepEqual(
+      page.rows[0].groups.map((g) => [g.cells[0].char, g.cells.length]),
+      [
+        ['飛', 9],
+        ['行', 6],
+      ],
+    )
+  })
+
+  it('wraps a long sequence onto the next row', () => {
+    const [page] = layoutWorksheet(
+      [['飛']],
+      opts({ strokeOrder: true, boxMm: 20 }), // 9 columns
+      (c) => (c === '飛' ? 12 : undefined),
+    )
+    assert.equal(page.rows[0].groups[0].cells.length, 9)
+    assert.equal(page.rows[1].groups[0].cells.length, 3)
+  })
+
+  it('keeps a repeated character as two separate sequences', () => {
+    const [page] = layoutWorksheet(
+      [['行', '行']],
+      opts({ strokeOrder: true }),
+      counts,
+    )
+    assert.equal(page.rows[0].groups.length, 2)
+  })
+
+  it('skips characters with no stroke data', () => {
+    const [page] = layoutWorksheet([['漢']], opts({ strokeOrder: true }), counts)
+    assert.equal(page.rows[0].groups[0].cells[0].kind, 'model')
+  })
+
+  it('adds nothing when turned off', () => {
+    const [page] = layoutWorksheet([['飛']], opts({ strokeOrder: false }), counts)
+    assert.equal(page.rows[0].groups[0].cells[0].kind, 'model')
   })
 })

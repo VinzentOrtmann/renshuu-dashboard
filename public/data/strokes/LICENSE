@@ -1,0 +1,10 @@
+Stroke-order data in this directory is derived from KanjiVG
+(https://kanjivg.tagaini.net), release r20260714.
+
+KanjiVG is copyright (C) 2009-2026 Ulrich Apel and is released under the
+Creative Commons Attribution-Share Alike 3.0 licence:
+https://creativecommons.org/licenses/by-sa/3.0/
+
+These files are a derivative work (only the stroke paths are kept, regrouped
+by code point) and are distributed under the same licence. The rest of this
+repository is not covered by this notice.

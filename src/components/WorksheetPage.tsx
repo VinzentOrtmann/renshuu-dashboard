@@ -15,15 +15,19 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { loadKanji, masteryBand } from '../lib/kanji.ts'
+import { KANJIVG_SIZE } from '../lib/strokeData.ts'
+import { loadStrokes } from '../lib/strokes.ts'
 import {
   DEFAULT_OPTIONS,
-  PAPER,
   layoutWorksheet,
+  pageSize,
   parseWords,
 } from '../lib/worksheet.ts'
 import type {
+  Orientation,
   Page,
   PaperSize,
+  TracedAmount,
   TracingMode,
   WorksheetOptions,
 } from '../lib/worksheet.ts'
@@ -38,6 +42,17 @@ import type {
  */
 const WORKSHEET_FONT =
   "'Klee One', 'UD Digi Kyokasho N-R', 'YuKyokasho', 'Yu Mincho', serif"
+
+/** Ink colours for the printed sheet. Fixed, not themed: this is paper. */
+const INK = {
+  model: '#1a1a1a',
+  trace: '#c4c4c4',
+  box: '#a8a8a8',
+  outline: '#555555',
+  guide: '#d4d4d4',
+  /** Strokes already drawn in a stroke-order box, behind the new one. */
+  earlierStroke: '#bdbdbd',
+}
 
 /** Box sizes offered, in millimetres. */
 const BOX_SIZES = [
@@ -65,8 +80,11 @@ const DEFAULT_SETTINGS: Settings = {
  * Initial settings: a `?words=` link wins (that's how the kanji wall hands over
  * a selection), then whatever was last used, then the defaults.
  *
- * Every storage access is wrapped: private windows and blocked site data throw,
- * and the page must still work — remembering settings is a convenience only.
+ * Saved options are merged over the defaults, so settings saved before an
+ * option existed pick up that option's default instead of coming back
+ * undefined. Every storage access is wrapped: private windows and blocked site
+ * data throw, and the page must still work — remembering settings is only a
+ * convenience.
  */
 function initialSettings(): Settings {
   let saved: Partial<Settings> = {}
@@ -86,11 +104,19 @@ function initialSettings(): Settings {
   }
 }
 
+/** Reads the traced-copies select, whose values are numbers or keywords. */
+function parseTracedAmount(value: string): TracedAmount {
+  return value === 'half' || value === 'all' ? value : Number(value)
+}
+
 export function WorksheetPage() {
   const [settings, setSettings] = useState<Settings>(initialSettings)
   const [status, setStatus] = useState<string | null>(null)
+  const [strokes, setStrokes] = useState<Map<string, string[]>>(new Map())
+  const [loadingStrokes, setLoadingStrokes] = useState(false)
 
   const { text, options, cross } = settings
+  const words = useMemo(() => parseWords(text), [text])
 
   useEffect(() => {
     try {
@@ -100,9 +126,42 @@ export function WorksheetPage() {
     }
   }, [settings])
 
+  // Fetch stroke data for whatever characters are on the sheet. Loaded files are
+  // cached in lib/strokes.ts, so typing only fetches blocks not seen before.
+  useEffect(() => {
+    const chars = options.strokeOrder
+      ? words.flat().filter((char) => !strokes.has(char))
+      : []
+    if (chars.length === 0) {
+      // Clear the flag here too. A load cancelled by an edit never reaches its
+      // own `finally`, and if this run has nothing to fetch the flag would
+      // otherwise stay set — leaving the print button disabled for good.
+      setLoadingStrokes(false)
+      return
+    }
+
+    let cancelled = false
+    setLoadingStrokes(true)
+    loadStrokes(chars)
+      .then((loaded) => {
+        if (cancelled || loaded.size === 0) return
+        setStrokes((previous) => new Map([...previous, ...loaded]))
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingStrokes(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+    // `strokes` is left out on purpose: adding it would re-run this after every
+    // load, only to find nothing new to fetch.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [words, options.strokeOrder])
+
   const pages = useMemo(
-    () => layoutWorksheet(parseWords(text), options),
-    [text, options],
+    () => layoutWorksheet(words, options, (char) => strokes.get(char)?.length),
+    [words, options, strokes],
   )
 
   const setOption = <K extends keyof WorksheetOptions>(
@@ -141,14 +200,16 @@ export function WorksheetPage() {
     window.print()
   }
 
-  const paper = PAPER[options.paper]
+  const paper = pageSize(options)
+  const pageRule = `${options.paper === 'a4' ? 'A4' : 'letter'} ${options.orientation}`
 
   return (
     <div className="min-h-dvh">
-      {/* The page size has to be set in CSS, and depends on the chosen paper.
-          Margin 0: the layout draws its own margins, and a zero print margin
-          also stops the browser adding its date/URL header and footer. */}
-      <style>{`@page { size: ${options.paper === 'a4' ? 'A4' : 'letter'}; margin: 0; }`}</style>
+      {/* The page size has to be set in CSS, and depends on the chosen paper
+          and orientation. Margin 0: the layout draws its own margins, and a
+          zero print margin also stops the browser adding its date/URL header
+          and footer. */}
+      <style>{`@page { size: ${pageRule}; margin: 0; }`}</style>
 
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-16 print:m-0 print:max-w-none print:p-0">
         <header className="mb-8 print:hidden">
@@ -181,7 +242,7 @@ export function WorksheetPage() {
               onChange={(e) =>
                 setSettings((s) => ({ ...s, text: e.target.value }))
               }
-              rows={9}
+              rows={11}
               className="mt-2 w-full rounded-md border border-[var(--border)] bg-[var(--surface-page)] p-3 text-lg text-[var(--text-primary)]"
               style={{ fontFamily: WORKSHEET_FONT }}
             />
@@ -206,6 +267,15 @@ export function WorksheetPage() {
               options={[
                 { value: 'a4', label: 'A4' },
                 { value: 'letter', label: 'US Letter' },
+              ]}
+            />
+            <Select
+              label="Orientation"
+              value={options.orientation}
+              onChange={(v) => setOption('orientation', v as Orientation)}
+              options={[
+                { value: 'portrait', label: 'Portrait (upright)' },
+                { value: 'landscape', label: 'Landscape (horizontal)' },
               ]}
             />
             <Select
@@ -239,28 +309,39 @@ export function WorksheetPage() {
             <Select
               label="Traced copies"
               value={String(options.tracedCopies)}
-              onChange={(v) => setOption('tracedCopies', Number(v))}
-              options={[1, 2, 3, 4, 5, 6].map((n) => ({
-                value: String(n),
-                label: String(n),
-              }))}
+              onChange={(v) => setOption('tracedCopies', parseTracedAmount(v))}
+              options={[
+                ...[1, 2, 3, 4, 5, 6].map((n) => ({
+                  value: String(n),
+                  label: String(n),
+                })),
+                { value: 'half', label: 'Half the row' },
+                { value: 'all', label: 'Whole row' },
+              ]}
             />
-            <label className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-              <input
-                type="checkbox"
-                checked={cross}
-                onChange={(e) =>
-                  setSettings((s) => ({ ...s, cross: e.target.checked }))
-                }
-              />
-              Centre cross guides
-            </label>
+            <Checkbox
+              label="Stroke order"
+              checked={options.strokeOrder}
+              onChange={(checked) => setOption('strokeOrder', checked)}
+            />
+            <Checkbox
+              label="Fill the rest of the last page"
+              checked={options.fillPage}
+              onChange={(checked) => setOption('fillPage', checked)}
+            />
+            <Checkbox
+              label="Centre cross guides"
+              checked={cross}
+              onChange={(checked) =>
+                setSettings((s) => ({ ...s, cross: checked }))
+              }
+            />
 
             <div className="border-t border-[var(--gridline)] pt-3">
               <button
                 type="button"
                 onClick={print}
-                disabled={pages.length === 0}
+                disabled={pages.length === 0 || loadingStrokes}
                 className="rounded-md border border-[var(--border)] bg-[var(--meter-track)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] disabled:opacity-50"
               >
                 Print or save as PDF
@@ -268,13 +349,27 @@ export function WorksheetPage() {
               <p className="mt-2 text-sm text-[var(--text-muted)]">
                 {pages.length === 0
                   ? 'Add at least one word.'
-                  : `${pages.length} ${pages.length === 1 ? 'page' : 'pages'}. `}
-                {pages.length > 0 &&
-                  'In the print dialog, choose "Save as PDF" as the printer.'}
+                  : loadingStrokes
+                    ? 'Loading stroke order…'
+                    : `${pages.length} ${pages.length === 1 ? 'page' : 'pages'}. ` +
+                      'In the print dialog, choose "Save as PDF" and keep the scale at 100%.'}
               </p>
             </div>
           </div>
         </section>
+
+        {options.strokeOrder && (
+          <p className="mt-3 text-sm text-[var(--text-muted)] print:hidden">
+            Stroke order from{' '}
+            <a
+              href="https://kanjivg.tagaini.net"
+              className="underline underline-offset-2"
+            >
+              KanjiVG
+            </a>{' '}
+            by Ulrich Apel, CC BY-SA 3.0.
+          </p>
+        )}
 
         <div className="mt-8 flex flex-col items-center gap-6 print:mt-0 print:gap-0">
           {pages.map((page, index) => (
@@ -285,6 +380,7 @@ export function WorksheetPage() {
               page={page}
               options={options}
               cross={cross}
+              strokes={strokes}
               width={paper.width}
               height={paper.height}
               last={index === pages.length - 1}
@@ -301,6 +397,7 @@ function Sheet({
   page,
   options,
   cross,
+  strokes,
   width,
   height,
   last,
@@ -308,11 +405,15 @@ function Sheet({
   page: Page
   options: WorksheetOptions
   cross: boolean
+  strokes: Map<string, string[]>
   width: number
   height: number
   last: boolean
 }) {
   const box = options.boxMm
+  const hasStrokeOrder = page.rows.some((row) =>
+    row.groups.some((group) => group.cells[0]?.kind === 'stroke'),
+  )
 
   return (
     <div
@@ -345,7 +446,7 @@ function Sheet({
                       width={box}
                       height={box}
                       fill="none"
-                      stroke="#a8a8a8"
+                      stroke={INK.box}
                       strokeWidth={0.2}
                     />
                     {cross && (
@@ -353,45 +454,114 @@ function Sheet({
                       // parts, like the cross on genkō yōshi practice paper.
                       <path
                         d={`M${x + box / 2} ${row.y} v${box} M${x} ${row.y + box / 2} h${box}`}
-                        stroke="#d4d4d4"
+                        stroke={INK.guide}
                         strokeWidth={0.15}
                         strokeDasharray="0.8 0.8"
                       />
                     )}
-                    {cell.kind !== 'blank' && (
-                      <text
-                        x={x + box / 2}
-                        y={row.y + box / 2}
-                        fontSize={box * 0.78}
-                        fontFamily={WORKSHEET_FONT}
-                        textAnchor="middle"
-                        dominantBaseline="central"
-                        // Light enough to write over and still see your own
-                        // stroke; the model is near-black to copy from.
-                        fill={cell.kind === 'model' ? '#1a1a1a' : '#c4c4c4'}
-                      >
-                        {cell.char}
-                      </text>
+                    {cell.kind === 'stroke' ? (
+                      <StrokeStep
+                        paths={strokes.get(cell.char) ?? []}
+                        step={cell.step ?? 0}
+                        x={x}
+                        y={row.y}
+                        box={box}
+                      />
+                    ) : (
+                      cell.kind !== 'blank' && (
+                        <text
+                          x={x + box / 2}
+                          y={row.y + box / 2}
+                          fontSize={box * 0.78}
+                          fontFamily={WORKSHEET_FONT}
+                          textAnchor="middle"
+                          dominantBaseline="central"
+                          // Light enough to write over and still see your own
+                          // stroke; the model is near-black to copy from.
+                          fill={cell.kind === 'model' ? INK.model : INK.trace}
+                        >
+                          {cell.char}
+                        </text>
+                      )
                     )}
                   </g>
                 )
               })}
-              {/* A darker outline around the whole copy, so a multi-kanji
-                  word reads as one unit rather than as loose characters. */}
+              {/* A darker outline around the whole unit, so a multi-kanji word
+                  or a stroke sequence reads as one thing rather than as loose
+                  boxes. */}
               <rect
                 x={group.x}
                 y={row.y}
                 width={group.cells.length * box}
                 height={box}
                 fill="none"
-                stroke="#555"
+                stroke={INK.outline}
                 strokeWidth={0.35}
               />
             </g>
           )),
         )}
+
+        {hasStrokeOrder && (
+          // Attribution on the paper itself: KanjiVG's licence asks for credit
+          // wherever its data is used, and a printed sheet leaves the website.
+          <text
+            x={width / 2}
+            y={height - options.marginMm / 2}
+            fontSize={2.2}
+            textAnchor="middle"
+            dominantBaseline="central"
+            fill="#9a9a9a"
+            fontFamily="system-ui, sans-serif"
+          >
+            Stroke order: KanjiVG by Ulrich Apel, CC BY-SA 3.0
+          </text>
+        )}
       </svg>
     </div>
+  )
+}
+
+/**
+ * One box of the stroke-order build-up: the first `step` strokes, with the
+ * newest dark and the ones before it grey, so reading along the row shows the
+ * order and each new stroke stands out against what's already there.
+ */
+function StrokeStep({
+  paths,
+  step,
+  x,
+  y,
+  box,
+}: {
+  paths: string[]
+  step: number
+  x: number
+  y: number
+  box: number
+}) {
+  const scale = box / KANJIVG_SIZE
+  return (
+    <g
+      transform={`translate(${x} ${y}) scale(${scale})`}
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {paths.slice(0, step).map((d, index) => {
+        const current = index === step - 1
+        return (
+          <path
+            key={index}
+            d={d}
+            stroke={current ? INK.model : INK.earlierStroke}
+            // In KanjiVG's 109-unit grid; scaled with the box.
+            strokeWidth={current ? 3.6 : 3}
+          />
+        )
+      })}
+    </g>
   )
 }
 
@@ -425,6 +595,27 @@ function Select({
         ))}
       </select>
     </div>
+  )
+}
+
+function Checkbox({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string
+  checked: boolean
+  onChange: (checked: boolean) => void
+}) {
+  return (
+    <label className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+      />
+      {label}
+    </label>
   )
 }
 
