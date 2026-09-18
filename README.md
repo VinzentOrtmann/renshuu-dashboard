@@ -63,9 +63,12 @@ nightly, that renders anywhere — a GitHub profile, a personal site, a README.
 makes printable tracing sheets, fixing the limits of Renshuu's own creator:
 multi-kanji words go in connected boxes at any box size, the sheet runs onto
 as many pages as it needs, and the last page is filled out instead of left
-half-empty. A line of `---` starts a new page, and each group is filled out on
-its own — so a set of related words can share pages and a single kanji after a
-break gets a whole page. Each character gets a stroke-order build-up row and each word a
+half-empty. Typing a word builds its practice group: `緊張` gives 緊, 張 and
+緊張 on a page of their own, and a kanji already practised earlier on the sheet
+is skipped. A line of `---` also starts a new page, and each page group is
+filled out on its own. Each character gets a stroke-order build-up row — once
+per page group, so a word doesn't repeat the stroke order of the kanji above
+it — and each word a
 meaning-and-reading line, and the kanji wall can hand its current filter
 straight to a sheet.
 
