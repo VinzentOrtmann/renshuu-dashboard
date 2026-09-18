@@ -46,6 +46,11 @@ export interface WorksheetOptions {
   strokeOrder: boolean
   /** Print a meaning-and-reading line above each word. */
   showInfo: boolean
+  /**
+   * Practise each kanji on its own before a word that uses it: 緊張 becomes
+   * 緊, 張, 緊張 on a page of its own. See {@link expandWords}.
+   */
+  expandKanji: boolean
 }
 
 /**
@@ -64,6 +69,7 @@ export const DEFAULT_OPTIONS: WorksheetOptions = {
   fillPage: true,
   strokeOrder: true,
   showInfo: true,
+  expandKanji: true,
 }
 
 /**
@@ -155,6 +161,86 @@ const PAGE_BREAK = /^\s*-{3,}\s*$/m
 export const PAGE_BREAK_TEXT = '---'
 
 /**
+ * Whether a character is a kanji.
+ *
+ * 々 is excluded: it's the repetition mark in words like 人々, written as part
+ * of the word but not a character you'd practise on its own.
+ */
+export function isKanji(char: string): boolean {
+  return char !== '々' && /\p{Script=Han}/u.test(char)
+}
+
+/**
+ * Turns each word containing kanji into a group of its own: the kanji one by
+ * one, then the word, starting on a new page.
+ *
+ *   緊張      ->  緊 / 張 / 緊張
+ *   結果          ---
+ *                結 / 果 / 結果
+ *
+ * - Only kanji are split out. 食べる gives 食 then 食べる, not rows for the kana.
+ * - A kanji is practised once per sheet. With 結果 then 結論, the second group
+ *   is just 論 and 結論, since 結 already had its rows.
+ * - Words without kanji, and single characters, stay where they were typed and
+ *   share a page with their neighbours.
+ * - Typing the group out by hand (緊, 張, 緊張) gives the same result as typing
+ *   the word alone: single kanji typed just before a word that contains them
+ *   are taken into that word's group rather than left on a page of their own.
+ *
+ * Manual page breaks are kept: groups never cross one.
+ */
+export function expandWords(sections: string[][][]): string[][][] {
+  const practised = new Set<string>()
+  const result: string[][][] = []
+
+  for (const section of sections) {
+    let loose: string[][] = []
+    const flushLoose = () => {
+      if (loose.length > 0) result.push(loose)
+      loose = []
+    }
+
+    for (const word of section) {
+      const kanji = [...new Set(word.filter(isKanji))]
+
+      if (word.length < 2 || kanji.length === 0) {
+        loose.push(word)
+        for (const char of kanji) practised.add(char)
+        continue
+      }
+
+      // Take back single kanji typed by hand right before this word, if they
+      // belong to it. They've already been counted as practised, so remember
+      // them to put them back in the group.
+      const takenBack = new Set<string>()
+      while (loose.length > 0) {
+        const last = loose[loose.length - 1]
+        if (last.length !== 1 || !kanji.includes(last[0])) break
+        takenBack.add(last[0])
+        loose.pop()
+      }
+      flushLoose()
+
+      // Kanji in the word's own order, each once, skipping any already
+      // practised earlier on the sheet.
+      const group: string[][] = []
+      for (const char of kanji) {
+        if (takenBack.has(char) || !practised.has(char)) {
+          group.push([char])
+          practised.add(char)
+        }
+      }
+      group.push(word)
+      result.push(group)
+    }
+
+    flushLoose()
+  }
+
+  return result
+}
+
+/**
  * Splits the input at page-break lines into sections, each a list of words.
  *
  * Sections that end up empty — a break at the very start, or two breaks in a
@@ -231,14 +317,28 @@ function kindFor(
  * Box k of a character holds its first k strokes, so reading along the row
  * shows the order they're written in. Each character's sequence is outlined as
  * a unit, and wraps to the next row if it's longer than a row.
+ *
+ * Each character's stroke order is shown once per section. `shown` carries the
+ * characters already drawn: in the group 緊 / 張 / 緊張, the word's own stroke
+ * row would repeat all 26 boxes directly beneath the kanji rows that already
+ * showed them. A new section starts fresh, so every page group stands alone.
+ *
+ * In a word that contains kanji, the kana get no stroke row: in 食べる the
+ * point is 食, and a row for べ and る is noise at the level of anyone writing
+ * kanji. A word that is only kana keeps its stroke order.
  */
 function strokeRows(
   piece: string[],
   columns: number,
   strokeCounts: StrokeCounts,
+  shown: Set<string>,
+  wordHasKanji: boolean,
 ): Cell[][] {
   const cells: Cell[] = []
   for (const char of piece) {
+    if (shown.has(char)) continue
+    if (wordHasKanji && !isKanji(char)) continue
+    shown.add(char)
     const count = strokeCounts(char) ?? 0
     for (let step = 1; step <= count; step++) {
       cells.push({ char, kind: 'stroke', step })
@@ -286,8 +386,13 @@ function layoutOnce(
   let page: Page = { rows: [] }
   let y = top
 
+  // Characters whose stroke order this section has already shown. Created per
+  // pass, because page filling calls this function repeatedly.
+  const strokesShown = new Set<string>()
+
   words.forEach((word, wordIndex) => {
     const pieces = chunk(word, columns)
+    const wordHasKanji = word.some(isKanji)
 
     // The label describes the whole word, so it goes above the first piece
     // only, and is shortened to fit the grid's width.
@@ -299,7 +404,7 @@ function layoutOnce(
     pieces.forEach((piece, pieceIndex) => {
       const labelled = pieceIndex === 0 && info !== undefined
       const strokes = options.strokeOrder
-        ? strokeRows(piece, columns, strokeCounts)
+        ? strokeRows(piece, columns, strokeCounts, strokesShown, wordHasKanji)
         : []
       // Extra rows from page filling go on the word's last piece, so a long
       // word that wraps doesn't get them interleaved between its halves.
@@ -406,7 +511,9 @@ export function layoutWorksheet(
   if (!options.fillPage || pages.length === 0) return pages
 
   const pageCount = pages.length
-  const lastPageWords = [...new Set(pages[pageCount - 1].rows.map((r) => r.word))]
+  const lastPageWords = [
+    ...new Set(pages[pageCount - 1].rows.map((r) => r.word)),
+  ]
   const bottom = pageSize(options).height - options.marginMm
 
   /**

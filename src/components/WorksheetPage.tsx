@@ -25,6 +25,7 @@ import {
   INFO_FONT_MM,
   INFO_ROW_MM,
   columnsFor,
+  expandWords,
   PAGE_BREAK_TEXT,
   layoutSections,
   pageSize,
@@ -145,7 +146,10 @@ export function WorksheetPage() {
   const { text, options, cross, printCredit } = settings
   // Sections are separated by page-break lines; `words` is every word across
   // them, for the loaders that only care which characters are on the sheet.
-  const sections = useMemo(() => parseSections(text), [text])
+  const sections = useMemo(() => {
+    const parsed = parseSections(text)
+    return options.expandKanji ? expandWords(parsed) : parsed
+  }, [text, options.expandKanji])
   const words = useMemo(() => sections.flat(), [sections])
   const textarea = useRef<HTMLTextAreaElement>(null)
   /** Where to put the cursor once an inserted page break has rendered. */
@@ -391,8 +395,9 @@ export function WorksheetPage() {
               style={{ fontFamily: WORKSHEET_FONT }}
             />
             <p className="mt-1 text-sm text-[var(--text-muted)]">
-              A line of <code>{PAGE_BREAK_TEXT}</code> starts a new page. Each
-              page group is filled out on its own.
+              With &ldquo;practise each kanji&rdquo; on, typing just 緊張 gives
+              緊, 張, 緊張 on a page of its own. A line of{' '}
+              <code>{PAGE_BREAK_TEXT}</code> starts a new page by hand.
             </p>
             <div className="mt-2 flex flex-wrap gap-2">
               <SmallButton onClick={insertPageBreak}>
@@ -474,6 +479,11 @@ export function WorksheetPage() {
               label="Stroke order"
               checked={options.strokeOrder}
               onChange={(checked) => setOption('strokeOrder', checked)}
+            />
+            <Checkbox
+              label="Practise each kanji before its word"
+              checked={options.expandKanji}
+              onChange={(checked) => setOption('expandKanji', checked)}
             />
             <Checkbox
               label="Meaning and reading"

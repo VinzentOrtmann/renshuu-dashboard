@@ -14,6 +14,8 @@ import {
   PAPER,
   INFO_ROW_MM,
   columnsFor,
+  expandWords,
+  isKanji,
   layoutSections,
   layoutWorksheet,
   pageSize,
@@ -234,7 +236,10 @@ describe('fill page', () => {
     const bottom = PAPER.a4.height - o.marginMm
     // Full means exactly this: the last row fits and one more would not.
     assert.ok(last.y + o.boxMm <= bottom)
-    assert.ok(last.y + 2 * o.boxMm > bottom, `page not full: last row at ${last.y}`)
+    assert.ok(
+      last.y + 2 * o.boxMm > bottom,
+      `page not full: last row at ${last.y}`,
+    )
   })
 
   it('never adds a page', () => {
@@ -265,7 +270,11 @@ describe('stroke order', () => {
   const counts = (char: string): number | undefined => STROKES[char]
 
   it('builds each character up one stroke per box', () => {
-    const [page] = layoutWorksheet([['飛']], opts({ strokeOrder: true }), counts)
+    const [page] = layoutWorksheet(
+      [['飛']],
+      opts({ strokeOrder: true }),
+      counts,
+    )
     const cells = page.rows[0].groups.flatMap((g) => g.cells)
     assert.deepEqual(
       cells.map((c) => c.step),
@@ -275,7 +284,11 @@ describe('stroke order', () => {
   })
 
   it('puts stroke order above the practice rows', () => {
-    const [page] = layoutWorksheet([['飛']], opts({ strokeOrder: true }), counts)
+    const [page] = layoutWorksheet(
+      [['飛']],
+      opts({ strokeOrder: true }),
+      counts,
+    )
     assert.equal(page.rows[0].groups[0].cells[0].kind, 'stroke')
     assert.equal(page.rows[1].groups[0].cells[0].kind, 'model')
   })
@@ -306,22 +319,30 @@ describe('stroke order', () => {
     assert.equal(page.rows[1].groups[0].cells.length, 3)
   })
 
-  it('keeps a repeated character as two separate sequences', () => {
+  it('shows a repeated character once, not once per occurrence', () => {
     const [page] = layoutWorksheet(
       [['行', '行']],
       opts({ strokeOrder: true }),
       counts,
     )
-    assert.equal(page.rows[0].groups.length, 2)
+    assert.equal(page.rows[0].groups.length, 1)
   })
 
   it('skips characters with no stroke data', () => {
-    const [page] = layoutWorksheet([['漢']], opts({ strokeOrder: true }), counts)
+    const [page] = layoutWorksheet(
+      [['漢']],
+      opts({ strokeOrder: true }),
+      counts,
+    )
     assert.equal(page.rows[0].groups[0].cells[0].kind, 'model')
   })
 
   it('adds nothing when turned off', () => {
-    const [page] = layoutWorksheet([['飛']], opts({ strokeOrder: false }), counts)
+    const [page] = layoutWorksheet(
+      [['飛']],
+      opts({ strokeOrder: false }),
+      counts,
+    )
     assert.equal(page.rows[0].groups[0].cells[0].kind, 'model')
   })
 })
@@ -331,7 +352,12 @@ describe('info line', () => {
     word.join('') === '飛行機' ? 'ひこうき — airplane, aeroplane' : undefined
 
   it('puts the label above the word, in a shorter row', () => {
-    const [page] = layoutWorksheet([['飛', '行', '機']], opts(), undefined, info)
+    const [page] = layoutWorksheet(
+      [['飛', '行', '機']],
+      opts(),
+      undefined,
+      info,
+    )
     assert.equal(page.rows[0].text, 'ひこうき — airplane, aeroplane')
     assert.equal(page.rows[0].height, INFO_ROW_MM)
     assert.equal(page.rows[0].groups.length, 0)
@@ -444,5 +470,118 @@ describe('page breaks', () => {
         r.groups.every((g) => g.cells.every((c) => c.char === '緊')),
       ),
     )
+  })
+})
+
+describe('isKanji', () => {
+  it('recognises kanji and rejects kana, Latin and the repetition mark', () => {
+    assert.equal(isKanji('緊'), true)
+    assert.equal(isKanji('𠮟'), true)
+    assert.equal(isKanji('あ'), false)
+    assert.equal(isKanji('ア'), false)
+    assert.equal(isKanji('a'), false)
+    assert.equal(isKanji('々'), false)
+  })
+})
+
+describe('expandWords', () => {
+  const expand = (text: string) =>
+    expandWords(parseSections(text)).map((section) =>
+      section.map((word) => word.join('')),
+    )
+
+  it('turns each word into its kanji then the word, one group per page', () => {
+    assert.deepEqual(expand('緊張\n結果'), [
+      ['緊', '張', '緊張'],
+      ['結', '果', '結果'],
+    ])
+  })
+
+  it('gives the same result when the group is typed out by hand', () => {
+    assert.deepEqual(
+      expand('緊\n張\n緊張\n---\n結\n果\n結果'),
+      expand('緊張\n結果'),
+    )
+  })
+
+  it('practises a kanji once per sheet', () => {
+    assert.deepEqual(expand('結果\n結論'), [
+      ['結', '果', '結果'],
+      ['論', '結論'],
+    ])
+  })
+
+  it('splits out only the kanji of a word with kana', () => {
+    assert.deepEqual(expand('食べる'), [['食', '食べる']])
+  })
+
+  it('does not split out the repetition mark', () => {
+    assert.deepEqual(expand('人々'), [['人', '人々']])
+  })
+
+  it('leaves single kanji and kana words together on a shared page', () => {
+    assert.deepEqual(expand('漢\n字\nありがとう'), [['漢', '字', 'ありがとう']])
+  })
+
+  it('does not take back a single kanji that is not part of the next word', () => {
+    assert.deepEqual(expand('漢\n緊張'), [['漢'], ['緊', '張', '緊張']])
+  })
+
+  it('keeps manual page breaks', () => {
+    assert.deepEqual(expand('漢\n---\n字'), [['漢'], ['字']])
+  })
+
+  it('keeps a word whose kanji were all practised, as its own group', () => {
+    assert.deepEqual(expand('緊\n---\n張\n---\n緊張'), [
+      ['緊'],
+      ['張'],
+      ['緊張'],
+    ])
+  })
+})
+
+describe('stroke order once per section', () => {
+  const STROKES: Record<string, number> = {
+    緊: 15,
+    張: 11,
+    食: 9,
+    べ: 2,
+    る: 1,
+    あ: 3,
+  }
+  const counts = (char: string) => STROKES[char]
+  const strokeChars = (words: string[][]) =>
+    layoutWorksheet(words, opts({ strokeOrder: true }), counts)
+      .flatMap((p) => p.rows)
+      .flatMap((r) => r.groups)
+      .filter((g) => g.cells[0].kind === 'stroke')
+      .map((g) => g.cells[0].char)
+
+  it('skips the word stroke row when its kanji were already shown', () => {
+    // 緊 and 張 each show once; the word 緊張 adds no stroke row of its own.
+    assert.deepEqual(strokeChars([['緊'], ['張'], ['緊', '張']]), ['緊', '張'])
+  })
+
+  it('still shows stroke order for a word on its own', () => {
+    assert.deepEqual(strokeChars([['緊', '張']]), ['緊', '張'])
+  })
+
+  it('shows no stroke rows for the kana in a word with kanji', () => {
+    assert.deepEqual(strokeChars([['食', 'べ', 'る']]), ['食'])
+  })
+
+  it('keeps stroke order for a word that is only kana', () => {
+    assert.deepEqual(strokeChars([['あ']]), ['あ'])
+  })
+
+  it('shows stroke order again in a new section', () => {
+    const pages = layoutSections(
+      [[['緊']], [['緊']]],
+      opts({ strokeOrder: true }),
+      counts,
+    )
+    for (const page of pages) {
+      assert.equal(page.rows[0].groups[0].cells[0].kind, 'stroke')
+    }
   })
 })
