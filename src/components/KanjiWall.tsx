@@ -38,6 +38,9 @@ type SortKey = 'level' | 'strokes' | 'mastery'
  */
 const NO_KANJI: KanjiEntry[] = []
 
+/** Most kanji the wall will hand to a single worksheet. */
+const WORKSHEET_LIMIT = 40
+
 export function KanjiWall() {
   const state = useKanji()
   const [level, setLevel] = useState<LevelFilter>('all')
@@ -138,6 +141,25 @@ export function KanjiWall() {
         >
           {asList ? 'Show grid' : 'Show list'}
         </button>
+        {visible.length > 0 && (
+          // Hands the current filter's kanji to the worksheet page. Capped so
+          // "All" doesn't produce a 660-kanji, 40-page sheet by accident.
+          <a
+            href={`${import.meta.env.BASE_URL}worksheet.html?words=${encodeURIComponent(
+              visible
+                .slice(0, WORKSHEET_LIMIT)
+                .map((k) => k.c)
+                .join('\n'),
+            )}`}
+            className="rounded-md border border-[var(--border)] px-2.5 py-1 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+          >
+            Worksheet from{' '}
+            {visible.length > WORKSHEET_LIMIT
+              ? `first ${WORKSHEET_LIMIT}`
+              : `these ${visible.length}`}{' '}
+            →
+          </a>
+        )}
       </div>
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-4">

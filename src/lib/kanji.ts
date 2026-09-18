@@ -46,6 +46,28 @@ export function bandLevel(band: MasteryBandId): number {
   return MASTERY_BANDS.find((b) => b.id === band)?.level ?? 0
 }
 
+/**
+ * Fetches and checks the collection.
+ *
+ * Exported separately from the hook so the worksheet page can load it only
+ * when a prefill button is pressed, rather than downloading 80 KB on every
+ * visit to a page that mostly doesn't need it.
+ */
+export async function loadKanji(): Promise<KanjiCollection> {
+  const response = await fetch(KANJI_URL, { cache: 'no-cache' })
+  if (!response.ok) {
+    throw new Error(
+      `Could not load the kanji collection (HTTP ${response.status}). ` +
+        `Expected it at ${KANJI_URL}.`,
+    )
+  }
+  const collection = (await response.json()) as KanjiCollection
+  if (!Array.isArray(collection?.kanji)) {
+    throw new Error('The collection loaded but has no "kanji" array.')
+  }
+  return collection
+}
+
 export type KanjiState =
   | { status: 'loading' }
   | { status: 'error'; error: Error }
@@ -58,21 +80,9 @@ export function useKanji(): KanjiState {
   useEffect(() => {
     let cancelled = false
 
-    fetch(KANJI_URL, { cache: 'no-cache' })
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error(
-            `Could not load the kanji collection (HTTP ${response.status}). ` +
-              `Expected it at ${KANJI_URL}.`,
-          )
-        }
-        return (await response.json()) as KanjiCollection
-      })
+    loadKanji()
       .then((collection) => {
         if (cancelled) return
-        if (!Array.isArray(collection?.kanji)) {
-          throw new Error('The collection loaded but has no "kanji" array.')
-        }
         setState({ status: 'ready', collection })
       })
       .catch((error: unknown) => {
