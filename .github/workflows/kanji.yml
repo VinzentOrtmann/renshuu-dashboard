@@ -59,12 +59,19 @@ jobs:
           RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
         run: npm run ceilings
 
+      # Readings and meanings for the words in your vocabulary schedules, used to
+      # label words on worksheets.
+      - name: Collect vocabulary
+        env:
+          RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
+        run: npm run vocab
+
       - name: Commit the updated collections
         id: commit
         run: |
           set -euo pipefail
 
-          if git diff --quiet -- public/data/kanji.json public/data/ceilings.json; then
+          if git diff --quiet -- public/data/kanji.json public/data/ceilings.json public/data/vocab.json; then
             echo "No change to the weekly collections."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
@@ -73,7 +80,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add public/data/kanji.json public/data/ceilings.json
+          git add public/data/kanji.json public/data/ceilings.json public/data/vocab.json
           git commit -m "Weekly collection $(date -u +%Y-%m-%d)"
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"

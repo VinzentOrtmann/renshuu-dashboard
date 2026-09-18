@@ -231,6 +231,25 @@ export interface RenshuuKanjiTerm {
 }
 
 /**
+ * A vocabulary word as returned inside a schedule's term list.
+ *
+ * Only the fields this project reads are typed. The API also returns example
+ * sentences, pitch accent, part of speech and study data.
+ */
+export interface RenshuuWordTerm {
+  id: string
+  /** The word as written with kanji. Empty for kana-only words. */
+  kanji_full: string
+  /** Reading in kana. For kana-only words this is the word itself. */
+  hiragana_full: string
+  /**
+   * English meanings, most common first. Glosses can carry dictionary tags in
+   * braces, such as "{col}" for colloquial.
+   */
+  def: string[]
+}
+
+/**
  * One page of a schedule's terms.
  *
  * Which terms are included depends on the `group` filter — `all` returns

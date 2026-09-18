@@ -12,6 +12,7 @@ import { describe, it } from 'node:test'
 import {
   DEFAULT_OPTIONS,
   PAPER,
+  INFO_ROW_MM,
   columnsFor,
   layoutWorksheet,
   pageSize,
@@ -320,5 +321,65 @@ describe('stroke order', () => {
   it('adds nothing when turned off', () => {
     const [page] = layoutWorksheet([['飛']], opts({ strokeOrder: false }), counts)
     assert.equal(page.rows[0].groups[0].cells[0].kind, 'model')
+  })
+})
+
+describe('info line', () => {
+  const info = (word: string[]) =>
+    word.join('') === '飛行機' ? 'ひこうき — airplane, aeroplane' : undefined
+
+  it('puts the label above the word, in a shorter row', () => {
+    const [page] = layoutWorksheet([['飛', '行', '機']], opts(), undefined, info)
+    assert.equal(page.rows[0].text, 'ひこうき — airplane, aeroplane')
+    assert.equal(page.rows[0].height, INFO_ROW_MM)
+    assert.equal(page.rows[0].groups.length, 0)
+    assert.equal(page.rows[1].y, page.rows[0].y + INFO_ROW_MM)
+  })
+
+  it('adds no row for a word with nothing to say', () => {
+    const [page] = layoutWorksheet([['漢']], opts(), undefined, info)
+    assert.equal(page.rows[0].text, undefined)
+  })
+
+  it('adds no row when turned off', () => {
+    const [page] = layoutWorksheet(
+      [['飛', '行', '機']],
+      opts({ showInfo: false }),
+      undefined,
+      info,
+    )
+    assert.equal(page.rows[0].text, undefined)
+  })
+
+  it('labels a wrapped word once, not per piece', () => {
+    const long = Array.from('あいうえおかきくけこさしすせそたちつ')
+    const [page] = layoutWorksheet(
+      [long],
+      opts({ rowsPerWord: 1 }),
+      undefined,
+      () => 'label',
+    )
+    assert.equal(page.rows.filter((r) => r.text).length, 1)
+  })
+
+  it('shortens a label to the width of the grid', () => {
+    const [page] = layoutWorksheet(
+      [['漢']],
+      opts({ boxMm: 20, orientation: 'portrait' }), // 9 columns = 180 mm
+      undefined,
+      () => 'x'.repeat(500),
+    )
+    const label = page.rows[0].text ?? ''
+    assert.ok(label.endsWith('…'))
+    assert.ok(label.length < 500)
+  })
+
+  it('still fills the page exactly with labels present', () => {
+    const o = opts({ fillPage: true })
+    const [page] = layoutWorksheet([['飛', '行', '機']], o, undefined, info)
+    const last = page.rows.at(-1)!
+    const bottom = PAPER.a4.height - o.marginMm
+    assert.ok(last.y + last.height <= bottom + 1e-9)
+    assert.ok(last.y + last.height + o.boxMm > bottom)
   })
 })

@@ -63,8 +63,15 @@ nightly, that renders anywhere — a GitHub profile, a personal site, a README.
 makes printable tracing sheets, fixing the limits of Renshuu's own creator:
 multi-kanji words go in connected boxes at any box size, the sheet runs onto
 as many pages as it needs, and the last page is filled out instead of left
-half-empty. Each character gets a stroke-order build-up row, and the kanji
-wall can hand its current filter straight to a sheet.
+half-empty. Each character gets a stroke-order build-up row and each word a
+meaning-and-reading line, and the kanji wall can hand its current filter
+straight to a sheet.
+
+Labels come from your own Renshuu data — the kanji collection, and a weekly
+collection of the words in your vocabulary schedules (`public/data/vocab.json`,
+first sense only, trimmed to what fits on one printed line) — so they read the
+way Renshuu shows them. A word outside your schedules falls back to the meaning
+of each of its kanji.
 
 The PDF comes from the browser's Print → Save as PDF, so the output is vector
 and no Japanese font has to ship inside the site. Tracing uses
@@ -75,7 +82,10 @@ Stroke order comes from [KanjiVG](https://kanjivg.tagaini.net) by Ulrich Apel
 (CC BY-SA 3.0), extracted from a pinned release into
 [`public/data/strokes/`](public/data/strokes/) by `npm run strokes`. Those files
 are a derivative and carry KanjiVG's licence — see the LICENSE file there; the
-rest of this repository is not covered by it. The data is served from here
+rest of this repository is not covered by it. Because this site publishes that
+data, it credits KanjiVG here, in that LICENSE file, and on the worksheet page.
+Printed sheets carry the credit only if you tick the option: sheets printed for
+your own use don't need it, but turn it on before sharing a PDF. The data is served from here
 rather than a CDN because jsDelivr rejects the KanjiVG repository as over its
 size limit and returns 403 for characters it hasn't already cached.
 
@@ -164,6 +174,7 @@ npm run dev
 | `npm run snapshot`  | Fetch and archive today (`-- --dry-run` to peek) |
 | `npm run kanji`     | Rebuild the kanji wall's data                   |
 | `npm run ceilings`  | Recompute the reachable maximum per JLPT level  |
+| `npm run vocab`     | Rebuild word readings and meanings for labels   |
 | `npm run strokes`   | Rebuild stroke-order data from KanjiVG          |
 | `npm run check-api` | Verify the API types against your real account  |
 

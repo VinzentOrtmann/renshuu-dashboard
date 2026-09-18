@@ -9,6 +9,8 @@
  * whose viewBox is in millimetres too, so a 12 mm box prints as 12 mm.
  */
 
+import { fitText } from './wordInfo.ts'
+
 export type PaperSize = 'a4' | 'letter'
 export type Orientation = 'portrait' | 'landscape'
 
@@ -42,6 +44,8 @@ export interface WorksheetOptions {
   fillPage: boolean
   /** Show each character built up stroke by stroke, above its practice rows. */
   strokeOrder: boolean
+  /** Print a meaning-and-reading line above each word. */
+  showInfo: boolean
 }
 
 /**
@@ -59,6 +63,7 @@ export const DEFAULT_OPTIONS: WorksheetOptions = {
   tracing: 'all-rows',
   fillPage: true,
   strokeOrder: true,
+  showInfo: true,
 }
 
 /**
@@ -89,9 +94,16 @@ export interface Group {
 export interface Row {
   /** Top edge, in mm from the page's top edge. */
   y: number
+  /** Height in mm. A box's size for box rows; less for an info line. */
+  height: number
   groups: Group[]
   /** Index of the word this row belongs to. */
   word: number
+  /**
+   * For an info row: the meaning-and-reading line, already shortened to fit.
+   * Info rows have no groups.
+   */
+  text?: string
 }
 
 export interface Page {
@@ -103,6 +115,18 @@ export interface Page {
  * data is still loading, or KanjiVG doesn't cover the character).
  */
 export type StrokeCounts = (char: string) => number | undefined
+
+/** The info line for a word, or undefined when there's nothing to print. */
+export type InfoFor = (word: string[]) => string | undefined
+
+/**
+ * Size of the info line's text, and the height of the row it sits in.
+ *
+ * Fixed rather than scaled with the box: at 9 mm boxes a proportional label
+ * would be too small to read, and at 20 mm it would shout. About 9 pt.
+ */
+export const INFO_FONT_MM = 3.2
+export const INFO_ROW_MM = 5.5
 
 /**
  * Splits the input into words, each an array of characters.
@@ -218,6 +242,7 @@ function layoutOnce(
   words: string[][],
   options: WorksheetOptions,
   strokeCounts: StrokeCounts,
+  infoFor: InfoFor,
   extraRows: number[],
 ): Page[] {
   const paper = pageSize(options)
@@ -240,7 +265,15 @@ function layoutOnce(
   words.forEach((word, wordIndex) => {
     const pieces = chunk(word, columns)
 
+    // The label describes the whole word, so it goes above the first piece
+    // only, and is shortened to fit the grid's width.
+    const rawInfo = options.showInfo ? infoFor(word) : undefined
+    const info = rawInfo
+      ? fitText(rawInfo, columns * box, INFO_FONT_MM)
+      : undefined
+
     pieces.forEach((piece, pieceIndex) => {
+      const labelled = pieceIndex === 0 && info !== undefined
       const strokes = options.strokeOrder
         ? strokeRows(piece, columns, strokeCounts)
         : []
@@ -249,7 +282,8 @@ function layoutOnce(
       const practiceRows =
         options.rowsPerWord +
         (pieceIndex === pieces.length - 1 ? extraRows[wordIndex] : 0)
-      const blockHeight = (strokes.length + practiceRows) * box
+      const blockHeight =
+        (labelled ? INFO_ROW_MM : 0) + (strokes.length + practiceRows) * box
 
       // Start a new page if this block won't fit, unless the page is still
       // empty — a block taller than a whole page has to go somewhere.
@@ -259,8 +293,24 @@ function layoutOnce(
         y = top
       }
 
+      if (labelled) {
+        page.rows.push({
+          y,
+          height: INFO_ROW_MM,
+          groups: [],
+          word: wordIndex,
+          text: info,
+        })
+        y += INFO_ROW_MM
+      }
+
       for (const cells of strokes) {
-        page.rows.push({ y, groups: groupByChar(cells, left, box), word: wordIndex })
+        page.rows.push({
+          y,
+          height: box,
+          groups: groupByChar(cells, left, box),
+          word: wordIndex,
+        })
         y += box
       }
 
@@ -274,7 +324,7 @@ function layoutOnce(
             cells: piece.map((char) => ({ char, kind })),
           })
         }
-        page.rows.push({ y, groups, word: wordIndex })
+        page.rows.push({ y, height: box, groups, word: wordIndex })
         y += box
       }
 
@@ -303,9 +353,10 @@ export function layoutWorksheet(
   words: string[][],
   options: WorksheetOptions,
   strokeCounts: StrokeCounts = () => undefined,
+  infoFor: InfoFor = () => undefined,
 ): Page[] {
   const extraRows = words.map(() => 0)
-  let pages = layoutOnce(words, options, strokeCounts, extraRows)
+  let pages = layoutOnce(words, options, strokeCounts, infoFor, extraRows)
   if (!options.fillPage || pages.length === 0) return pages
 
   const pageCount = pages.length
@@ -325,7 +376,7 @@ export function layoutWorksheet(
   const fits = (trial: Page[]): boolean => {
     if (trial.length > pageCount) return false
     const lastRow = trial[trial.length - 1].rows.at(-1)
-    return !lastRow || lastRow.y + options.boxMm <= bottom + 1e-9
+    return !lastRow || lastRow.y + lastRow.height <= bottom + 1e-9
   }
 
   // Try each last-page word in turn. A word whose extra row would not fit drops
@@ -336,7 +387,7 @@ export function layoutWorksheet(
     const stillFitting: number[] = []
     for (const word of candidates) {
       extraRows[word]++
-      const trial = layoutOnce(words, options, strokeCounts, extraRows)
+      const trial = layoutOnce(words, options, strokeCounts, infoFor, extraRows)
       if (fits(trial)) {
         pages = trial
         stillFitting.push(word)

@@ -17,12 +17,19 @@ import { useEffect, useMemo, useState } from 'react'
 import { loadKanji, masteryBand } from '../lib/kanji.ts'
 import { KANJIVG_SIZE } from '../lib/strokeData.ts'
 import { loadStrokes } from '../lib/strokes.ts'
+import { loadVocab } from '../lib/vocab.ts'
+import { infoLine } from '../lib/wordInfo.ts'
 import {
   DEFAULT_OPTIONS,
+  INFO_FONT_MM,
+  INFO_ROW_MM,
+  columnsFor,
   layoutWorksheet,
   pageSize,
   parseWords,
 } from '../lib/worksheet.ts'
+import type { KanjiEntry } from '../types/kanji.ts'
+import type { VocabEntry } from '../types/vocab.ts'
 import type {
   Orientation,
   Page,
@@ -68,12 +75,20 @@ interface Settings {
   text: string
   options: WorksheetOptions
   cross: boolean
+  /**
+   * Print KanjiVG's credit at the foot of each page. Off by default: for sheets
+   * you print for yourself nothing requires it, since CC BY-SA's attribution
+   * applies when material is shared or published. Turn it on before giving a
+   * PDF to someone else.
+   */
+  printCredit: boolean
 }
 
 const DEFAULT_SETTINGS: Settings = {
   text: '飛行機\n漢字\n練習',
   options: DEFAULT_OPTIONS,
   cross: true,
+  printCredit: false,
 }
 
 /**
@@ -101,6 +116,7 @@ function initialSettings(): Settings {
     text: fromLink ?? saved.text ?? DEFAULT_SETTINGS.text,
     options: { ...DEFAULT_OPTIONS, ...saved.options },
     cross: saved.cross ?? DEFAULT_SETTINGS.cross,
+    printCredit: saved.printCredit ?? DEFAULT_SETTINGS.printCredit,
   }
 }
 
@@ -114,8 +130,12 @@ export function WorksheetPage() {
   const [status, setStatus] = useState<string | null>(null)
   const [strokes, setStrokes] = useState<Map<string, string[]>>(new Map())
   const [loadingStrokes, setLoadingStrokes] = useState(false)
+  const [labels, setLabels] = useState<{
+    kanji: Map<string, KanjiEntry>
+    words: Record<string, VocabEntry>
+  } | null>(null)
 
-  const { text, options, cross } = settings
+  const { text, options, cross, printCredit } = settings
   const words = useMemo(() => parseWords(text), [text])
 
   useEffect(() => {
@@ -159,10 +179,46 @@ export function WorksheetPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [words, options.strokeOrder])
 
+  // Label data: the kanji and vocabulary collections, both from your own
+  // renshuu schedules, so labels read the way renshuu shows them. Loaded once,
+  // the first time labels are switched on.
+  const loadingLabels = options.showInfo && labels === null
+  useEffect(() => {
+    if (!options.showInfo || labels !== null) return
+    let cancelled = false
+    Promise.all([loadKanji().catch(() => null), loadVocab()]).then(
+      ([kanji, vocab]) => {
+        if (cancelled) return
+        setLabels({
+          kanji: new Map((kanji?.kanji ?? []).map((k) => [k.c, k])),
+          words: vocab?.words ?? {},
+        })
+      },
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [options.showInfo, labels])
+
   const pages = useMemo(
-    () => layoutWorksheet(words, options, (char) => strokes.get(char)?.length),
-    [words, options, strokes],
+    () =>
+      layoutWorksheet(
+        words,
+        options,
+        (char) => strokes.get(char)?.length,
+        (word) =>
+          labels
+            ? infoLine(word, {
+                word: (written) => labels.words[written],
+                kanji: (char) => labels.kanji.get(char),
+                strokes: (char) => strokes.get(char)?.length,
+              })
+            : undefined,
+      ),
+    [words, options, strokes, labels],
   )
+
+  const busy = loadingStrokes || loadingLabels
 
   const setOption = <K extends keyof WorksheetOptions>(
     key: K,
@@ -325,6 +381,11 @@ export function WorksheetPage() {
               onChange={(checked) => setOption('strokeOrder', checked)}
             />
             <Checkbox
+              label="Meaning and reading"
+              checked={options.showInfo}
+              onChange={(checked) => setOption('showInfo', checked)}
+            />
+            <Checkbox
               label="Fill the rest of the last page"
               checked={options.fillPage}
               onChange={(checked) => setOption('fillPage', checked)}
@@ -336,12 +397,19 @@ export function WorksheetPage() {
                 setSettings((s) => ({ ...s, cross: checked }))
               }
             />
+            <Checkbox
+              label="Print stroke-data credit (for sharing)"
+              checked={printCredit}
+              onChange={(checked) =>
+                setSettings((s) => ({ ...s, printCredit: checked }))
+              }
+            />
 
             <div className="border-t border-[var(--gridline)] pt-3">
               <button
                 type="button"
                 onClick={print}
-                disabled={pages.length === 0 || loadingStrokes}
+                disabled={pages.length === 0 || busy}
                 className="rounded-md border border-[var(--border)] bg-[var(--meter-track)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] disabled:opacity-50"
               >
                 Print or save as PDF
@@ -349,8 +417,8 @@ export function WorksheetPage() {
               <p className="mt-2 text-sm text-[var(--text-muted)]">
                 {pages.length === 0
                   ? 'Add at least one word.'
-                  : loadingStrokes
-                    ? 'Loading stroke order…'
+                  : busy
+                    ? 'Loading stroke order and labels…'
                     : `${pages.length} ${pages.length === 1 ? 'page' : 'pages'}. ` +
                       'In the print dialog, choose "Save as PDF" and keep the scale at 100%.'}
               </p>
@@ -380,6 +448,7 @@ export function WorksheetPage() {
               page={page}
               options={options}
               cross={cross}
+              printCredit={printCredit}
               strokes={strokes}
               width={paper.width}
               height={paper.height}
@@ -397,6 +466,7 @@ function Sheet({
   page,
   options,
   cross,
+  printCredit,
   strokes,
   width,
   height,
@@ -405,12 +475,16 @@ function Sheet({
   page: Page
   options: WorksheetOptions
   cross: boolean
+  printCredit: boolean
   strokes: Map<string, string[]>
   width: number
   height: number
   last: boolean
 }) {
   const box = options.boxMm
+  // Left edge of the grid, matching the layout's centring, so labels line up
+  // with the boxes beneath them.
+  const gridLeft = (width - columnsFor(options) * box) / 2
   const hasStrokeOrder = page.rows.some((row) =>
     row.groups.some((group) => group.cells[0]?.kind === 'stroke'),
   )
@@ -434,78 +508,92 @@ function Sheet({
         style={{ display: 'block' }}
       >
         {page.rows.map((row, r) =>
-          row.groups.map((group, g) => (
-            <g key={`${r}-${g}`}>
-              {group.cells.map((cell, c) => {
-                const x = group.x + c * box
-                return (
-                  <g key={c}>
-                    <rect
-                      x={x}
-                      y={row.y}
-                      width={box}
-                      height={box}
-                      fill="none"
-                      stroke={INK.box}
-                      strokeWidth={0.2}
-                    />
-                    {cross && (
-                      // Dashed centre guides help place the character and its
-                      // parts, like the cross on genkō yōshi practice paper.
-                      <path
-                        d={`M${x + box / 2} ${row.y} v${box} M${x} ${row.y + box / 2} h${box}`}
-                        stroke={INK.guide}
-                        strokeWidth={0.15}
-                        strokeDasharray="0.8 0.8"
-                      />
-                    )}
-                    {cell.kind === 'stroke' ? (
-                      <StrokeStep
-                        paths={strokes.get(cell.char) ?? []}
-                        step={cell.step ?? 0}
+          row.text !== undefined ? (
+            <text
+              key={r}
+              x={gridLeft}
+              y={row.y + INFO_ROW_MM / 2}
+              fontSize={INFO_FONT_MM}
+              fontFamily={WORKSHEET_FONT}
+              dominantBaseline="central"
+              fill="#3a3a3a"
+            >
+              {row.text}
+            </text>
+          ) : (
+            row.groups.map((group, g) => (
+              <g key={`${r}-${g}`}>
+                {group.cells.map((cell, c) => {
+                  const x = group.x + c * box
+                  return (
+                    <g key={c}>
+                      <rect
                         x={x}
                         y={row.y}
-                        box={box}
+                        width={box}
+                        height={box}
+                        fill="none"
+                        stroke={INK.box}
+                        strokeWidth={0.2}
                       />
-                    ) : (
-                      cell.kind !== 'blank' && (
-                        <text
-                          x={x + box / 2}
-                          y={row.y + box / 2}
-                          fontSize={box * 0.78}
-                          fontFamily={WORKSHEET_FONT}
-                          textAnchor="middle"
-                          dominantBaseline="central"
-                          // Light enough to write over and still see your own
-                          // stroke; the model is near-black to copy from.
-                          fill={cell.kind === 'model' ? INK.model : INK.trace}
-                        >
-                          {cell.char}
-                        </text>
-                      )
-                    )}
-                  </g>
-                )
-              })}
-              {/* A darker outline around the whole unit, so a multi-kanji word
+                      {cross && (
+                        // Dashed centre guides help place the character and its
+                        // parts, like the cross on genkō yōshi practice paper.
+                        <path
+                          d={`M${x + box / 2} ${row.y} v${box} M${x} ${row.y + box / 2} h${box}`}
+                          stroke={INK.guide}
+                          strokeWidth={0.15}
+                          strokeDasharray="0.8 0.8"
+                        />
+                      )}
+                      {cell.kind === 'stroke' ? (
+                        <StrokeStep
+                          paths={strokes.get(cell.char) ?? []}
+                          step={cell.step ?? 0}
+                          x={x}
+                          y={row.y}
+                          box={box}
+                        />
+                      ) : (
+                        cell.kind !== 'blank' && (
+                          <text
+                            x={x + box / 2}
+                            y={row.y + box / 2}
+                            fontSize={box * 0.78}
+                            fontFamily={WORKSHEET_FONT}
+                            textAnchor="middle"
+                            dominantBaseline="central"
+                            // Light enough to write over and still see your own
+                            // stroke; the model is near-black to copy from.
+                            fill={cell.kind === 'model' ? INK.model : INK.trace}
+                          >
+                            {cell.char}
+                          </text>
+                        )
+                      )}
+                    </g>
+                  )
+                })}
+                {/* A darker outline around the whole unit, so a multi-kanji word
                   or a stroke sequence reads as one thing rather than as loose
                   boxes. */}
-              <rect
-                x={group.x}
-                y={row.y}
-                width={group.cells.length * box}
-                height={box}
-                fill="none"
-                stroke={INK.outline}
-                strokeWidth={0.35}
-              />
-            </g>
-          )),
+                <rect
+                  x={group.x}
+                  y={row.y}
+                  width={group.cells.length * box}
+                  height={box}
+                  fill="none"
+                  stroke={INK.outline}
+                  strokeWidth={0.35}
+                />
+              </g>
+            ))
+          ),
         )}
 
-        {hasStrokeOrder && (
-          // Attribution on the paper itself: KanjiVG's licence asks for credit
-          // wherever its data is used, and a printed sheet leaves the website.
+        {hasStrokeOrder && printCredit && (
+          // Only when asked for: the credit is needed when a sheet is shared,
+          // not for one printed for your own use. See Settings.printCredit.
           <text
             x={width / 2}
             y={height - options.marginMm / 2}

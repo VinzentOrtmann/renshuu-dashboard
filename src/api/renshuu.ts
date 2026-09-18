@@ -19,6 +19,7 @@ import type {
   RenshuuSchedule,
   RenshuuScheduleList,
   RenshuuTermPage,
+  RenshuuWordTerm,
   StudiedCounts,
   TermUserData,
   UpcomingReviews,
@@ -283,6 +284,38 @@ export function createRenshuuClient(
                 mastery_avg_perc: toNumber(term.user_data.mastery_avg_perc),
               } satisfies TermUserData)
             : undefined,
+        })),
+      }
+    },
+
+    /**
+     * One page of a vocabulary schedule's words.
+     *
+     * A separate method from {@link getSchedulePage} because words and kanji
+     * share the page envelope but not their fields, and giving each its own
+     * type is clearer than one method whose term type is a guess.
+     */
+    async getWordPage(
+      scheduleId: string,
+      page: number,
+    ): Promise<RenshuuTermPage<RenshuuWordTerm>['contents']> {
+      const data = await request<RenshuuTermPage<RenshuuWordTerm>>(
+        `/schedule/${scheduleId}/list?group=all&pg=${page}`,
+      )
+      const contents = data.contents
+
+      return {
+        pg: toNumber(contents?.pg),
+        total_pg: toNumber(contents?.total_pg),
+        result_count: toNumber(contents?.result_count),
+        per_pg: toNumber(contents?.per_pg),
+        terms: (contents?.terms ?? []).map((term) => ({
+          id: String(term.id),
+          kanji_full: term.kanji_full ?? '',
+          hiragana_full: term.hiragana_full ?? '',
+          // Usually an array of glosses, but normalised in case a word with a
+          // single meaning ever comes back as a bare string.
+          def: Array.isArray(term.def) ? term.def : term.def ? [term.def] : [],
         })),
       }
     },
