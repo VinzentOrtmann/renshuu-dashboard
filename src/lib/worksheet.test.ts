@@ -21,6 +21,7 @@ import {
   pageSize,
   parseSections,
   parseWords,
+  ungrouped,
 } from './worksheet.ts'
 import type { WorksheetOptions } from './worksheet.ts'
 
@@ -441,13 +442,16 @@ describe('page breaks', () => {
   it('without a break, is exactly the ordinary layout', () => {
     const o = opts({ fillPage: true })
     assert.deepEqual(
-      layoutSections(parseSections('緊\n張'), o),
+      layoutSections(ungrouped(parseSections('緊\n張')), o),
       layoutWorksheet(parseWords('緊\n張'), o),
     )
   })
 
   it('starts each section on a new page', () => {
-    const pages = layoutSections(parseSections('緊\n張\n---\n緊'), opts())
+    const pages = layoutSections(
+      ungrouped(parseSections('緊\n張\n---\n緊')),
+      opts(),
+    )
     assert.equal(pages.length, 2)
     const firstRowOf = (page: (typeof pages)[number]) =>
       page.rows[0].groups[0].cells.map((c) => c.char).join('')
@@ -456,7 +460,10 @@ describe('page breaks', () => {
 
   it('fills each section on its own, so a lone kanji gets a whole page', () => {
     const o = opts({ fillPage: true })
-    const pages = layoutSections(parseSections('緊\n張\n緊張\n---\n緊'), o)
+    const pages = layoutSections(
+      ungrouped(parseSections('緊\n張\n緊張\n---\n緊')),
+      o,
+    )
     const bottom = PAPER.a4.height - o.marginMm
     for (const page of pages) {
       const last = page.rows.at(-1)!
@@ -485,58 +492,97 @@ describe('isKanji', () => {
 })
 
 describe('expandWords', () => {
+  /** Sections of groups, with each word joined back into a string. */
   const expand = (text: string) =>
     expandWords(parseSections(text)).map((section) =>
-      section.map((word) => word.join('')),
+      section.map((group) => group.map((word) => word.join(''))),
     )
 
-  it('turns each word into its kanji then the word, one group per page', () => {
+  it('groups each word with its kanji, all sharing one section', () => {
     assert.deepEqual(expand('緊張\n結果'), [
-      ['緊', '張', '緊張'],
-      ['結', '果', '結果'],
+      [
+        ['緊', '張', '緊張'],
+        ['結', '果', '結果'],
+      ],
     ])
   })
 
   it('gives the same result when the group is typed out by hand', () => {
-    assert.deepEqual(
-      expand('緊\n張\n緊張\n---\n結\n果\n結果'),
-      expand('緊張\n結果'),
-    )
+    assert.deepEqual(expand('緊\n張\n緊張\n結\n果\n結果'), expand('緊張\n結果'))
   })
 
   it('practises a kanji once per sheet', () => {
     assert.deepEqual(expand('結果\n結論'), [
-      ['結', '果', '結果'],
-      ['論', '結論'],
+      [
+        ['結', '果', '結果'],
+        ['論', '結論'],
+      ],
     ])
   })
 
   it('splits out only the kanji of a word with kana', () => {
-    assert.deepEqual(expand('食べる'), [['食', '食べる']])
+    assert.deepEqual(expand('食べる'), [[['食', '食べる']]])
   })
 
   it('does not split out the repetition mark', () => {
-    assert.deepEqual(expand('人々'), [['人', '人々']])
+    assert.deepEqual(expand('人々'), [[['人', '人々']]])
   })
 
-  it('leaves single kanji and kana words together on a shared page', () => {
-    assert.deepEqual(expand('漢\n字\nありがとう'), [['漢', '字', 'ありがとう']])
+  it('makes single kanji and kana words groups of one', () => {
+    assert.deepEqual(expand('漢\n字\nありがとう'), [
+      [['漢'], ['字'], ['ありがとう']],
+    ])
   })
 
   it('does not take back a single kanji that is not part of the next word', () => {
-    assert.deepEqual(expand('漢\n緊張'), [['漢'], ['緊', '張', '緊張']])
+    assert.deepEqual(expand('漢\n緊張'), [[['漢'], ['緊', '張', '緊張']]])
   })
 
   it('keeps manual page breaks', () => {
-    assert.deepEqual(expand('漢\n---\n字'), [['漢'], ['字']])
+    assert.deepEqual(expand('漢\n---\n字'), [[['漢']], [['字']]])
   })
 
   it('keeps a word whose kanji were all practised, as its own group', () => {
     assert.deepEqual(expand('緊\n---\n張\n---\n緊張'), [
-      ['緊'],
-      ['張'],
-      ['緊張'],
+      [['緊']],
+      [['張']],
+      [['緊張']],
     ])
+  })
+})
+
+describe('keeping groups together', () => {
+  const layout = (text: string, o: WorksheetOptions) =>
+    layoutSections(expandWords(parseSections(text)), o)
+  const charsOn = (page: {
+    rows: { groups: { cells: { char: string }[] }[] }[]
+  }) =>
+    page.rows.flatMap((r) =>
+      r.groups.flatMap((g) => g.cells.map((c) => c.char)),
+    )
+
+  it('lets several groups share a page', () => {
+    assert.equal(layout('緊張\n結果', opts({ rowsPerWord: 1 })).length, 1)
+  })
+
+  it('moves a group that would straddle a page to the next page, whole', () => {
+    // Fill most of a page with loose kanji, then add a group that can't fit in
+    // what's left: it must start the next page, not begin at the bottom of this one.
+    const loose = Array.from({ length: 19 }, (_, i) =>
+      String.fromCharCode(0x4e00 + i),
+    )
+    const pages = layout(
+      [...loose, '緊張'].join('\n'),
+      opts({ rowsPerWord: 1 }),
+    )
+    assert.equal(pages.length, 2)
+    assert.ok(!charsOn(pages[0]).includes('緊'))
+    assert.ok(charsOn(pages[1]).includes('緊'))
+    assert.ok(charsOn(pages[1]).includes('張'))
+  })
+
+  it('still splits a group taller than a whole page rather than losing it', () => {
+    assert.ok(layout('緊張', opts({ rowsPerWord: 12 })).length > 1)
   })
 })
 
@@ -576,7 +622,7 @@ describe('stroke order once per section', () => {
 
   it('shows stroke order again in a new section', () => {
     const pages = layoutSections(
-      [[['緊']], [['緊']]],
+      [[[['緊']]], [[['緊']]]],
       opts({ strokeOrder: true }),
       counts,
     )

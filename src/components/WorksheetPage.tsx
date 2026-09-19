@@ -30,6 +30,7 @@ import {
   layoutSections,
   pageSize,
   parseSections,
+  ungrouped,
 } from '../lib/worksheet.ts'
 import type { KanjiEntry } from '../types/kanji.ts'
 import type { VocabEntry } from '../types/vocab.ts'
@@ -144,13 +145,14 @@ export function WorksheetPage() {
   const [loadingDictionary, setLoadingDictionary] = useState(false)
 
   const { text, options, cross, printCredit } = settings
-  // Sections are separated by page-break lines; `words` is every word across
-  // them, for the loaders that only care which characters are on the sheet.
+  // Sections (separated by page-break lines) hold groups of words that are kept
+  // together on a page. `words` is every word across them, for the loaders
+  // that only care which characters are on the sheet.
   const sections = useMemo(() => {
     const parsed = parseSections(text)
-    return options.expandKanji ? expandWords(parsed) : parsed
+    return options.expandKanji ? expandWords(parsed) : ungrouped(parsed)
   }, [text, options.expandKanji])
-  const words = useMemo(() => sections.flat(), [sections])
+  const words = useMemo(() => sections.flat(2), [sections])
   const textarea = useRef<HTMLTextAreaElement>(null)
   /** Where to put the cursor once an inserted page break has rendered. */
   const pendingCursor = useRef<number | null>(null)
@@ -396,8 +398,8 @@ export function WorksheetPage() {
             />
             <p className="mt-1 text-sm text-[var(--text-muted)]">
               With &ldquo;practise each kanji&rdquo; on, typing just 緊張 gives
-              緊, 張, 緊張 on a page of its own. A line of{' '}
-              <code>{PAGE_BREAK_TEXT}</code> starts a new page by hand.
+              緊, 張, 緊張, kept together on one page. A line of{' '}
+              <code>{PAGE_BREAK_TEXT}</code> starts a new page.
             </p>
             <div className="mt-2 flex flex-wrap gap-2">
               <SmallButton onClick={insertPageBreak}>

@@ -171,40 +171,37 @@ export function isKanji(char: string): boolean {
 }
 
 /**
- * Turns each word containing kanji into a group of its own: the kanji one by
- * one, then the word, starting on a new page.
+ * Groups each word containing kanji with its kanji: the kanji one by one, then
+ * the word, kept together on one page.
  *
- *   緊張      ->  緊 / 張 / 緊張
- *   結果          ---
- *                結 / 果 / 結果
+ *   緊張   ->  [緊 / 張 / 緊張]
+ *   結果       [結 / 果 / 結果]
+ *
+ * Groups share pages — several fit on one sheet — but a group is never split
+ * across a page break. For a fresh page, use a manual `---` break.
  *
  * - Only kanji are split out. 食べる gives 食 then 食べる, not rows for the kana.
  * - A kanji is practised once per sheet. With 結果 then 結論, the second group
  *   is just 論 and 結論, since 結 already had its rows.
- * - Words without kanji, and single characters, stay where they were typed and
- *   share a page with their neighbours.
+ * - Words without kanji, and single characters, are groups of one.
  * - Typing the group out by hand (緊, 張, 緊張) gives the same result as typing
  *   the word alone: single kanji typed just before a word that contains them
- *   are taken into that word's group rather than left on a page of their own.
+ *   are taken into that word's group.
  *
- * Manual page breaks are kept: groups never cross one.
+ * Returns sections of groups of words. Manual page breaks are kept: groups
+ * never cross one.
  */
-export function expandWords(sections: string[][][]): string[][][] {
+export function expandWords(sections: string[][][]): string[][][][] {
   const practised = new Set<string>()
-  const result: string[][][] = []
 
-  for (const section of sections) {
-    let loose: string[][] = []
-    const flushLoose = () => {
-      if (loose.length > 0) result.push(loose)
-      loose = []
-    }
+  return sections.map((section) => {
+    const groups: string[][][] = []
 
     for (const word of section) {
       const kanji = [...new Set(word.filter(isKanji))]
 
       if (word.length < 2 || kanji.length === 0) {
-        loose.push(word)
+        groups.push([word])
         for (const char of kanji) practised.add(char)
         continue
       }
@@ -213,13 +210,13 @@ export function expandWords(sections: string[][][]): string[][][] {
       // belong to it. They've already been counted as practised, so remember
       // them to put them back in the group.
       const takenBack = new Set<string>()
-      while (loose.length > 0) {
-        const last = loose[loose.length - 1]
-        if (last.length !== 1 || !kanji.includes(last[0])) break
-        takenBack.add(last[0])
-        loose.pop()
+      while (groups.length > 0) {
+        const last = groups[groups.length - 1]
+        if (last.length !== 1 || last[0].length !== 1) break
+        if (!kanji.includes(last[0][0])) break
+        takenBack.add(last[0][0])
+        groups.pop()
       }
-      flushLoose()
 
       // Kanji in the word's own order, each once, skipping any already
       // practised earlier on the sheet.
@@ -231,13 +228,11 @@ export function expandWords(sections: string[][][]): string[][][] {
         }
       }
       group.push(word)
-      result.push(group)
+      groups.push(group)
     }
 
-    flushLoose()
-  }
-
-  return result
+    return groups
+  })
 }
 
 /**
@@ -361,9 +356,23 @@ function groupByChar(cells: Cell[], left: number, box: number): Group[] {
   return groups
 }
 
-/** One pass of layout, with a given number of extra rows per word. */
+/** One piece of a word, laid out with rows positioned from its own top. */
+interface Block {
+  rows: Row[]
+  height: number
+}
+
+/**
+ * One pass of layout, with a given number of extra rows per word.
+ *
+ * Works in groups: words that must stay on the same page, like 緊 / 張 / 緊張.
+ * Each group is measured whole before it's placed, and moves to a new page
+ * rather than splitting across one. Groups otherwise share pages, so a list of
+ * short words fills a page instead of taking one each. A plain word is simply a
+ * group of one.
+ */
 function layoutOnce(
-  words: string[][],
+  groups: string[][][],
   options: WorksheetOptions,
   strokeCounts: StrokeCounts,
   infoFor: InfoFor,
@@ -382,15 +391,12 @@ function layoutOnce(
   // Breathing room between different words, so each block reads as a unit.
   const wordGap = box * 0.35
 
-  const pages: Page[] = []
-  let page: Page = { rows: [] }
-  let y = top
-
   // Characters whose stroke order this section has already shown. Created per
   // pass, because page filling calls this function repeatedly.
   const strokesShown = new Set<string>()
 
-  words.forEach((word, wordIndex) => {
+  /** A word's rows, as one block per piece, each positioned from y = 0. */
+  function blocksFor(word: string[], wordIndex: number): Block[] {
     const pieces = chunk(word, columns)
     const wordHasKanji = word.some(isKanji)
 
@@ -401,29 +407,12 @@ function layoutOnce(
       ? fitText(rawInfo, columns * box, INFO_FONT_MM)
       : undefined
 
-    pieces.forEach((piece, pieceIndex) => {
-      const labelled = pieceIndex === 0 && info !== undefined
-      const strokes = options.strokeOrder
-        ? strokeRows(piece, columns, strokeCounts, strokesShown, wordHasKanji)
-        : []
-      // Extra rows from page filling go on the word's last piece, so a long
-      // word that wraps doesn't get them interleaved between its halves.
-      const practiceRows =
-        options.rowsPerWord +
-        (pieceIndex === pieces.length - 1 ? extraRows[wordIndex] : 0)
-      const blockHeight =
-        (labelled ? INFO_ROW_MM : 0) + (strokes.length + practiceRows) * box
+    return pieces.map((piece, pieceIndex) => {
+      const rows: Row[] = []
+      let y = 0
 
-      // Start a new page if this block won't fit, unless the page is still
-      // empty — a block taller than a whole page has to go somewhere.
-      if (y + blockHeight > bottom && page.rows.length > 0) {
-        pages.push(page)
-        page = { rows: [] }
-        y = top
-      }
-
-      if (labelled) {
-        page.rows.push({
+      if (pieceIndex === 0 && info !== undefined) {
+        rows.push({
           y,
           height: INFO_ROW_MM,
           groups: [],
@@ -433,8 +422,11 @@ function layoutOnce(
         y += INFO_ROW_MM
       }
 
+      const strokes = options.strokeOrder
+        ? strokeRows(piece, columns, strokeCounts, strokesShown, wordHasKanji)
+        : []
       for (const cells of strokes) {
-        page.rows.push({
+        rows.push({
           y,
           height: box,
           groups: groupByChar(cells, left, box),
@@ -443,62 +435,91 @@ function layoutOnce(
         y += box
       }
 
+      // Extra rows from page filling go on the word's last piece, so a long
+      // word that wraps doesn't get them interleaved between its halves.
+      const practiceRows =
+        options.rowsPerWord +
+        (pieceIndex === pieces.length - 1 ? extraRows[wordIndex] : 0)
       const copies = Math.max(1, Math.floor(columns / piece.length))
       for (let row = 0; row < practiceRows; row++) {
-        const groups: Group[] = []
+        const cells: Group[] = []
         for (let copy = 0; copy < copies; copy++) {
           const kind = kindFor(row, copy, copies, options)
-          groups.push({
+          cells.push({
             x: left + copy * piece.length * box,
             cells: piece.map((char) => ({ char, kind })),
           })
         }
-        page.rows.push({ y, height: box, groups, word: wordIndex })
+        rows.push({ y, height: box, groups: cells, word: wordIndex })
         y += box
       }
 
-      y += wordGap
+      return { rows, height: y }
     })
-  })
+  }
+
+  const pages: Page[] = []
+  let page: Page = { rows: [] }
+  let y = top
+  const newPage = () => {
+    pages.push(page)
+    page = { rows: [] }
+    y = top
+  }
+
+  let wordIndex = 0
+  for (const group of groups) {
+    const blocks = group.flatMap((word) => blocksFor(word, wordIndex++))
+    const groupHeight =
+      blocks.reduce((sum, block) => sum + block.height, 0) +
+      wordGap * (blocks.length - 1)
+
+    // Keep the group together: start a new page if it won't fit on this one,
+    // unless this page is still empty — then it's taller than any page and has
+    // to be split wherever it runs out.
+    if (y + groupHeight > bottom && page.rows.length > 0) newPage()
+
+    for (const block of blocks) {
+      // Only reached mid-group when the group is taller than a whole page.
+      if (y + block.height > bottom && page.rows.length > 0) newPage()
+      for (const row of block.rows) page.rows.push({ ...row, y: y + row.y })
+      y += block.height + wordGap
+    }
+  }
 
   if (page.rows.length > 0) pages.push(page)
   return pages
 }
 
 /**
+ * Wraps each word as a group of its own, for input that hasn't been grouped.
+ */
+export function ungrouped(sections: string[][][]): string[][][][] {
+  return sections.map((words) => words.map((word) => [word]))
+}
+
+/**
  * Lays out several sections, each starting on a fresh page.
  *
  * Every section is laid out on its own, so page filling applies to each
- * section's last page separately: a group of words shares its pages, and a
- * lone kanji after a break gets a whole page to itself rather than whatever
- * space the group before it left over.
- *
- * `words` passed to the callbacks are the words of the current section; the
- * callbacks only look at the characters, so that makes no difference to them.
+ * section's last page separately. Within a section, groups share pages but are
+ * never split across one.
  */
 export function layoutSections(
-  sections: string[][][],
+  sections: string[][][][],
   options: WorksheetOptions,
   strokeCounts: StrokeCounts = () => undefined,
   infoFor: InfoFor = () => undefined,
 ): Page[] {
-  return sections.flatMap((words) =>
-    layoutWorksheet(words, options, strokeCounts, infoFor),
+  return sections.flatMap((groups) =>
+    layoutGroups(groups, options, strokeCounts, infoFor),
   )
 }
 
 /**
- * Lays words out onto pages.
+ * Lays words out onto pages, each word kept together on its own.
  *
- * Each word gets `rowsPerWord` practice rows, preceded by its stroke-order rows
- * when enabled. A row repeats the word as many times as fits, so short words
- * fill the width instead of leaving it empty. A word's rows are kept together
- * on one page — splitting a word's practice across a page break means turning
- * the sheet over mid-exercise.
- *
- * With `fillPage`, the words on the last page are given extra practice rows,
- * round-robin, until another row would spill onto a new page. So a single
- * kanji makes a full page of practice rather than two rows and blank paper.
+ * The same as {@link layoutGroups} with every word a group of one.
  */
 export function layoutWorksheet(
   words: string[][],
@@ -506,8 +527,35 @@ export function layoutWorksheet(
   strokeCounts: StrokeCounts = () => undefined,
   infoFor: InfoFor = () => undefined,
 ): Page[] {
-  const extraRows = words.map(() => 0)
-  let pages = layoutOnce(words, options, strokeCounts, infoFor, extraRows)
+  return layoutGroups(
+    words.map((word) => [word]),
+    options,
+    strokeCounts,
+    infoFor,
+  )
+}
+
+/**
+ * Lays groups of words out onto pages.
+ *
+ * Each word gets `rowsPerWord` practice rows, preceded by its stroke-order rows
+ * when enabled. A row repeats the word as many times as fits, so short words
+ * fill the width instead of leaving it empty. Each group's rows are kept
+ * together on one page — splitting 緊 / 張 / 緊張 across a page break means
+ * turning the sheet over mid-exercise — but groups share pages otherwise.
+ *
+ * With `fillPage`, the words on the last page are given extra practice rows,
+ * round-robin, until another row would spill onto a new page. So a single
+ * kanji makes a full page of practice rather than two rows and blank paper.
+ */
+export function layoutGroups(
+  groups: string[][][],
+  options: WorksheetOptions,
+  strokeCounts: StrokeCounts = () => undefined,
+  infoFor: InfoFor = () => undefined,
+): Page[] {
+  const extraRows = groups.flat().map(() => 0)
+  let pages = layoutOnce(groups, options, strokeCounts, infoFor, extraRows)
   if (!options.fillPage || pages.length === 0) return pages
 
   const pageCount = pages.length
@@ -540,7 +588,13 @@ export function layoutWorksheet(
     const stillFitting: number[] = []
     for (const word of candidates) {
       extraRows[word]++
-      const trial = layoutOnce(words, options, strokeCounts, infoFor, extraRows)
+      const trial = layoutOnce(
+        groups,
+        options,
+        strokeCounts,
+        infoFor,
+        extraRows,
+      )
       if (fits(trial)) {
         pages = trial
         stillFitting.push(word)
