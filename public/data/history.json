@@ -14298,11 +14298,11 @@
     },
     {
       "date": "2026-09-19",
-      "capturedAt": "2026-09-19T16:49:44.492Z",
+      "capturedAt": "2026-09-19T19:00:12.510Z",
       "adventureLevel": 184,
       "studiedToday": {
-        "all": 34,
-        "vocab": 34,
+        "all": 80,
+        "vocab": 80,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -14310,8 +14310,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 5887,
-        "vocab": 4129,
+        "all": 5890,
+        "vocab": 4132,
         "kanji": 580,
         "grammar": 234,
         "sent": 944
@@ -14363,11 +14363,11 @@
           "name": "Kaishi1.5K",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1438,
+          "studiedCount": 1441,
           "totalCount": 1479,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 363
+          "newToday": 2,
+          "newThisWeek": 2,
+          "dueToday": 353
         },
         {
           "id": "9179005",
@@ -14389,7 +14389,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 970
+          "dueToday": 966
         },
         {
           "id": "8375655",
@@ -14400,7 +14400,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 103
+          "dueToday": 71
         },
         {
           "id": "7932506",
@@ -14411,7 +14411,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 32
+          "dueToday": 31
         },
         {
           "id": "9216681",
