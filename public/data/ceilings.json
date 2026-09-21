@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-14T09:37:20.364Z",
+  "generatedAt": "2026-09-21T09:40:13.662Z",
   "ceilings": {
     "kanji": {
       "n3": {
@@ -28,16 +28,6 @@
         ]
       }
     },
-    "grammar": {
-      "n5": {
-        "total": 63,
-        "blocked": 0,
-        "ceilingPercent": 100,
-        "sources": [
-          "Japanisch für Anfänger/N5"
-        ]
-      }
-    },
     "sent": {
       "n5": {
         "total": 689,
@@ -61,6 +51,16 @@
         "ceilingPercent": 98,
         "sources": [
           "Pre-Intermediate Sentences (N4)"
+        ]
+      }
+    },
+    "grammar": {
+      "n5": {
+        "total": 63,
+        "blocked": 0,
+        "ceilingPercent": 100,
+        "sources": [
+          "Japanisch für Anfänger/N5"
         ]
       }
     }
