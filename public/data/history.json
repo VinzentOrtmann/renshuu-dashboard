@@ -14866,7 +14866,7 @@
     },
     {
       "date": "2026-09-21",
-      "capturedAt": "2026-09-21T00:33:49.255Z",
+      "capturedAt": "2026-09-21T05:33:18.033Z",
       "adventureLevel": 186,
       "studiedToday": {
         "all": 0,
@@ -14918,8 +14918,8 @@
         }
       },
       "dayStreaks": {
-        "vocab": 108,
-        "kanji": 2,
+        "vocab": 109,
+        "kanji": 3,
         "grammar": 0,
         "sent": 0,
         "conj": 0,
@@ -14933,9 +14933,20 @@
           "isFrozen": false,
           "studiedCount": 1475,
           "totalCount": 1479,
-          "newToday": 20,
-          "newThisWeek": 20,
-          "dueToday": 292
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 452
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 148,
+          "totalCount": 148,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 21
         },
         {
           "id": "8983851",
@@ -14944,9 +14955,9 @@
           "isFrozen": false,
           "studiedCount": 1621,
           "totalCount": 2473,
-          "newToday": 20,
-          "newThisWeek": 20,
-          "dueToday": 877
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 1000
         },
         {
           "id": "8260191",
@@ -14957,7 +14968,7 @@
           "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 5
+          "dueToday": 28
         },
         {
           "id": "8375655",
@@ -14968,7 +14979,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 12
+          "dueToday": 93
         },
         {
           "id": "7932506",
@@ -14979,7 +14990,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 3
+          "dueToday": 44
         },
         {
           "id": "9216681",
@@ -14988,9 +14999,9 @@
           "isFrozen": false,
           "studiedCount": 318,
           "totalCount": 379,
-          "newToday": 20,
-          "newThisWeek": 20,
-          "dueToday": 262
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 292
         },
         {
           "id": "9179012",
@@ -15001,7 +15012,29 @@
           "totalCount": 156,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 78
+          "dueToday": 81
+        },
+        {
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 80,
+          "totalCount": 80,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 4
+        },
+        {
+          "id": "8277523",
+          "name": "Pre-Intermediate Kanji (N4)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 168,
+          "totalCount": 168,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 25
         },
         {
           "id": "8983957",
@@ -15034,7 +15067,7 @@
           "totalCount": 138,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 87
+          "dueToday": 91
         },
         {
           "id": "8376486",
@@ -15098,39 +15131,6 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 148,
-          "totalCount": 148,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8277523",
-          "name": "Pre-Intermediate Kanji (N4)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 168,
-          "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
