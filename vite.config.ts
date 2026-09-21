@@ -20,6 +20,7 @@ export default defineConfig({
         main: fileURLToPath(new URL('./index.html', import.meta.url)),
         kanji: fileURLToPath(new URL('./kanji.html', import.meta.url)),
         worksheet: fileURLToPath(new URL('./worksheet.html', import.meta.url)),
+        kanjiPath: fileURLToPath(new URL('./kanji-path.html', import.meta.url)),
       },
     },
   },

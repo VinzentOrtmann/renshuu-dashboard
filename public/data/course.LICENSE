@@ -1,0 +1,17 @@
+course.json is derived from two files of the Electronic Dictionary Research
+and Development Group (EDRDG):
+
+- KANJIDIC2 (https://www.edrdg.org/wiki/index.php/KANJIDIC_Project):
+  meanings, readings, school grade, frequency and stroke count.
+- KRADFILE (https://www.edrdg.org/krad/kradinf.html): the components each
+  kanji is made of.
+
+Both are used in conformance with the Group's licence
+(https://www.edrdg.org/edrdg/licence.html), which applies the Creative Commons
+Attribution-ShareAlike 4.0 International licence:
+https://creativecommons.org/licenses/by-sa/4.0/
+
+course.json is a derivative work (kanji reordered into levels, components
+reduced to the direct parts of each kanji, and component names added) and is
+distributed under the same licence. The rest of this repository is not covered
+by this notice.

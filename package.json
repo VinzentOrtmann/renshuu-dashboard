@@ -15,7 +15,8 @@
     "vocab": "node --env-file-if-exists=.env scripts/vocab.ts",
     "test": "node --test --test-timeout=10000 \"src/**/*.test.ts\"",
     "strokes": "node scripts/strokes.ts",
-    "kanjidic": "node scripts/kanjidic.ts"
+    "kanjidic": "node scripts/kanjidic.ts",
+    "course": "node scripts/course.ts"
   },
   "dependencies": {
     "react": "^19.2.7",

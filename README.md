@@ -103,6 +103,32 @@ your own use don't need it, but turn it on before sharing a PDF. The data is ser
 rather than a CDN because jsDelivr rejects the KanjiVG repository as over its
 size limit and returns 403 for characters it hasn't already cached.
 
+### 6. Kanji path
+
+[`kanji-path.html`](https://vinzentortmann.github.io/renshuu-dashboard/kanji-path.html)
+is a WaniKani-style course for the 1,026 kyōiku and 1,110 further jōyō kanji,
+in 72 levels of 30 following Japanese school-grade order. Each level first
+teaches the components its kanji are built from — 亻 person, 木 tree — and a
+kanji unlocks only once its components reach Guru, so 休 is learned as
+"person + tree" rather than as six arbitrary strokes. Reviews run on WaniKani's
+intervals (4 hours up to 4 months, then Burned); you reveal the answer and grade
+yourself. Level up at 90% of a level's kanji at Guru, or skip ahead to where you
+already are. A kanji card also shows its stroke order and up to five words from
+your own Renshuu vocabulary that use it.
+
+Progress is saved in this browser only — no account, nothing leaves your
+computer — so export a backup from the settings now and then.
+
+The course is built by `npm run course` from
+[KANJIDIC2](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project) (meanings,
+readings, grade, frequency) and [KRADFILE](https://www.edrdg.org/krad/kradinf.html)
+(components), both EDRDG, CC BY-SA 4.0; see
+[`public/data/course.LICENSE`](public/data/course.LICENSE). KRADFILE lists every
+part down to single strokes, so the script keeps only the direct parts of each
+kanji, and swaps its stand-in characters for the shape actually written
+(KRADFILE writes the 亻 in 休 as 化). Component names are KANJIDIC meanings, overridden by
+hand where a component has no kanji meaning of its own.
+
 ## What it does not claim
 
 The dashboard is careful about the difference between *no data* and *zero*:
@@ -191,6 +217,7 @@ npm run dev
 | `npm run vocab`     | Rebuild word readings and meanings for labels   |
 | `npm run strokes`   | Rebuild stroke-order data from KanjiVG          |
 | `npm run kanjidic`  | Rebuild fallback kanji labels from KANJIDIC2    |
+| `npm run course`    | Rebuild the Kanji path course data              |
 | `npm run check-api` | Verify the API types against your real account  |
 
 ### API access

@@ -80,6 +80,12 @@ function Header() {
         className="mt-5 ml-2 inline-block rounded-md border border-[var(--border)] px-3 py-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
       >
         Writing worksheets →
+      </a>{' '}
+      <a
+        href={`${import.meta.env.BASE_URL}kanji-path.html`}
+        className="mt-5 ml-2 inline-block rounded-md border border-[var(--border)] px-3 py-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+      >
+        Kanji path →
       </a>
     </header>
   )
