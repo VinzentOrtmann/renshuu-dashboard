@@ -86,11 +86,10 @@ export function ItemDetails({ itemKey, course, usedIn }: ItemCardProps) {
         </Field>
         {examples.length > 0 && (
           <Field label="Found in">
-            <span
-              className="text-2xl tracking-wide text-[var(--text-primary)]"
-              style={{ fontFamily: GLYPH_FONT }}
-            >
-              {examples.join(' ')}
+            <span className="flex flex-wrap gap-1">
+              {examples.map((char) => (
+                <FoundInKanji key={char} char={char} course={course} />
+              ))}
             </span>
           </Field>
         )}
@@ -143,6 +142,59 @@ export function ItemDetails({ itemKey, course, usedIn }: ItemCardProps) {
       <StrokeStrip char={id} />
       <ExampleWords char={id} />
     </div>
+  )
+}
+
+/**
+ * One kanji in a component's "found in" list, with its details in a popup on
+ * hover or keyboard focus — enough to see how the component is used without
+ * leaving the lesson. A custom popup rather than a title attribute, because
+ * the native tooltip is slow to appear and can't lay out several lines.
+ */
+function FoundInKanji({ char, course }: { char: string; course: Course }) {
+  const kanji = course.kanji[char]
+  const parts = kanji.parts
+    .map((part) => {
+      const component = course.components[part]
+      return `${component?.form ?? part} ${component?.name ?? ''}`.trim()
+    })
+    .join(' + ')
+
+  return (
+    <span
+      tabIndex={0}
+      aria-label={`${char}: ${kanji.m}`}
+      className="group relative rounded px-0.5 text-2xl text-[var(--text-primary)] outline-none hover:bg-[var(--surface-page)] focus-visible:ring-2 focus-visible:ring-[var(--axis)]"
+      style={{ fontFamily: GLYPH_FONT }}
+    >
+      {char}
+      <span
+        role="tooltip"
+        className="invisible absolute bottom-full left-1/2 z-10 mb-2 w-60 -translate-x-1/2 rounded-lg border border-[var(--border)] bg-[var(--surface-1)] p-3 text-left font-sans text-sm shadow-lg group-hover:visible group-focus:visible"
+      >
+        <span className="block text-base text-[var(--text-primary)]">
+          {kanji.m}
+        </span>
+        {kanji.on && (
+          <span className="mt-1 block text-[var(--text-secondary)]">
+            On: {kanji.on}
+          </span>
+        )}
+        {kanji.kun && (
+          <span className="block text-[var(--text-secondary)]">
+            Kun: {kanji.kun}
+          </span>
+        )}
+        {parts && (
+          <span className="mt-1 block text-[var(--text-secondary)]">
+            {parts}
+          </span>
+        )}
+        <span className="mt-1 block text-xs text-[var(--text-muted)]">
+          Level {kanji.level}
+        </span>
+      </span>
+    </span>
   )
 }
 
