@@ -36,8 +36,22 @@ export function parseKey(key: ItemKey): { kind: ItemKind; id: string } {
 export const GURU = 5
 export const BURNED = 9
 
-/** Hours until the next review after reaching each stage. Index = stage. */
-const INTERVAL_HOURS = [0, 4, 8, 23, 47, 167, 335, 730, 2922]
+/**
+ * Pace: how long the four Apprentice stages wait. Only those change — they're
+ * where the time goes before a component unlocks its kanji, and a short early
+ * gap costs little, since the later, fixed stages still catch anything that
+ * didn't stick. Guru onwards keeps WaniKani's intervals.
+ */
+export type Pace = 'normal' | 'fast' | 'custom'
+
+/** Hours to wait after reaching Apprentice 1-4, per preset. */
+export const PACE_HOURS: Record<Exclude<Pace, 'custom'>, number[]> = {
+  normal: [4, 8, 23, 47],
+  fast: [2, 4, 8, 23],
+}
+
+/** Hours to wait after reaching Guru 1 through Enlightened. */
+const LATER_HOURS = [167, 335, 730, 2922]
 
 const HOUR = 60 * 60 * 1000
 
@@ -64,13 +78,48 @@ export interface SrsState {
   /** The highest level unlocked. */
   level: number
   progress: Record<ItemKey, ItemProgress>
+  /** Absent in saves from before paces existed, which means normal. */
+  pace?: Pace
+  /** The four Apprentice waits in hours, when pace is custom. */
+  customHours?: number[]
 }
 
 export const INITIAL_STATE: SrsState = { version: 1, level: 1, progress: {} }
 
-/** Progress for an item right after its lesson: stage 1, due in 4 hours. */
-export function afterLesson(now: number): ItemProgress {
-  return { stage: 1, next: now + INTERVAL_HOURS[1] * HOUR, correct: 0, incorrect: 0 }
+/** Whether custom Apprentice hours are usable: four positive numbers. */
+export function validHours(hours: unknown): hours is number[] {
+  return (
+    Array.isArray(hours) &&
+    hours.length === 4 &&
+    hours.every((h) => typeof h === 'number' && Number.isFinite(h) && h > 0)
+  )
+}
+
+/** The Apprentice waits in effect for a state. */
+export function apprenticeHours(
+  state: Pick<SrsState, 'pace' | 'customHours'>,
+): number[] {
+  if (state.pace === 'custom' && validHours(state.customHours)) {
+    return state.customHours
+  }
+  return PACE_HOURS[state.pace === 'fast' ? 'fast' : 'normal']
+}
+
+/**
+ * Hours until the next review after reaching each stage, index = stage (0 is
+ * unused, 9 is burned and has no next review).
+ */
+export function intervalHours(
+  state: Pick<SrsState, 'pace' | 'customHours'> = {},
+): number[] {
+  return [0, ...apprenticeHours(state), ...LATER_HOURS]
+}
+
+const NORMAL_HOURS = intervalHours()
+
+/** Progress for an item right after its lesson: stage 1, due after its wait. */
+export function afterLesson(now: number, hours = NORMAL_HOURS): ItemProgress {
+  return { stage: 1, next: now + hours[1] * HOUR, correct: 0, incorrect: 0 }
 }
 
 /**
@@ -85,6 +134,7 @@ export function answer(
   progress: ItemProgress,
   correct: boolean,
   now: number,
+  hours = NORMAL_HOURS,
 ): ItemProgress {
   const stage = correct
     ? Math.min(BURNED, progress.stage + 1)
@@ -92,10 +142,48 @@ export function answer(
 
   return {
     stage,
-    next: stage >= BURNED ? undefined : now + INTERVAL_HOURS[stage] * HOUR,
+    next: stage >= BURNED ? undefined : now + hours[stage] * HOUR,
     correct: progress.correct + (correct ? 1 : 0),
     incorrect: progress.incorrect + (correct ? 0 : 1),
   }
+}
+
+/**
+ * Switches pace, and reschedules waiting items to match.
+ *
+ * Each pending review is moved as if it had always been on the new pace:
+ * when it was last answered stays fixed, its wait changes. So switching to a
+ * faster pace brings reviews forward straight away (possibly to now), instead
+ * of only affecting answers from here on.
+ */
+export function setPace(
+  state: SrsState,
+  pace: Pace,
+  customHours?: number[],
+): SrsState {
+  if (pace === 'custom' && !validHours(customHours)) {
+    throw new Error('Custom pace needs four positive numbers of hours.')
+  }
+  const before = intervalHours(state)
+  const settings = pace === 'custom' ? { pace, customHours } : { pace }
+  const after = intervalHours(settings)
+
+  const progress: Record<ItemKey, ItemProgress> = {}
+  for (const [key, p] of Object.entries(state.progress)) {
+    progress[key] =
+      p.next === undefined || p.stage >= BURNED
+        ? p
+        : { ...p, next: p.next + (after[p.stage] - before[p.stage]) * HOUR }
+  }
+  // Rebuilt rather than spread, so leaving custom drops the old custom hours.
+  return { version: state.version, level: state.level, ...settings, progress }
+}
+
+/** Fastest possible time from a lesson to Guru, in hours: every answer right. */
+export function hoursToGuru(
+  state: Pick<SrsState, 'pace' | 'customHours'>,
+): number {
+  return apprenticeHours(state).reduce((sum, h) => sum + h, 0)
 }
 
 /** Stage of an item, or 0 when it hasn't had its lesson yet. */
@@ -114,7 +202,11 @@ function stageOf(state: SrsState, key: ItemKey): number {
  */
 export function unlockedItems(course: Course, state: SrsState): ItemKey[] {
   const keys: ItemKey[] = []
-  for (let level = 1; level <= state.level && level <= course.levels.length; level++) {
+  for (
+    let level = 1;
+    level <= state.level && level <= course.levels.length;
+    level++
+  ) {
     const { components, kanji } = course.levels[level - 1]
     for (const id of components) keys.push(componentKey(id))
     for (const char of kanji) {
@@ -142,7 +234,9 @@ export function lessonQueue(course: Course, state: SrsState): ItemKey[] {
 /** Items due for review now. */
 export function reviewQueue(state: SrsState, now: number): ItemKey[] {
   return Object.entries(state.progress)
-    .filter(([, p]) => p.stage < BURNED && p.next !== undefined && p.next <= now)
+    .filter(
+      ([, p]) => p.stage < BURNED && p.next !== undefined && p.next <= now,
+    )
     .map(([key]) => key)
 }
 
@@ -152,7 +246,9 @@ export function levelProgress(
   state: SrsState,
 ): { guru: number; total: number; needed: number } {
   const kanji = course.levels[state.level - 1]?.kanji ?? []
-  const guru = kanji.filter((char) => stageOf(state, kanjiKey(char)) >= GURU).length
+  const guru = kanji.filter(
+    (char) => stageOf(state, kanjiKey(char)) >= GURU,
+  ).length
   return { guru, total: kanji.length, needed: Math.ceil(kanji.length * 0.9) }
 }
 
@@ -178,12 +274,19 @@ export function levelUp(course: Course, state: SrsState): SrsState {
  * For starting partway through: someone who already reads N4 doesn't need to
  * work through first-grade kanji to reach anything useful.
  */
-export function skipToLevel(course: Course, state: SrsState, level: number): SrsState {
+export function skipToLevel(
+  course: Course,
+  state: SrsState,
+  level: number,
+): SrsState {
   const target = Math.max(1, Math.min(level, course.levels.length))
   const progress = { ...state.progress }
   for (let l = 1; l < target; l++) {
     const { components, kanji } = course.levels[l - 1]
-    for (const key of [...components.map(componentKey), ...kanji.map(kanjiKey)]) {
+    for (const key of [
+      ...components.map(componentKey),
+      ...kanji.map(kanjiKey),
+    ]) {
       progress[key] = {
         stage: BURNED,
         correct: progress[key]?.correct ?? 0,
@@ -203,7 +306,8 @@ export function stageCounts(state: SrsState): Record<string, number> {
     Enlightened: 0,
     Burned: 0,
   }
-  for (const { stage } of Object.values(state.progress)) counts[stageName(stage)]++
+  for (const { stage } of Object.values(state.progress))
+    counts[stageName(stage)]++
   return counts
 }
 

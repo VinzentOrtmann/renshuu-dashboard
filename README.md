@@ -112,8 +112,10 @@ teaches the components its kanji are built from — 亻 person, 木 tree — and
 kanji unlocks only once its components reach Guru, so 休 is learned as
 "person + tree" rather than as six arbitrary strokes. Reviews run on WaniKani's
 intervals (4 hours up to 4 months, then Burned); you reveal the answer and grade
-yourself. Level up at 90% of a level's kanji at Guru, or skip ahead to where you
-already are. A kanji card also shows its stroke order and up to five words from
+yourself. A pace setting shortens the four Apprentice waits — Fast (2, 4, 8,
+23 hours) roughly halves the time per level — or takes your own; switching
+reschedules waiting reviews too. Level up at 90% of a level's kanji at Guru, or
+skip ahead to where you already are. A kanji card also shows its stroke order and up to five words from
 your own Renshuu vocabulary that use it.
 
 Progress is saved in this browser only — no account, nothing leaves your

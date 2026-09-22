@@ -16,21 +16,26 @@ import {
   BURNED,
   GURU,
   INITIAL_STATE,
+  PACE_HOURS,
   afterLesson,
   answer,
   componentKey,
   forecast,
+  hoursToGuru,
+  intervalHours,
   kanjiKey,
   lessonQueue,
   levelProgress,
   levelUp,
   reviewQueue,
+  setPace,
   skipToLevel,
   stageCounts,
   stageName,
   unlockedItems,
+  validHours,
 } from '../../lib/srs.ts'
-import type { ItemKey, SrsState } from '../../lib/srs.ts'
+import type { ItemKey, Pace, SrsState } from '../../lib/srs.ts'
 import {
   exportProgress,
   importProgress,
@@ -125,8 +130,9 @@ function Path({ course }: { course: Course }) {
     (items: ItemKey[]) => {
       const at = Date.now()
       update((state) => {
+        const hours = intervalHours(state)
         const progress = { ...state.progress }
-        for (const item of items) progress[item] ??= afterLesson(at)
+        for (const item of items) progress[item] ??= afterLesson(at, hours)
         return { ...state, progress }
       })
       setView({ name: 'home' })
@@ -142,7 +148,10 @@ function Path({ course }: { course: Course }) {
         if (!current) return state
         return {
           ...state,
-          progress: { ...state.progress, [item]: answer(current, correct, at) },
+          progress: {
+            ...state.progress,
+            [item]: answer(current, correct, at, intervalHours(state)),
+          },
         }
       })
     },
@@ -160,6 +169,7 @@ function Path({ course }: { course: Course }) {
         course={course}
         usedIn={usedIn}
         items={view.items}
+        firstReviewHours={intervalHours(srs)[1]}
         onFinish={finishLessons}
         onExit={home}
       />
@@ -279,6 +289,7 @@ function Path({ course }: { course: Course }) {
         course={course}
         srs={srs}
         onSkip={(level) => update((state) => skipToLevel(course, state, level))}
+        onPace={(pace, hours) => update((state) => setPace(state, pace, hours))}
         onImport={(state) => {
           setSrs(levelUp(course, state))
           setCanSave(true)
@@ -377,12 +388,14 @@ function Settings({
   course,
   srs,
   onSkip,
+  onPace,
   onImport,
   onReset,
 }: {
   course: Course
   srs: SrsState
   onSkip: (level: number) => void
+  onPace: (pace: Pace, customHours?: number[]) => void
   onImport: (state: SrsState) => void
   onReset: () => void
 }) {
@@ -395,6 +408,13 @@ function Settings({
         Settings and backup
       </summary>
       <div className="mt-4 space-y-5 text-sm text-[var(--text-secondary)]">
+        {/* Keyed on the saved pace, so an import or reset shows its pace. */}
+        <PaceSetting
+          key={`${srs.pace}:${srs.customHours}`}
+          srs={srs}
+          onPace={onPace}
+        />
+
         <div>
           <p>
             <strong className="text-[var(--text-primary)]">
@@ -492,6 +512,136 @@ function Settings({
         </p>
       </div>
     </details>
+  )
+}
+
+const PACE_OPTIONS: { pace: Pace; label: string }[] = [
+  { pace: 'normal', label: 'Normal' },
+  { pace: 'fast', label: 'Fast' },
+  { pace: 'custom', label: 'Custom' },
+]
+
+/** "1.5 days" or "20 hours". */
+function duration(hours: number): string {
+  if (hours < 48) return `${Math.round(hours * 10) / 10} hours`
+  return `${Math.round((hours / 24) * 10) / 10} days`
+}
+
+/**
+ * Pace: how long the Apprentice stages wait. Normal and Fast apply at once;
+ * Custom needs its four numbers first. Changing pace also moves reviews that
+ * are already waiting (see setPace in lib/srs.ts).
+ */
+function PaceSetting({
+  srs,
+  onPace,
+}: {
+  srs: SrsState
+  onPace: (pace: Pace, customHours?: number[]) => void
+}) {
+  const current = srs.pace ?? 'normal'
+  const [choice, setChoice] = useState<Pace>(current)
+  const [custom, setCustom] = useState<string[]>(
+    (srs.customHours ?? PACE_HOURS.fast).map(String),
+  )
+  const customHours = custom.map(Number)
+  const customValid = validHours(customHours)
+  const customChanged =
+    current !== 'custom' ||
+    customHours.some((h, i) => h !== srs.customHours?.[i])
+
+  // What the chosen settings would give, shown before applying them.
+  const preview =
+    choice === 'custom'
+      ? customValid
+        ? { pace: choice, customHours }
+        : null
+      : { pace: choice }
+  const guru = preview ? hoursToGuru(preview) : null
+
+  return (
+    <div>
+      <p>
+        <strong className="text-[var(--text-primary)]">Pace.</strong> How long
+        the four Apprentice stages wait before the next review. Guru and later
+        keep their intervals (1 week, 2 weeks, 1 month, 4 months). Changing it
+        also moves reviews that are already waiting.
+      </p>
+      <div
+        role="radiogroup"
+        aria-label="Pace"
+        className="mt-2 flex flex-wrap gap-2"
+      >
+        {PACE_OPTIONS.map(({ pace, label }) => (
+          <label
+            key={pace}
+            className={`cursor-pointer rounded-md border px-3 py-1.5 ${
+              choice === pace
+                ? 'border-[var(--axis)] text-[var(--text-primary)]'
+                : 'border-[var(--border)] text-[var(--text-secondary)]'
+            }`}
+          >
+            <input
+              type="radio"
+              name="pace"
+              value={pace}
+              checked={choice === pace}
+              onChange={() => {
+                setChoice(pace)
+                if (pace !== 'custom') onPace(pace)
+              }}
+              className="sr-only"
+            />
+            {label}
+            {pace !== 'custom' && (
+              <span className="ml-1.5 text-[var(--text-muted)]">
+                {PACE_HOURS[pace].join(' · ')} h
+              </span>
+            )}
+          </label>
+        ))}
+      </div>
+
+      {choice === 'custom' && (
+        <div className="mt-3 flex flex-wrap items-end gap-2">
+          {custom.map((value, i) => (
+            <label key={i} className="flex flex-col gap-1">
+              <span className="text-xs text-[var(--text-muted)]">
+                Apprentice {i + 1}
+              </span>
+              <input
+                type="number"
+                min={0.5}
+                step={0.5}
+                value={value}
+                onChange={(e) =>
+                  setCustom((all) =>
+                    all.map((v, j) => (j === i ? e.target.value : v)),
+                  )
+                }
+                className="w-20 rounded-md border border-[var(--border)] bg-[var(--surface-page)] px-2 py-1 text-[var(--text-primary)]"
+              />
+            </label>
+          ))}
+          <span className="pb-1.5 text-[var(--text-muted)]">hours</span>
+          <Button
+            primary
+            disabled={!customValid || !customChanged}
+            onClick={() => onPace('custom', customHours)}
+          >
+            Apply
+          </Button>
+        </div>
+      )}
+
+      <p className="mt-2 text-[var(--text-muted)]">
+        {guru === null
+          ? 'Each wait must be a positive number of hours.'
+          : `Lesson to Guru in ${duration(guru)} at best, so about ${duration(
+              guru * 2,
+            )} per level: components, then the kanji they unlock.`}
+      </p>
+    </div>
   )
 }
 

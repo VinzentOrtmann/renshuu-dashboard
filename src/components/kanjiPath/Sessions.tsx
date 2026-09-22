@@ -40,9 +40,15 @@ export function LessonSession({
   course,
   usedIn,
   items,
+  firstReviewHours,
   onFinish,
   onExit,
-}: SessionProps & { items: ItemKey[]; onFinish: (items: ItemKey[]) => void }) {
+}: SessionProps & {
+  items: ItemKey[]
+  /** Wait before the first review, for the hint under the buttons. */
+  firstReviewHours: number
+  onFinish: (items: ItemKey[]) => void
+}) {
   const [index, setIndex] = useState(0)
   const item = items[index]
   const last = index === items.length - 1
@@ -89,8 +95,8 @@ export function LessonSession({
         </Button>
       </div>
       <p className="mt-3 text-sm text-[var(--text-muted)]">
-        Arrow keys move through the batch. They come up for review in four
-        hours.
+        Arrow keys move through the batch. They come up for review in{' '}
+        {firstReviewHours === 1 ? 'an hour' : `${firstReviewHours} hours`}.
       </p>
     </SessionFrame>
   )

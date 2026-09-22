@@ -13,12 +13,15 @@ import {
   answer,
   componentKey,
   forecast,
+  hoursToGuru,
+  intervalHours,
   kanjiKey,
   lessonQueue,
   levelProgress,
   levelUp,
   parseKey,
   reviewQueue,
+  setPace,
   skipToLevel,
   stageCounts,
   stageName,
@@ -42,9 +45,36 @@ const COURSE: Course = {
     { components: ['日'], kanji: ['旦'] },
   ],
   kanji: {
-    木: { c: '木', level: 1, grade: 1, s: 4, m: 'tree', on: '', kun: '', parts: ['木'] },
-    休: { c: '休', level: 1, grade: 1, s: 6, m: 'rest', on: '', kun: '', parts: ['化', '木'] },
-    旦: { c: '旦', level: 2, grade: 8, s: 5, m: 'dawn', on: '', kun: '', parts: ['日'] },
+    木: {
+      c: '木',
+      level: 1,
+      grade: 1,
+      s: 4,
+      m: 'tree',
+      on: '',
+      kun: '',
+      parts: ['木'],
+    },
+    休: {
+      c: '休',
+      level: 1,
+      grade: 1,
+      s: 6,
+      m: 'rest',
+      on: '',
+      kun: '',
+      parts: ['化', '木'],
+    },
+    旦: {
+      c: '旦',
+      level: 2,
+      grade: 8,
+      s: 5,
+      m: 'dawn',
+      on: '',
+      kun: '',
+      parts: ['日'],
+    },
   },
   components: {
     木: { id: '木', form: '木', name: 'tree', level: 1 },
@@ -64,15 +94,23 @@ function withStages(stages: Record<string, number>, level = 1): SrsState {
 
 describe('keys and names', () => {
   it('round-trips item keys', () => {
-    assert.deepEqual(parseKey(componentKey('化')), { kind: 'component', id: '化' })
+    assert.deepEqual(parseKey(componentKey('化')), {
+      kind: 'component',
+      id: '化',
+    })
     assert.deepEqual(parseKey(kanjiKey('休')), { kind: 'kanji', id: '休' })
   })
 
   it('names the stage groups', () => {
-    assert.deepEqual(
-      [1, 4, 5, 6, 7, 8, 9].map(stageName),
-      ['Apprentice', 'Apprentice', 'Guru', 'Guru', 'Master', 'Enlightened', 'Burned'],
-    )
+    assert.deepEqual([1, 4, 5, 6, 7, 8, 9].map(stageName), [
+      'Apprentice',
+      'Apprentice',
+      'Guru',
+      'Guru',
+      'Master',
+      'Enlightened',
+      'Burned',
+    ])
   })
 })
 
@@ -82,31 +120,108 @@ describe('answer', () => {
   })
 
   it('moves up a stage when right, with the interval of the new stage', () => {
-    const next = answer({ stage: 4, next: NOW, correct: 3, incorrect: 0 }, true, NOW)
+    const next = answer(
+      { stage: 4, next: NOW, correct: 3, incorrect: 0 },
+      true,
+      NOW,
+    )
     assert.equal(next.stage, 5)
     assert.equal(next.next, NOW + 167 * HOUR) // one week
     assert.equal(next.correct, 4)
   })
 
   it('moves down one stage when wrong below Guru', () => {
-    const next = answer({ stage: 3, next: NOW, correct: 0, incorrect: 0 }, false, NOW)
+    const next = answer(
+      { stage: 3, next: NOW, correct: 0, incorrect: 0 },
+      false,
+      NOW,
+    )
     assert.equal(next.stage, 2)
     assert.equal(next.incorrect, 1)
   })
 
   it('moves down two stages when wrong from Guru or above', () => {
-    const next = answer({ stage: 7, next: NOW, correct: 0, incorrect: 0 }, false, NOW)
+    const next = answer(
+      { stage: 7, next: NOW, correct: 0, incorrect: 0 },
+      false,
+      NOW,
+    )
     assert.equal(next.stage, 5)
   })
 
   it('never drops below stage 1', () => {
-    assert.equal(answer({ stage: 1, correct: 0, incorrect: 0 }, false, NOW).stage, 1)
+    assert.equal(
+      answer({ stage: 1, correct: 0, incorrect: 0 }, false, NOW).stage,
+      1,
+    )
   })
 
   it('burns an item after Enlightened, and stops scheduling it', () => {
-    const burned = answer({ stage: 8, next: NOW, correct: 0, incorrect: 0 }, true, NOW)
+    const burned = answer(
+      { stage: 8, next: NOW, correct: 0, incorrect: 0 },
+      true,
+      NOW,
+    )
     assert.equal(burned.stage, BURNED)
     assert.equal(burned.next, undefined)
+  })
+})
+
+describe('pace', () => {
+  it('uses WaniKani intervals when no pace is saved', () => {
+    assert.deepEqual(
+      intervalHours(INITIAL_STATE),
+      [0, 4, 8, 23, 47, 167, 335, 730, 2922],
+    )
+    assert.equal(hoursToGuru(INITIAL_STATE), 82)
+  })
+
+  it('shortens only the Apprentice stages when fast', () => {
+    const hours = intervalHours({ pace: 'fast' })
+    assert.deepEqual(hours.slice(1, 5), [2, 4, 8, 23])
+    assert.deepEqual(hours.slice(5), [167, 335, 730, 2922])
+    assert.equal(afterLesson(NOW, hours).next, NOW + 2 * HOUR)
+    assert.equal(
+      answer({ stage: 2, correct: 0, incorrect: 0 }, true, NOW, hours).next,
+      NOW + 8 * HOUR,
+    )
+  })
+
+  it('uses custom hours, and falls back to normal when they are invalid', () => {
+    assert.deepEqual(
+      intervalHours({ pace: 'custom', customHours: [1, 2, 3, 4] }).slice(1, 5),
+      [1, 2, 3, 4],
+    )
+    assert.deepEqual(
+      intervalHours({ pace: 'custom', customHours: [1, 0, 3, 4] }).slice(1, 5),
+      [4, 8, 23, 47],
+    )
+    assert.throws(() => setPace(INITIAL_STATE, 'custom', [1, 2]))
+  })
+
+  it('reschedules waiting items as if they had always been on the new pace', () => {
+    const state: SrsState = {
+      ...INITIAL_STATE,
+      progress: {
+        // Answered to stage 3 now, so due in 23 hours on normal.
+        a: { stage: 3, next: NOW + 23 * HOUR, correct: 2, incorrect: 0 },
+        // Guru waits don't depend on pace.
+        b: { stage: 5, next: NOW + 100 * HOUR, correct: 4, incorrect: 0 },
+        c: { stage: BURNED, correct: 8, incorrect: 0 },
+      },
+    }
+    const fast = setPace(state, 'fast')
+    assert.equal(fast.pace, 'fast')
+    assert.equal(fast.progress.a.next, NOW + 8 * HOUR)
+    assert.equal(fast.progress.b.next, NOW + 100 * HOUR)
+    assert.deepEqual(fast.progress.c, state.progress.c)
+
+    const back = setPace(fast, 'normal')
+    assert.equal(back.progress.a.next, NOW + 23 * HOUR)
+    assert.equal(
+      setPace(setPace(state, 'custom', [1, 1, 1, 1]), 'fast').customHours,
+      undefined,
+    )
   })
 })
 
@@ -119,20 +234,29 @@ describe('unlocking', () => {
   })
 
   it('unlocks a kanji once all its components reach Guru', () => {
-    const state = withStages({ [componentKey('木')]: GURU, [componentKey('化')]: GURU - 1 })
+    const state = withStages({
+      [componentKey('木')]: GURU,
+      [componentKey('化')]: GURU - 1,
+    })
     const unlocked = unlockedItems(COURSE, state)
     assert.ok(unlocked.includes(kanjiKey('木'))) // needs only 木
     assert.ok(!unlocked.includes(kanjiKey('休'))) // 亻 is still Apprentice
   })
 
   it('keeps later levels locked until reached', () => {
-    const state = withStages({ [componentKey('木')]: BURNED, [componentKey('化')]: BURNED })
+    const state = withStages({
+      [componentKey('木')]: BURNED,
+      [componentKey('化')]: BURNED,
+    })
     assert.ok(!unlockedItems(COURSE, state).includes(componentKey('日')))
   })
 
   it('queues lessons for unlocked items not yet started, components first', () => {
     const state = withStages({ [componentKey('木')]: GURU })
-    assert.deepEqual(lessonQueue(COURSE, state), [componentKey('化'), kanjiKey('木')])
+    assert.deepEqual(lessonQueue(COURSE, state), [
+      componentKey('化'),
+      kanjiKey('木'),
+    ])
   })
 })
 
@@ -174,7 +298,11 @@ describe('reviews', () => {
 
 describe('levels', () => {
   it('needs 90% of the level kanji at Guru', () => {
-    assert.deepEqual(levelProgress(COURSE, INITIAL_STATE), { guru: 0, total: 2, needed: 2 })
+    assert.deepEqual(levelProgress(COURSE, INITIAL_STATE), {
+      guru: 0,
+      total: 2,
+      needed: 2,
+    })
   })
 
   it('does not level up short of the threshold', () => {
@@ -189,7 +317,11 @@ describe('levels', () => {
 
   it('never goes past the last level', () => {
     const state = withStages(
-      { [kanjiKey('木')]: GURU, [kanjiKey('休')]: GURU, [kanjiKey('旦')]: GURU },
+      {
+        [kanjiKey('木')]: GURU,
+        [kanjiKey('休')]: GURU,
+        [kanjiKey('旦')]: GURU,
+      },
       2,
     )
     assert.equal(levelUp(COURSE, state).level, 2)
