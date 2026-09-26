@@ -72,6 +72,9 @@ export interface ItemProgress {
   incorrect: number
 }
 
+/** How reviews are answered: reveal it and grade yourself, or type it. */
+export type AnswerMode = 'reveal' | 'typed'
+
 /** Everything saved about the learner. */
 export interface SrsState {
   version: 1
@@ -80,6 +83,8 @@ export interface SrsState {
   progress: Record<ItemKey, ItemProgress>
   /** Absent in saves from before paces existed, which means normal. */
   pace?: Pace
+  /** How reviews are answered. Absent means reveal and self-grade. */
+  input?: AnswerMode
   /** The four Apprentice waits in hours, when pace is custom. */
   customHours?: number[]
 }

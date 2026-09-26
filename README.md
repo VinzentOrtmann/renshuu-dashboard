@@ -111,8 +111,12 @@ in 72 levels of 30 following Japanese school-grade order. Each level first
 teaches the components its kanji are built from — 亻 person, 木 tree — and a
 kanji unlocks only once its components reach Guru, so 休 is learned as
 "person + tree" rather than as six arbitrary strokes. Reviews run on WaniKani's
-intervals (4 hours up to 4 months, then Burned); you reveal the answer and grade
-yourself. A pace setting shortens the four Apprentice waits — Fast (2, 4, 8,
+intervals (4 hours up to 4 months, then Burned). Answer by revealing the card
+and grading yourself, or by typing: readings take kana or romaji (けい, kei and
+kyu for きゅう all pass, but けい never passes for け), meanings forgive a typo
+and ask again instead of marking it wrong, and a kanji asks for both its
+meaning and a reading. Browse any level, or search by character, meaning,
+component name or reading. A pace setting shortens the four Apprentice waits — Fast (2, 4, 8,
 23 hours) roughly halves the time per level — or takes your own; switching
 reschedules waiting reviews too. Level up at 90% of a level's kanji at Guru, or
 skip ahead to where you already are. A kanji card also shows its stroke order and up to five words from

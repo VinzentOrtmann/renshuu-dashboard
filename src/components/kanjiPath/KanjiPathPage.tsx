@@ -29,7 +29,7 @@ import {
   stageCounts,
   validHours,
 } from '../../lib/srs.ts'
-import type { ItemKey, Pace, SrsState } from '../../lib/srs.ts'
+import type { AnswerMode, ItemKey, Pace, SrsState } from '../../lib/srs.ts'
 import {
   exportProgress,
   importProgress,
@@ -183,6 +183,7 @@ function Path({ course }: { course: Course }) {
         course={course}
         usedIn={usedIn}
         items={view.items}
+        mode={srs.input}
         onAnswer={recordAnswer}
         onExit={home}
       />
@@ -297,6 +298,7 @@ function Path({ course }: { course: Course }) {
         srs={srs}
         onSkip={(level) => update((state) => skipToLevel(course, state, level))}
         onPace={(pace, hours) => update((state) => setPace(state, pace, hours))}
+        onInput={(input) => update((state) => ({ ...state, input }))}
         onImport={(state) => {
           setSrs(levelUp(course, state))
           setCanSave(true)
@@ -322,6 +324,7 @@ function Settings({
   srs,
   onSkip,
   onPace,
+  onInput,
   onImport,
   onReset,
 }: {
@@ -329,6 +332,7 @@ function Settings({
   srs: SrsState
   onSkip: (level: number) => void
   onPace: (pace: Pace, customHours?: number[]) => void
+  onInput: (input: AnswerMode) => void
   onImport: (state: SrsState) => void
   onReset: () => void
 }) {
@@ -341,6 +345,47 @@ function Settings({
         Settings and backup
       </summary>
       <div className="mt-4 space-y-5 text-sm text-[var(--text-secondary)]">
+        <div>
+          <p>
+            <strong className="text-[var(--text-primary)]">Answers.</strong>{' '}
+            Type the answer, or reveal it and grade yourself. Typed answers take
+            kana or romaji for readings, forgive a typo in a meaning, and ask a
+            kanji for both its meaning and a reading — both have to be right for
+            the item to count.
+          </p>
+          <div
+            role="radiogroup"
+            aria-label="Answers"
+            className="mt-2 flex flex-wrap gap-2"
+          >
+            {(
+              [
+                ['reveal', 'Reveal and self-grade'],
+                ['typed', 'Typed'],
+              ] as const
+            ).map(([mode, label]) => (
+              <label
+                key={mode}
+                className={`cursor-pointer rounded-md border px-3 py-1.5 ${
+                  (srs.input ?? 'reveal') === mode
+                    ? 'border-[var(--axis)] text-[var(--text-primary)]'
+                    : 'border-[var(--border)] text-[var(--text-secondary)]'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="answers"
+                  value={mode}
+                  checked={(srs.input ?? 'reveal') === mode}
+                  onChange={() => onInput(mode)}
+                  className="sr-only"
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        </div>
+
         {/* Keyed on the saved pace, so an import or reset shows its pace. */}
         <PaceSetting
           key={`${srs.pace}:${srs.customHours}`}
