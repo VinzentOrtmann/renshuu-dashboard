@@ -8,7 +8,7 @@ import type { Course } from '../../lib/courseData.ts'
 import { checkMeaning, checkReading } from '../../lib/answers.ts'
 import { parseKey } from '../../lib/srs.ts'
 import type { AnswerMode, ItemKey } from '../../lib/srs.ts'
-import { Glyph, ItemDetails, KindBadge } from './ItemCard.tsx'
+import { GLYPH_FONT, Glyph, ItemDetails, KindBadge } from './ItemCard.tsx'
 
 /**
  * Whether a key press belongs to a focused control rather than to the
@@ -26,6 +26,14 @@ function aimedAtControl(event: KeyboardEvent): boolean {
 
 /** Items per lesson batch, as in WaniKani. Small enough to hold in mind. */
 export const LESSON_BATCH = 5
+
+/** The most recent graded answer, so a mistake can be flipped. */
+export interface LastGrade {
+  item: ItemKey
+  correct: boolean
+  /** Flips it, and re-applies the schedule from the answer as it should be. */
+  regrade: (correct: boolean) => void
+}
 
 interface SessionProps {
   course: Course
@@ -123,6 +131,7 @@ export function ReviewSession(
     items: ItemKey[]
     /** 'typed' asks for the answer; 'reveal' shows it and you grade yourself. */
     mode?: AnswerMode
+    last?: LastGrade
     onAnswer: (item: ItemKey, correct: boolean) => void
   },
 ) {
@@ -137,10 +146,12 @@ function RevealReviewSession({
   course,
   usedIn,
   items,
+  last,
   onAnswer,
   onExit,
 }: SessionProps & {
   items: ItemKey[]
+  last?: LastGrade
   onAnswer: (item: ItemKey, correct: boolean) => void
 }) {
   // Fixed at the start: answering changes what's due, and the queue must not
@@ -194,6 +205,7 @@ function RevealReviewSession({
             Back to overview
           </Button>
         </div>
+        <LastGradeBar last={last} course={course} />
       </SessionFrame>
     )
   }
@@ -235,6 +247,7 @@ function RevealReviewSession({
           </Button>
         )}
       </div>
+      <LastGradeBar last={last} course={course} />
     </SessionFrame>
   )
 }
@@ -281,10 +294,12 @@ function TypedReviewSession({
   course,
   usedIn,
   items,
+  last,
   onAnswer,
   onExit,
 }: SessionProps & {
   items: ItemKey[]
+  last?: LastGrade
   onAnswer: (item: ItemKey, correct: boolean) => void
 }) {
   const queue = useMemo(() => shuffled(items), [items])
@@ -347,6 +362,21 @@ function TypedReviewSession({
     if (!shown) field.current?.focus()
   }, [index, step, shown])
 
+  // While an answer is revealed the field is read-only, so "i" is free to
+  // mean "that was a typo, count it right".
+  useEffect(() => {
+    if (!shown) return
+    const onKey = (event: KeyboardEvent) => {
+      if (aimedAtControl(event)) return
+      if (event.key === 'i') {
+        event.preventDefault()
+        advance(false)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [shown, advance])
+
   if (done) {
     const total = tally.right + tally.wrong
     return (
@@ -360,6 +390,7 @@ function TypedReviewSession({
             Back to overview
           </Button>
         </div>
+        <LastGradeBar last={last} course={course} />
       </SessionFrame>
     )
   }
@@ -415,6 +446,9 @@ function TypedReviewSession({
               <Button primary onClick={submit}>
                 {shown ? 'Next (enter)' : 'Answer (enter)'}
               </Button>
+              {shown && (
+                <Button onClick={() => advance(false)}>I was right (i)</Button>
+              )}
               {!shown && (
                 <Button
                   onClick={() => {
@@ -434,7 +468,35 @@ function TypedReviewSession({
           <ItemDetails itemKey={item} course={course} usedIn={usedIn} />
         </div>
       )}
+      <LastGradeBar last={last} course={course} />
     </SessionFrame>
+  )
+}
+
+/**
+ * Flips how the last answer was graded.
+ *
+ * Typing "ten" for "10" or fumbling the keyboard shouldn't cost an item four
+ * days, and honest self-grading sometimes needs correcting a moment later. The
+ * item is rescheduled from the answer as if it had been graded that way.
+ */
+function LastGradeBar({ last, course }: { last?: LastGrade; course: Course }) {
+  if (!last) return null
+  const { kind, id } = parseKey(last.item)
+  const text = kind === 'component' ? course.components[id].form : id
+  return (
+    <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-[var(--border)] pt-4 text-sm text-[var(--text-muted)]">
+      <span>
+        Last answer:{' '}
+        <span className="text-xl" style={{ fontFamily: GLYPH_FONT }}>
+          {text}
+        </span>{' '}
+        counted {last.correct ? 'right' : 'wrong'}.
+      </span>
+      <Button onClick={() => last.regrade(!last.correct)}>
+        Count as {last.correct ? 'wrong' : 'right'}
+      </Button>
+    </div>
   )
 }
 

@@ -115,7 +115,10 @@ intervals (4 hours up to 4 months, then Burned). Answer by revealing the card
 and grading yourself, or by typing: readings take kana or romaji (けい, kei and
 kyu for きゅう all pass, but けい never passes for け), meanings forgive a typo
 and ask again instead of marking it wrong, and a kanji asks for both its
-meaning and a reading. Browse any level, or search by character, meaning,
+meaning and a reading. A mistype needn't cost four days: a revealed wrong
+answer offers "I was right", and the last answer of either mode can be flipped
+between right and wrong, which reschedules the item from how it stood before
+that answer. Browse any level, or search by character, meaning,
 component name or reading. A pace setting shortens the four Apprentice waits — Fast (2, 4, 8,
 23 hours) roughly halves the time per level — or takes your own; switching
 reschedules waiting reviews too. Level up at 90% of a level's kanji at Guru, or

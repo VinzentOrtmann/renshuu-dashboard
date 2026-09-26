@@ -43,6 +43,7 @@ import {
   LessonSession,
   ReviewSession,
 } from './Sessions.tsx'
+import type { LastGrade } from './Sessions.tsx'
 
 type View =
   | { name: 'home' }
@@ -98,6 +99,7 @@ function Path({ course }: { course: Course }) {
   const [saveFailed, setSaveFailed] = useState(false)
   const [view, setView] = useState<View>({ name: 'home' })
   const [now, setNow] = useState(() => Date.now())
+  const [last, setLast] = useState<LastGrade | null>(null)
   const usedIn = useUsedIn(course)
 
   // Keep "now" current so due reviews appear without reloading.
@@ -135,9 +137,34 @@ function Path({ course }: { course: Course }) {
     [update],
   )
 
+  /**
+   * Applies a review answer, remembering what the item looked like before it.
+   *
+   * That snapshot is what makes re-grading possible: flipping an answer
+   * re-applies the schedule from the item's state before it, rather than
+   * stacking a second answer on top of the first.
+   */
   const recordAnswer = useCallback(
     (item: ItemKey, correct: boolean) => {
       const at = Date.now()
+      const before = srs.progress[item]
+      if (!before) return
+      setLast({
+        item,
+        correct,
+        regrade: (nowCorrect: boolean) => {
+          update((state) => ({
+            ...state,
+            progress: {
+              ...state.progress,
+              [item]: answer(before, nowCorrect, at, intervalHours(state)),
+            },
+          }))
+          setLast((l) =>
+            l && l.item === item ? { ...l, correct: nowCorrect } : l,
+          )
+        },
+      })
       update((state) => {
         const current = state.progress[item]
         if (!current) return state
@@ -150,7 +177,7 @@ function Path({ course }: { course: Course }) {
         }
       })
     },
-    [update],
+    [update, srs],
   )
 
   const home = () => {
@@ -184,6 +211,7 @@ function Path({ course }: { course: Course }) {
         usedIn={usedIn}
         items={view.items}
         mode={srs.input}
+        last={last ?? undefined}
         onAnswer={recordAnswer}
         onExit={home}
       />
@@ -239,7 +267,10 @@ function Path({ course }: { course: Course }) {
           label="Reviews"
           count={reviews.length}
           detail={reviews.length > 0 ? 'Due now' : nextReviewText(upcoming)}
-          onClick={() => setView({ name: 'reviews', items: [...reviews] })}
+          onClick={() => {
+            setLast(null)
+            setView({ name: 'reviews', items: [...reviews] })
+          }}
         />
       </section>
 
