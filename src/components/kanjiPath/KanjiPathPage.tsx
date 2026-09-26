@@ -11,19 +11,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { loadCourse, useUsedIn } from '../../lib/course.ts'
 import type { Course } from '../../lib/courseData.ts'
-import { heatmapColorVar } from '../../lib/palette.ts'
 import {
   BURNED,
-  GURU,
   INITIAL_STATE,
   PACE_HOURS,
   afterLesson,
   answer,
-  componentKey,
   forecast,
   hoursToGuru,
   intervalHours,
-  kanjiKey,
   lessonQueue,
   levelProgress,
   levelUp,
@@ -31,8 +27,6 @@ import {
   setPace,
   skipToLevel,
   stageCounts,
-  stageName,
-  unlockedItems,
   validHours,
 } from '../../lib/srs.ts'
 import type { ItemKey, Pace, SrsState } from '../../lib/srs.ts'
@@ -42,7 +36,7 @@ import {
   loadProgress,
   saveProgress,
 } from '../../lib/srsStore.ts'
-import { GLYPH_FONT } from './ItemCard.tsx'
+import { BrowseView, LevelGrid } from './Browse.tsx'
 import {
   Button,
   LESSON_BATCH,
@@ -52,6 +46,7 @@ import {
 
 type View =
   | { name: 'home' }
+  | { name: 'browse' }
   | { name: 'lessons'; items: ItemKey[] }
   | { name: 'reviews'; items: ItemKey[] }
 
@@ -163,6 +158,12 @@ function Path({ course }: { course: Course }) {
     setView({ name: 'home' })
   }
 
+  if (view.name === 'browse') {
+    return (
+      <BrowseView course={course} srs={srs} usedIn={usedIn} onExit={home} />
+    )
+  }
+
   if (view.name === 'lessons') {
     return (
       <LessonSession
@@ -272,6 +273,12 @@ function Path({ course }: { course: Course }) {
         </div>
 
         <LevelGrid course={course} srs={srs} />
+
+        <div className="mt-5">
+          <Button onClick={() => setView({ name: 'browse' })}>
+            Browse all levels →
+          </Button>
+        </div>
       </section>
 
       <section className="flex flex-wrap gap-x-8 gap-y-3 rounded-xl border border-[var(--border)] bg-[var(--surface-1)] px-4 py-4 sm:px-6">
@@ -308,80 +315,6 @@ function nextReviewText(upcoming: number[]): string {
   const hour = upcoming.findIndex((count) => count > 0)
   if (hour === -1) return 'None in the next day'
   return hour === 0 ? 'Next within the hour' : `Next in about ${hour + 1} hours`
-}
-
-/**
- * The current level's components and kanji, each shaded by its stage on the
- * same ramp as the dashboard's heatmap. Locked items are outlines: not yet
- * available is a different fact from not yet learned.
- */
-function LevelGrid({ course, srs }: { course: Course; srs: SrsState }) {
-  const level = course.levels[srs.level - 1]
-  const unlocked = new Set(unlockedItems(course, srs))
-
-  const tile = (key: ItemKey, text: string, title: string) => {
-    const stage = srs.progress[key]?.stage ?? 0
-    const step =
-      stage === 0 ? 0 : stage >= 8 ? 4 : stage === 7 ? 3 : stage >= GURU ? 2 : 1
-    const locked = !unlocked.has(key) && stage === 0
-    return (
-      <span
-        key={key}
-        title={`${title} — ${locked ? 'locked' : stage === 0 ? 'lesson waiting' : stageName(stage)}`}
-        className={`flex h-11 min-w-11 items-center justify-center rounded-md px-1 text-2xl ${
-          locked
-            ? 'border border-dashed border-[var(--gridline)] text-[var(--text-muted)]'
-            : ''
-        } ${!locked && stage === 0 ? 'border border-[var(--axis)] text-[var(--text-primary)]' : ''}`}
-        style={{
-          fontFamily: GLYPH_FONT,
-          ...(stage > 0
-            ? {
-                background: heatmapColorVar(step),
-                color: `var(--heat-${step}-ink)`,
-              }
-            : {}),
-        }}
-      >
-        {text}
-      </span>
-    )
-  }
-
-  return (
-    <div className="mt-5 space-y-4">
-      {level.components.length > 0 && (
-        <div>
-          <p className="text-xs font-medium tracking-wide text-[var(--text-muted)] uppercase">
-            Components
-          </p>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {level.components.map((id) =>
-              tile(
-                componentKey(id),
-                course.components[id].form,
-                course.components[id].name,
-              ),
-            )}
-          </div>
-        </div>
-      )}
-      <div>
-        <p className="text-xs font-medium tracking-wide text-[var(--text-muted)] uppercase">
-          Kanji
-        </p>
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          {level.kanji.map((char) =>
-            tile(kanjiKey(char), char, course.kanji[char].m.split(',')[0]),
-          )}
-        </div>
-      </div>
-      <p className="text-xs text-[var(--text-muted)]">
-        Dashed: locked until its components reach Guru. Outlined: lesson
-        waiting. Shaded darker as it moves from Apprentice to Burned.
-      </p>
-    </div>
-  )
 }
 
 function Settings({
