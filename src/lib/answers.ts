@@ -288,19 +288,54 @@ const NUMBERS: Record<string, string> = {
   thousand: '1000',
 }
 
+/** Ordinals, which renshuu writes as "2nd" and people type as "second". */
+const ORDINALS: Record<string, string> = {
+  first: '1',
+  second: '2',
+  third: '3',
+  fourth: '4',
+  fifth: '5',
+  sixth: '6',
+  seventh: '7',
+  eighth: '8',
+  ninth: '9',
+  tenth: '10',
+  eleventh: '11',
+  twelfth: '12',
+  thirteenth: '13',
+  fourteenth: '14',
+  fifteenth: '15',
+  sixteenth: '16',
+  seventeenth: '17',
+  eighteenth: '18',
+  nineteenth: '19',
+  twentieth: '20',
+  thirtieth: '30',
+}
+
+/** "2nd" and "second" both come out as "2". */
+function asNumber(word: string): string | undefined {
+  const suffixed = /^(\d+)(st|nd|rd|th)$/.exec(word)
+  return suffixed ? suffixed[1] : (ORDINALS[word] ?? NUMBERS[word])
+}
+
 /**
  * One spelling of a meaning, with everything that shouldn't decide an answer
  * taken out: case, punctuation, a leading "to " or article, and the
- * difference between "three" and "3". What's left is compared literally.
+ * difference between "three", "third", "3rd" and "3". What's left is compared
+ * literally.
  */
 function canonicalMeaning(text: string): string {
   const words = text
     .toLowerCase()
+    // Apostrophes close up rather than split, so "one's" stays one word and
+    // doesn't come apart into "one" — which would then read as the number 1.
+    .replace(/['‘’]/g, '')
     .replace(/[^a-z0-9]+/g, ' ')
     .trim()
     .split(' ')
     .filter(Boolean)
-    .map((word) => NUMBERS[word] ?? word)
+    .map((word) => asNumber(word) ?? word)
   // A verb's "to be" and an article decide nothing: "absent" answers
   // "to be absent". At least one word always survives.
   while (

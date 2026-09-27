@@ -125,8 +125,26 @@ describe('checkMeaning', () => {
       checkMeaning('absent', 'to be absent, to take a day off'),
       'yes',
     )
+    assert.equal(checkMeaning('ones body', "one's body"), 'yes')
+    assert.equal(
+      checkMeaning("to raise one's voice", 'to raise ones voice'),
+      'yes',
+    )
     assert.equal(checkMeaning('a gift', 'gift'), 'yes')
     assert.equal(checkMeaning('  REST  ', 'rest'), 'yes')
+  })
+
+  it('treats an ordinal as its number, spelled either way', () => {
+    assert.equal(
+      checkMeaning('second day of the month', '2nd day of the month'),
+      'yes',
+    )
+    assert.equal(
+      checkMeaning('2nd day of the month', '2nd day of the month'),
+      'yes',
+    )
+    assert.equal(checkMeaning('twentieth', '20th'), 'yes')
+    assert.equal(checkMeaning('third day', '2nd day'), 'no')
   })
 
   it('still tells different numbers apart', () => {
