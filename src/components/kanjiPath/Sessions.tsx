@@ -266,6 +266,26 @@ function promptsFor(itemKey: ItemKey, course: Course) {
       },
     ]
   }
+  if (kind === 'word') {
+    const word = course.words[id]
+    return [
+      {
+        label: 'Meaning',
+        ask: 'What does this word mean?',
+        answer: word.m,
+        check: (typed: string) => checkMeaning(typed, word.m),
+      },
+      {
+        label: 'Reading',
+        // A word has one reading, which is the point of teaching it: it
+        // settles which of the kanji's readings is used here.
+        ask: 'How is this word read? (kana or romaji)',
+        answer: word.r.join(' / '),
+        check: (typed: string) => checkReading(typed, word.r.join(',')),
+      },
+    ]
+  }
+
   const kanji = course.kanji[id]
   return [
     {

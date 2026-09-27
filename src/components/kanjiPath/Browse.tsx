@@ -15,6 +15,7 @@ import {
   componentKey,
   kanjiKey,
   parseKey,
+  wordKey,
   stageName,
   unlockedItems,
 } from '../../lib/srs.ts'
@@ -54,9 +55,13 @@ export function ItemTile({
   selected?: boolean
 }) {
   const { kind, id } = parseKey(itemKey)
-  const component = kind === 'component' ? course.components[id] : undefined
-  const text = component ? component.form : id
-  const label = component ? component.name : course.kanji[id].m.split(',')[0]
+  const text = kind === 'component' ? course.components[id].form : id
+  const label =
+    kind === 'component'
+      ? course.components[id].name
+      : kind === 'word'
+        ? course.words[id].m.split(',')[0]
+        : course.kanji[id].m.split(',')[0]
 
   const stage = srs.progress[itemKey]?.stage ?? 0
   const step =
@@ -64,7 +69,8 @@ export function ItemTile({
   const locked = stage === 0 && !unlocked.has(itemKey)
 
   const className = [
-    'flex h-11 min-w-11 items-center justify-center rounded-md px-1 text-2xl',
+    'flex h-11 min-w-11 items-center justify-center rounded-md px-1',
+    [...text].length > 3 ? 'text-lg' : 'text-2xl',
     locked
       ? 'border border-dashed border-[var(--gridline)] text-[var(--text-muted)]'
       : '',
@@ -122,7 +128,7 @@ export function LevelGrid({
     () => new Set(unlockedItems(course, srs)),
     [course, srs],
   )
-  const { components, kanji } = course.levels[level - 1]
+  const { components, kanji, words } = course.levels[level - 1]
 
   const row = (keys: ItemKey[]) => (
     <div className="mt-2 flex flex-wrap gap-1.5">
@@ -152,6 +158,12 @@ export function LevelGrid({
         <Label>Kanji</Label>
         {row(kanji.map(kanjiKey))}
       </div>
+      {words.length > 0 && (
+        <div>
+          <Label>Words</Label>
+          {row(words.map(wordKey))}
+        </div>
+      )}
       <p className="text-xs text-[var(--text-muted)]">
         Dashed: locked until its components reach Guru. Outlined: lesson
         waiting. Shaded darker as it moves from Apprentice to Burned.
@@ -195,6 +207,15 @@ function search(course: Course, query: string): ItemKey[] {
       hits.push(kanjiKey(char))
     }
   }
+  for (const [written, word] of Object.entries(course.words)) {
+    if (
+      written.includes(q) ||
+      word.m.toLowerCase().includes(q) ||
+      word.r.some((reading) => reading.includes(q))
+    ) {
+      hits.push(wordKey(written))
+    }
+  }
   return hits.slice(0, MAX_RESULTS)
 }
 
@@ -234,7 +255,7 @@ export function BrowseView({
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search a kanji, a meaning, a component name or a reading"
+        placeholder="Search a kanji, a word, a meaning or a reading"
         aria-label="Search the course"
         className="w-full rounded-md border border-[var(--border)] bg-[var(--surface-page)] px-3 py-2 text-[var(--text-primary)]"
       />

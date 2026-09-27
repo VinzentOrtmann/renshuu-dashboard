@@ -16,7 +16,7 @@
  */
 
 /** Bumped only if the course shape changes incompatibly. */
-export const COURSE_VERSION = 1
+export const COURSE_VERSION = 2
 
 /** Kanji per level. WaniKani's levels run to a similar size. */
 export const LEVEL_SIZE = 30
@@ -171,7 +171,10 @@ export function directParts(
       const partInCourse = courseKanji.has(part)
       const otherInCourse = courseKanji.has(other)
       if (otherInCourse && !partInCourse) return false
-      if (partInCourse === otherInCourse && parts.indexOf(other) < parts.indexOf(part)) {
+      if (
+        partInCourse === otherInCourse &&
+        parts.indexOf(other) < parts.indexOf(part)
+      ) {
         return false
       }
     }
@@ -206,7 +209,23 @@ export interface CourseLevel {
   /** Components first introduced at this level. */
   components: string[]
   kanji: string[]
+  /** Words whose last kanji is taught at this level. */
+  words: string[]
 }
+
+/** One vocabulary word, from your own renshuu schedules. */
+export interface CourseWord {
+  w: string
+  /** Readings in kana; more than one when the spelling is two words. */
+  r: string[]
+  m: string
+  /** The course kanji it is written with, in order of appearance. */
+  kanji: string[]
+  level: number
+}
+
+/** Words picked per kanji. WaniKani teaches about this many. */
+export const WORDS_PER_KANJI = 3
 
 /** The top level of public/data/course.json. */
 export interface Course {
@@ -215,6 +234,7 @@ export interface Course {
   levels: CourseLevel[]
   kanji: Record<string, CourseKanji>
   components: Record<string, CourseComponent>
+  words: Record<string, CourseWord>
 }
 
 /** The KANJIDIC2 fields the course needs. */
@@ -234,9 +254,7 @@ export function parseCourseEntry(block: string): KanjidicCourseEntry | null {
   const literal = /<literal>([^<]+)<\/literal>/.exec(block)?.[1]
   if (!literal) return null
   const all = (pattern: RegExp) =>
-    [...block.matchAll(pattern)].map((m) =>
-      m[1].trim().replace(/&amp;/g, '&'),
-    )
+    [...block.matchAll(pattern)].map((m) => m[1].trim().replace(/&amp;/g, '&'))
   const grade = /<grade>(\d+)<\/grade>/.exec(block)?.[1]
   const freq = /<freq>(\d+)<\/freq>/.exec(block)?.[1]
   return {
@@ -244,9 +262,15 @@ export function parseCourseEntry(block: string): KanjidicCourseEntry | null {
     grade: grade ? Number(grade) : undefined,
     freq: freq ? Number(freq) : undefined,
     s: Number(/<stroke_count>(\d+)<\/stroke_count>/.exec(block)?.[1] ?? 0),
-    m: all(/<meaning>([^<]+)<\/meaning>/g).slice(0, 3).join(', '),
-    on: all(/<reading r_type="ja_on">([^<]+)<\/reading>/g).slice(0, 3).join(', '),
-    kun: all(/<reading r_type="ja_kun">([^<]+)<\/reading>/g).slice(0, 3).join(', '),
+    m: all(/<meaning>([^<]+)<\/meaning>/g)
+      .slice(0, 3)
+      .join(', '),
+    on: all(/<reading r_type="ja_on">([^<]+)<\/reading>/g)
+      .slice(0, 3)
+      .join(', '),
+    kun: all(/<reading r_type="ja_kun">([^<]+)<\/reading>/g)
+      .slice(0, 3)
+      .join(', '),
   }
 }
 
@@ -256,7 +280,9 @@ export function parseCourseEntry(block: string): KanjidicCourseEntry | null {
  * newspaper frequency, so each level front-loads the kanji you'll meet most;
  * kanji with no frequency rank go last, fewest strokes first.
  */
-export function orderCourse(entries: KanjidicCourseEntry[]): KanjidicCourseEntry[] {
+export function orderCourse(
+  entries: KanjidicCourseEntry[],
+): KanjidicCourseEntry[] {
   return entries
     .filter((e) => e.grade !== undefined && e.grade <= 8)
     .sort(
@@ -282,10 +308,83 @@ function componentName(
 }
 
 /** Builds the whole course from KANJIDIC2 entries and KRADFILE. */
+/** The kanji written in a word, ignoring the repeat mark. */
+function kanjiIn(word: string): string[] {
+  return [...word].filter((c) => c !== '々' && /\p{Script=Han}/u.test(c))
+}
+
+/**
+ * Trims a renshuu gloss that was cut mid-bracket, as several are:
+ * "you (trad. polite in ref. to someone of equal or lower status".
+ */
+function cleanMeaning(meaning: string): string {
+  const opens = (meaning.match(/\(/g) ?? []).length
+  const closes = (meaning.match(/\)/g) ?? []).length
+  const trimmed =
+    opens > closes ? meaning.slice(0, meaning.lastIndexOf('(')) : meaning
+  return trimmed.replace(/[\s,;]+$/, '').trim()
+}
+
+/**
+ * Picks the words to teach, about `perKanji` for each kanji.
+ *
+ * Words come from your own renshuu vocabulary, so they are words you actually
+ * study. A word is only usable once every kanji in it has been taught, so it
+ * belongs to the level of its last kanji — and words using a kanji outside the
+ * course are skipped, since they could never unlock.
+ *
+ * Shorter words first, then fewer kanji, then earlier in the course: 休み
+ * before 休憩, which teaches the reading with the least around it.
+ */
+export function selectWords(
+  vocabulary: Record<string, { r: string[]; m: string }>,
+  kanjiLevels: Map<string, number>,
+  perKanji: number = WORDS_PER_KANJI,
+): Record<string, CourseWord> {
+  const candidates: CourseWord[] = []
+  for (const [written, entry] of Object.entries(vocabulary)) {
+    const chars = [...new Set(kanjiIn(written))]
+    if (chars.length === 0) continue
+    if (!chars.every((c) => kanjiLevels.has(c))) continue
+    const meaning = cleanMeaning(entry.m)
+    if (!meaning || entry.r.length === 0) continue
+    candidates.push({
+      w: written,
+      r: entry.r,
+      m: meaning,
+      kanji: chars,
+      level: Math.max(...chars.map((c) => kanjiLevels.get(c)!)),
+    })
+  }
+
+  candidates.sort(
+    (a, b) =>
+      [...a.w].length - [...b.w].length ||
+      a.kanji.length - b.kanji.length ||
+      a.level - b.level ||
+      a.w.localeCompare(b.w),
+  )
+
+  const chosen: Record<string, CourseWord> = {}
+  const taught = new Map<string, number>()
+  // In course order, so early kanji get the pick of the shortest words.
+  const byLevel = [...kanjiLevels.entries()].sort((a, b) => a[1] - b[1])
+  for (const [char] of byLevel) {
+    for (const word of candidates) {
+      if ((taught.get(char) ?? 0) >= perKanji) break
+      if (chosen[word.w] || !word.kanji.includes(char)) continue
+      chosen[word.w] = word
+      for (const c of word.kanji) taught.set(c, (taught.get(c) ?? 0) + 1)
+    }
+  }
+  return chosen
+}
+
 export function buildCourse(
   entries: KanjidicCourseEntry[],
   krad: Map<string, string[]>,
   levelSize: number = LEVEL_SIZE,
+  vocabulary: Record<string, { r: string[]; m: string }> = {},
 ): Course {
   const dictionary = new Map(entries.map((e) => [e.c, e]))
   const ordered = orderCourse(entries)
@@ -297,7 +396,7 @@ export function buildCourse(
 
   ordered.forEach((entry, index) => {
     const level = Math.floor(index / levelSize) + 1
-    levels[level - 1] ??= { components: [], kanji: [] }
+    levels[level - 1] ??= { components: [], kanji: [], words: [] }
     const parts = directParts(entry.c, krad, courseKanji)
 
     // A component is introduced at the first level that needs it.
@@ -325,11 +424,21 @@ export function buildCourse(
     }
   })
 
+  const words = selectWords(
+    vocabulary,
+    new Map(Object.values(kanji).map((k) => [k.c, k.level])),
+  )
+  for (const word of Object.values(words)) {
+    levels[word.level - 1].words.push(word.w)
+  }
+  for (const level of levels) level.words.sort()
+
   return {
     version: COURSE_VERSION,
     generatedAt: new Date().toISOString(),
     levels,
     kanji,
     components,
+    words,
   }
 }

@@ -21,6 +21,7 @@ import {
   levelUp,
   parseKey,
   reviewQueue,
+  wordKey,
   setPace,
   skipToLevel,
   stageCounts,
@@ -35,15 +36,20 @@ const NOW = Date.UTC(2026, 8, 21, 12)
 
 /**
  * A two-level course. Level 1: components 木 and 亻 (stand-in 化), kanji 木
- * (built from 木) and 休 (亻 + 木). Level 2: component 日, kanji 旦 (日).
+ * (built from 木) and 休 (亻 + 木), word 休み. Level 2: component 日, kanji 旦
+ * (日), word 旦那.
  */
 const COURSE: Course = {
   version: 1,
   generatedAt: '',
   levels: [
-    { components: ['木', '化'], kanji: ['木', '休'] },
-    { components: ['日'], kanji: ['旦'] },
+    { components: ['木', '化'], kanji: ['木', '休'], words: ['休み'] },
+    { components: ['日'], kanji: ['旦'], words: ['旦那'] },
   ],
+  words: {
+    休み: { w: '休み', r: ['やすみ'], m: 'rest', kanji: ['休'], level: 1 },
+    旦那: { w: '旦那', r: ['だんな'], m: 'husband', kanji: ['旦'], level: 2 },
+  },
   kanji: {
     木: {
       c: '木',
@@ -293,6 +299,54 @@ describe('reviews', () => {
     assert.equal(counts.Apprentice, 1)
     assert.equal(counts.Guru, 1)
     assert.equal(counts.Burned, 1)
+  })
+})
+
+describe('words', () => {
+  const guru = (keys: string[]): SrsState => ({
+    ...INITIAL_STATE,
+    progress: Object.fromEntries(
+      keys.map((key) => [
+        key,
+        { stage: GURU, next: NOW, correct: 5, incorrect: 0 },
+      ]),
+    ),
+  })
+
+  it('stays locked until every kanji in it is at Guru', () => {
+    const before = guru([componentKey('木'), componentKey('化')])
+    assert.equal(unlockedItems(COURSE, before).includes(wordKey('休み')), false)
+
+    const after = guru([componentKey('木'), componentKey('化'), kanjiKey('休')])
+    assert.equal(unlockedItems(COURSE, after).includes(wordKey('休み')), true)
+  })
+
+  it('is left out entirely when vocabulary is switched off', () => {
+    const state = { ...guru([kanjiKey('休')]), vocab: false }
+    assert.equal(unlockedItems(COURSE, state).includes(wordKey('休み')), false)
+  })
+
+  it('comes after components and kanji in lessons', () => {
+    const kinds = lessonQueue(COURSE, guru([kanjiKey('休')])).map(
+      (key) => parseKey(key).kind,
+    )
+    assert.equal(kinds[kinds.length - 1], 'word')
+    assert.equal(kinds.indexOf('word') > kinds.lastIndexOf('component'), true)
+  })
+
+  it('never gates a level, however far behind the words are', () => {
+    // Both level 1 kanji at Guru, its word untouched: the level still passes.
+    const state = guru([kanjiKey('木'), kanjiKey('休')])
+    const { guru: atGuru, needed } = levelProgress(COURSE, state)
+    assert.equal(atGuru, 2)
+    assert.equal(needed, 2)
+    assert.equal(levelUp(COURSE, state).level, 2)
+  })
+
+  it('is burned along with the rest when skipping past its level', () => {
+    const skipped = skipToLevel(COURSE, INITIAL_STATE, 2)
+    assert.equal(skipped.progress[wordKey('休み')].stage, BURNED)
+    assert.equal(skipped.progress[wordKey('旦那')], undefined)
   })
 })
 

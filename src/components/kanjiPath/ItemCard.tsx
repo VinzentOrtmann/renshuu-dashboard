@@ -14,7 +14,7 @@ import { KANJIVG_SIZE } from '../../lib/strokeData.ts'
 import { loadStrokes } from '../../lib/strokes.ts'
 import { loadVocab } from '../../lib/vocab.ts'
 import { parseKey } from '../../lib/srs.ts'
-import type { ItemKey } from '../../lib/srs.ts'
+import type { ItemKey, ItemKind } from '../../lib/srs.ts'
 
 /**
  * Glyph font. Klee One for handwriting shapes, then fonts that cover the few
@@ -25,12 +25,19 @@ export const GLYPH_FONT =
   "'Klee One', 'UD Digi Kyokasho N-R', 'Yu Mincho', 'SimSun-ExtB', 'MingLiU-ExtB', serif"
 
 /** Kind colours: identity only, from the chart palette. Never used for text. */
-const KIND_COLOR = {
+const KIND_COLOR: Record<ItemKind, string> = {
   component: 'var(--series-grammar)',
   kanji: 'var(--series-vocab)',
+  word: 'var(--series-sent)',
 }
 
-export function KindBadge({ kind }: { kind: 'component' | 'kanji' }) {
+const KIND_LABEL: Record<ItemKind, string> = {
+  component: 'Component',
+  kanji: 'Kanji',
+  word: 'Word',
+}
+
+export function KindBadge({ kind }: { kind: ItemKind }) {
   return (
     <span className="inline-flex items-center gap-1.5 text-xs font-medium tracking-wide text-[var(--text-muted)] uppercase">
       <span
@@ -38,12 +45,12 @@ export function KindBadge({ kind }: { kind: 'component' | 'kanji' }) {
         className="h-2 w-2 rounded-full"
         style={{ background: KIND_COLOR[kind] }}
       />
-      {kind === 'component' ? 'Component' : 'Kanji'}
+      {KIND_LABEL[kind]}
     </span>
   )
 }
 
-/** The big character at the top of a card. */
+/** The big character, or word, at the top of a card. */
 export function Glyph({
   itemKey,
   course,
@@ -52,10 +59,14 @@ export function Glyph({
   course: Course
 }) {
   const { kind, id } = parseKey(itemKey)
-  const text = kind === 'component' ? course.components[id]?.form : id
+  const text = kind === 'component' ? (course.components[id]?.form ?? id) : id
+  // Words run to several characters, so they step down a size or two rather
+  // than running off the card.
+  const length = [...text].length
+  const size = length <= 2 ? 'text-8xl' : length <= 4 ? 'text-6xl' : 'text-5xl'
   return (
     <div
-      className="text-8xl leading-none text-[var(--text-primary)]"
+      className={`${size} leading-none text-[var(--text-primary)]`}
       style={{ fontFamily: GLYPH_FONT }}
     >
       {text}
@@ -93,6 +104,42 @@ export function ItemDetails({ itemKey, course, usedIn }: ItemCardProps) {
             </span>
           </Field>
         )}
+      </div>
+    )
+  }
+
+  if (kind === 'word') {
+    const word = course.words[id]
+    return (
+      <div className="space-y-4">
+        <Field label="Reading">
+          <span
+            className="text-2xl text-[var(--text-primary)]"
+            style={{ fontFamily: GLYPH_FONT }}
+          >
+            {word.r.join(' / ')}
+          </span>
+        </Field>
+        <Field label="Meaning">
+          <span className="text-xl text-[var(--text-primary)]">{word.m}</span>
+        </Field>
+        <Field label="Written with">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            {word.kanji.map((char) => (
+              <span key={char} className="flex items-baseline gap-1.5">
+                <span
+                  className="text-3xl text-[var(--text-primary)]"
+                  style={{ fontFamily: GLYPH_FONT }}
+                >
+                  {char}
+                </span>
+                <span className="text-sm text-[var(--text-secondary)]">
+                  {course.kanji[char]?.m.split(',')[0]}
+                </span>
+              </span>
+            ))}
+          </div>
+        </Field>
       </div>
     )
   }

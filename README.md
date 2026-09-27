@@ -125,6 +125,14 @@ reschedules waiting reviews too. Level up at 90% of a level's kanji at Guru, or
 skip ahead to where you already are. A kanji card also shows its stroke order and up to five words from
 your own Renshuu vocabulary that use it.
 
+It teaches words too, as WaniKani does: 2,707 of them, taken from your own
+renshuu vocabulary rather than a general dictionary, about three per kanji and
+shortest first (休み before 休憩). A word unlocks once every kanji in it reaches
+Guru, and asks for its meaning and its one reading — which is what settles
+whether 生 is せい or なま here. Words never gate a level, and the whole of
+vocabulary can be switched off in the settings. 690 kanji have no word, since
+your schedules don't cover them.
+
 Progress is saved in this browser only — no account, nothing leaves your
 computer — so export a backup from the settings now and then.
 

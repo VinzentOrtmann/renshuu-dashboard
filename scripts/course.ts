@@ -10,7 +10,7 @@
  * Group, CC BY-SA 4.0. See src/lib/courseData.ts for how they're combined.
  */
 
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { gunzipSync } from 'node:zlib'
@@ -21,17 +21,32 @@ import {
   parseKradfile,
 } from '../src/lib/courseData.ts'
 import type { KanjidicCourseEntry } from '../src/lib/courseData.ts'
+import type { VocabCollection } from '../src/types/vocab.ts'
 
 const KANJIDIC = 'http://www.edrdg.org/kanjidic/kanjidic2.xml.gz'
 const KRADFILE = 'http://ftp.edrdg.org/pub/Nihongo/kradfile.gz'
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT = resolve(projectRoot, 'public/data/course.json')
+const VOCAB = resolve(projectRoot, 'public/data/vocab.json')
 
 async function download(url: string): Promise<Buffer> {
   const response = await fetch(url)
   if (!response.ok) throw new Error(`HTTP ${response.status} for ${url}`)
   return gunzipSync(Buffer.from(await response.arrayBuffer()))
+}
+
+/** The words from public/data/vocab.json, or none if it isn't there yet. */
+async function readVocabulary(): Promise<
+  Record<string, { r: string[]; m: string }>
+> {
+  try {
+    const raw = await readFile(VOCAB, 'utf8')
+    return (JSON.parse(raw) as VocabCollection).words
+  } catch {
+    console.warn(`No vocabulary at ${VOCAB}; run npm run vocab first.`)
+    return {}
+  }
 }
 
 async function main() {
@@ -53,7 +68,11 @@ async function main() {
   // for Japanese text. Decoded as UTF-8 every component would come out garbled.
   const krad = parseKradfile(new TextDecoder('euc-jp').decode(kradfile))
 
-  const course = buildCourse(entries, krad)
+  // Vocabulary comes from your own renshuu schedules, collected weekly by
+  // npm run vocab. Without it the course is still complete, just kanji only.
+  const vocabulary = await readVocabulary()
+
+  const course = buildCourse(entries, krad, undefined, vocabulary)
   const contents = `${JSON.stringify(course)}\n`
 
   await mkdir(dirname(OUT), { recursive: true })
@@ -66,6 +85,7 @@ async function main() {
   console.log(
     `${kanjiCount} kanji in ${course.levels.length} levels, ` +
       `${Object.keys(course.components).length} components, ` +
+      `${Object.keys(course.words).length} words, ` +
       `${Math.round(Buffer.byteLength(contents, 'utf8') / 1024)} KB` +
       (withoutParts ? ` (${withoutParts} kanji have no component data)` : ''),
   )

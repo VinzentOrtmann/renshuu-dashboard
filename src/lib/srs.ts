@@ -13,18 +13,25 @@
 import type { Course } from './courseData.ts'
 
 /** What kind of thing is being learned. */
-export type ItemKind = 'component' | 'kanji'
+export type ItemKind = 'component' | 'kanji' | 'word'
 
-/** Identifies an item across both kinds: `c:<id>` or `k:<kanji>`. */
+/** Identifies an item across the kinds: `c:<id>`, `k:<kanji>`, `w:<word>`. */
 export type ItemKey = string
 
 export const componentKey = (id: string): ItemKey => `c:${id}`
 export const kanjiKey = (kanji: string): ItemKey => `k:${kanji}`
+export const wordKey = (word: string): ItemKey => `w:${word}`
+
+const KINDS: Record<string, ItemKind> = {
+  c: 'component',
+  k: 'kanji',
+  w: 'word',
+}
 
 /** Splits an item key back into its kind and id. */
 export function parseKey(key: ItemKey): { kind: ItemKind; id: string } {
   return {
-    kind: key.startsWith('c:') ? 'component' : 'kanji',
+    kind: KINDS[key[0]] ?? 'kanji',
     id: key.slice(2),
   }
 }
@@ -85,6 +92,8 @@ export interface SrsState {
   pace?: Pace
   /** How reviews are answered. Absent means reveal and self-grade. */
   input?: AnswerMode
+  /** Whether vocabulary is taught too. Absent means yes. */
+  vocab?: boolean
   /** The four Apprentice waits in hours, when pace is custom. */
   customHours?: number[]
 }
@@ -204,6 +213,10 @@ function stageOf(state: SrsState, key: ItemKey): number {
  * point of the whole exercise: you meet a kanji only after its parts are
  * familiar, so it arrives as a combination of known pieces rather than as an
  * arbitrary tangle of strokes.
+ *
+ * Words follow the same rule one floor up: a word unlocks once every kanji in
+ * it has reached Guru. Words are where a reading is settled — 生 is せい in
+ * 学生 but なま on its own — but they never hold up a level (see levelProgress).
  */
 export function unlockedItems(course: Course, state: SrsState): ItemKey[] {
   const keys: ItemKey[] = []
@@ -220,6 +233,13 @@ export function unlockedItems(course: Course, state: SrsState): ItemKey[] {
         keys.push(kanjiKey(char))
       }
     }
+    if (state.vocab === false) continue
+    for (const word of course.levels[level - 1].words ?? []) {
+      const chars = course.words[word].kanji
+      if (chars.every((char) => stageOf(state, kanjiKey(char)) >= GURU)) {
+        keys.push(wordKey(word))
+      }
+    }
   }
   return keys
 }
@@ -229,10 +249,11 @@ export function lessonQueue(course: Course, state: SrsState): ItemKey[] {
   const pending = unlockedItems(course, state).filter(
     (key) => !state.progress[key],
   )
-  // Components before kanji, so a kanji's parts are always taught first.
+  // Components, then kanji, then words: always the pieces before the whole.
   return [
     ...pending.filter((key) => key.startsWith('c:')),
     ...pending.filter((key) => key.startsWith('k:')),
+    ...pending.filter((key) => key.startsWith('w:')),
   ]
 }
 
@@ -245,7 +266,10 @@ export function reviewQueue(state: SrsState, now: number): ItemKey[] {
     .map(([key]) => key)
 }
 
-/** How far the current level is toward the next: kanji at Guru or beyond. */
+/**
+ * How far the current level is toward the next: kanji at Guru or beyond.
+ * Words are deliberately not counted, so vocabulary never gates a level.
+ */
 export function levelProgress(
   course: Course,
   state: SrsState,
@@ -287,10 +311,11 @@ export function skipToLevel(
   const target = Math.max(1, Math.min(level, course.levels.length))
   const progress = { ...state.progress }
   for (let l = 1; l < target; l++) {
-    const { components, kanji } = course.levels[l - 1]
+    const { components, kanji, words } = course.levels[l - 1]
     for (const key of [
       ...components.map(componentKey),
       ...kanji.map(kanjiKey),
+      ...(words ?? []).map(wordKey),
     ]) {
       progress[key] = {
         stage: BURNED,

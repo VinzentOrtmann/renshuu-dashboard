@@ -330,6 +330,7 @@ function Path({ course }: { course: Course }) {
         onSkip={(level) => update((state) => skipToLevel(course, state, level))}
         onPace={(pace, hours) => update((state) => setPace(state, pace, hours))}
         onInput={(input) => update((state) => ({ ...state, input }))}
+        onVocab={(vocab) => update((state) => ({ ...state, vocab }))}
         onImport={(state) => {
           setSrs(levelUp(course, state))
           setCanSave(true)
@@ -356,6 +357,7 @@ function Settings({
   onSkip,
   onPace,
   onInput,
+  onVocab,
   onImport,
   onReset,
 }: {
@@ -364,6 +366,7 @@ function Settings({
   onSkip: (level: number) => void
   onPace: (pace: Pace, customHours?: number[]) => void
   onInput: (input: AnswerMode) => void
+  onVocab: (vocab: boolean) => void
   onImport: (state: SrsState) => void
   onReset: () => void
 }) {
@@ -415,6 +418,24 @@ function Settings({
               </label>
             ))}
           </div>
+        </div>
+
+        <div>
+          <p>
+            <strong className="text-[var(--text-primary)]">Vocabulary.</strong>{' '}
+            Words from your renshuu schedules, about three per kanji, unlocked
+            once every kanji in the word reaches Guru. They teach which reading
+            a kanji actually takes, and never hold up a level. Switching this
+            off hides them; progress on words already learned is kept.
+          </p>
+          <label className="mt-2 flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={srs.vocab !== false}
+              onChange={(e) => onVocab(e.target.checked)}
+            />
+            Teach words too
+          </label>
         </div>
 
         {/* Keyed on the saved pace, so an import or reset shows its pace. */}
