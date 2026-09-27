@@ -314,15 +314,46 @@ function kanjiIn(word: string): string[] {
 }
 
 /**
- * Trims a renshuu gloss that was cut mid-bracket, as several are:
- * "you (trad. polite in ref. to someone of equal or lower status".
+ * Tidies a renshuu gloss.
+ *
+ * Two things are wrong with them as they arrive. Some are cut mid-bracket —
+ * "you (trad. polite in ref. to someone of equal or lower status" — and some
+ * repeat a sense verbatim across renshuu's own sense groups, so 年 reads
+ * "year; year". Brackets are kept, since they carry real detail, but a
+ * repeated sense is dropped.
  */
 function cleanMeaning(meaning: string): string {
   const opens = (meaning.match(/\(/g) ?? []).length
   const closes = (meaning.match(/\)/g) ?? []).length
   const trimmed =
     opens > closes ? meaning.slice(0, meaning.lastIndexOf('(')) : meaning
-  return trimmed.replace(/[\s,;]+$/, '').trim()
+
+  // Split on separators outside brackets, so a bracketed note stays whole.
+  const senses: string[] = []
+  let depth = 0
+  let current = ''
+  for (const char of trimmed) {
+    if (char === '(') depth++
+    if (char === ')') depth = Math.max(0, depth - 1)
+    if (depth === 0 && (char === ';' || char === ',')) {
+      senses.push(current)
+      current = ''
+      continue
+    }
+    current += char
+  }
+  senses.push(current)
+
+  const seen = new Set<string>()
+  const kept: string[] = []
+  for (const sense of senses) {
+    const text = sense.trim()
+    const key = text.toLowerCase()
+    if (!text || seen.has(key)) continue
+    seen.add(key)
+    kept.push(text)
+  }
+  return kept.join(', ')
 }
 
 /**

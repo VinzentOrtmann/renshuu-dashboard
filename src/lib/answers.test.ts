@@ -71,6 +71,15 @@ describe('splitting dictionary fields', () => {
   it('drops notes in brackets from meanings', () => {
     assert.deepEqual(meaningAnswers('be (classical), other'), ['be', 'other'])
   })
+
+  it('splits senses on semicolons as well as commas', () => {
+    assert.deepEqual(meaningAnswers('year; year'), ['year', 'year'])
+    assert.deepEqual(meaningAnswers('inside, interior; within'), [
+      'inside',
+      'interior',
+      'within',
+    ])
+  })
 })
 
 describe('checkReading', () => {
@@ -104,6 +113,15 @@ describe('checkMeaning', () => {
   it('calls a typo close rather than wrong', () => {
     assert.equal(checkMeaning('retier', meanings), 'close')
     assert.equal(checkMeaning('day of', meanings), 'close')
+  })
+
+  it('accepts one sense of a semicolon-separated meaning', () => {
+    assert.equal(checkMeaning('year', 'year; year'), 'yes')
+    assert.equal(checkMeaning('interior', 'inside, interior; within'), 'yes')
+    assert.equal(
+      checkMeaning("New Year's gift", "New Year's gift (usu. money given)"),
+      'yes',
+    )
   })
 
   it('rejects a different meaning', () => {

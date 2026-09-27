@@ -192,16 +192,19 @@ export function readingAnswers(readings: string): string[] {
   return [...new Set(answers)]
 }
 
-/** The meanings of an item as separate answers. */
+/**
+ * The meanings of an item as separate answers.
+ *
+ * Senses are separated by a semicolon and near-synonyms by a comma — renshuu
+ * writes "year; year", KANJIDIC "rest, day off" — and any one of them counts,
+ * so both are split on. Notes in brackets are dropped first, since nobody
+ * types "(usu. money given to a child by relatives and visitors)".
+ */
 export function meaningAnswers(meanings: string): string[] {
   return meanings
-    .split(',')
-    .map((m) =>
-      m
-        .replace(/\([^)]*\)/g, '')
-        .trim()
-        .toLowerCase(),
-    )
+    .replace(/\([^)]*\)/g, ' ')
+    .split(/[;,]/)
+    .map((m) => m.trim().toLowerCase())
     .filter(Boolean)
 }
 
