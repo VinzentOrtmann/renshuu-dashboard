@@ -110,6 +110,30 @@ describe('checkMeaning', () => {
     }
   })
 
+  it('ignores the difference between digits and number words', () => {
+    assert.equal(checkMeaning('3 people', 'three people'), 'yes')
+    assert.equal(checkMeaning('three people', 'three people'), 'yes')
+    assert.equal(checkMeaning('9 oclock', "nine o'clock"), 'yes')
+    assert.equal(checkMeaning('ten', '10'), 'yes')
+  })
+
+  it('ignores punctuation, articles and where the spaces fall', () => {
+    assert.equal(checkMeaning('day-off', 'day off'), 'yes')
+    assert.equal(checkMeaning('dayoff', 'day off'), 'yes')
+    assert.equal(checkMeaning('the sea', 'sea'), 'yes')
+    assert.equal(
+      checkMeaning('absent', 'to be absent, to take a day off'),
+      'yes',
+    )
+    assert.equal(checkMeaning('a gift', 'gift'), 'yes')
+    assert.equal(checkMeaning('  REST  ', 'rest'), 'yes')
+  })
+
+  it('still tells different numbers apart', () => {
+    assert.equal(checkMeaning('2 people', 'three people'), 'no')
+    assert.equal(checkMeaning('four', '5'), 'no')
+  })
+
   it('calls a typo close rather than wrong', () => {
     assert.equal(checkMeaning('retier', meanings), 'close')
     assert.equal(checkMeaning('day of', meanings), 'close')

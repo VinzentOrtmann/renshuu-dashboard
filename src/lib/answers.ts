@@ -254,21 +254,86 @@ function sameLetters(a: string, b: string): boolean {
  * Checks a typed meaning. Plurals and a trailing "to " are ignored, so
  * "to rest" and "days off" pass for "rest" and "day off".
  */
+/** Number words, so "3 people" and "three people" are the same answer. */
+const NUMBERS: Record<string, string> = {
+  zero: '0',
+  one: '1',
+  two: '2',
+  three: '3',
+  four: '4',
+  five: '5',
+  six: '6',
+  seven: '7',
+  eight: '8',
+  nine: '9',
+  ten: '10',
+  eleven: '11',
+  twelve: '12',
+  thirteen: '13',
+  fourteen: '14',
+  fifteen: '15',
+  sixteen: '16',
+  seventeen: '17',
+  eighteen: '18',
+  nineteen: '19',
+  twenty: '20',
+  thirty: '30',
+  forty: '40',
+  fifty: '50',
+  sixty: '60',
+  seventy: '70',
+  eighty: '80',
+  ninety: '90',
+  hundred: '100',
+  thousand: '1000',
+}
+
+/**
+ * One spelling of a meaning, with everything that shouldn't decide an answer
+ * taken out: case, punctuation, a leading "to " or article, and the
+ * difference between "three" and "3". What's left is compared literally.
+ */
+function canonicalMeaning(text: string): string {
+  const words = text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+    .map((word) => NUMBERS[word] ?? word)
+  // A verb's "to be" and an article decide nothing: "absent" answers
+  // "to be absent". At least one word always survives.
+  while (
+    words.length > 1 &&
+    ['to', 'be', 'a', 'an', 'the'].includes(words[0])
+  ) {
+    words.shift()
+  }
+  return words.join(' ').replace(/s$/, '')
+}
+
+/** The numbers in a meaning, which a typo is never allowed to change. */
+function numbersIn(text: string): string {
+  return (text.match(/\d+/g) ?? []).join(' ')
+}
+
+/** Whether two canonical meanings match, ignoring where the spaces fall. */
+function sameMeaning(a: string, b: string): boolean {
+  return a === b || a.replace(/ /g, '') === b.replace(/ /g, '')
+}
+
 export function checkMeaning(typed: string, meanings: string): Verdict {
-  const clean = (text: string) =>
-    text
-      .toLowerCase()
-      .trim()
-      .replace(/^to\s+/, '')
-      .replace(/[^a-z0-9 ]/g, '')
-      .replace(/s$/, '')
+  const clean = canonicalMeaning
   const answer = clean(typed)
   if (!answer) return 'no'
 
   let verdict: Verdict = 'no'
   for (const meaning of meaningAnswers(meanings)) {
     const target = clean(meaning)
-    if (answer === target) return 'yes'
+    if (sameMeaning(answer, target)) return 'yes'
+    // "2 people" for "three people" is a different answer, not a slip.
+    if (numbersIn(answer) !== numbersIn(target)) continue
+
     const slips = distance(answer, target)
     if (
       slips <= allowedTypos(target) ||

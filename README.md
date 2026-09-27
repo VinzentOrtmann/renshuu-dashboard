@@ -114,7 +114,9 @@ kanji unlocks only once its components reach Guru, so 休 is learned as
 intervals (4 hours up to 4 months, then Burned). Answer by revealing the card
 and grading yourself, or by typing: readings take kana or romaji (けい, kei and
 kyu for きゅう all pass, but けい never passes for け), meanings forgive a typo
-and ask again instead of marking it wrong, and a kanji asks for both its
+and ask again instead of marking it wrong, and ignore what shouldn't decide an
+answer (case, punctuation, a leading "to be" or article, and "3" for "three")
+while still telling a wrong number from a slip, and a kanji asks for both its
 meaning and a reading. A mistype needn't cost four days: a revealed wrong
 answer offers "I was right", and the last answer of either mode can be flipped
 between right and wrong, which reschedules the item from how it stood before
