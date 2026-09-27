@@ -117,7 +117,9 @@ kyu for きゅう all pass, but けい never passes for け), meanings forgive a
 and ask again instead of marking it wrong, and ignore what shouldn't decide an
 answer (case, punctuation, a leading "to be" or article, and "3" for "three")
 while still telling a wrong number from a slip, and a kanji asks for both its
-meaning and a reading. A mistype needn't cost four days: a revealed wrong
+meaning and a reading. Every answer, right or wrong, shows the entry and the other
+spellings that would have counted, so 休 tells you キュウ, やすむ and やす all
+pass. A mistype needn't cost four days: a revealed wrong
 answer offers "I was right", and the last answer of either mode can be flipped
 between right and wrong, which reschedules the item from how it stood before
 that answer. Browse any level, or search by character, meaning,

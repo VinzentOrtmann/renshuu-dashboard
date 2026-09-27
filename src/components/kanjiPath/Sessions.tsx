@@ -5,7 +5,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Course } from '../../lib/courseData.ts'
-import { checkMeaning, checkReading } from '../../lib/answers.ts'
+import {
+  checkMeaning,
+  checkReading,
+  meaningAnswers,
+  readingAnswers,
+} from '../../lib/answers.ts'
 import { parseKey } from '../../lib/srs.ts'
 import type { AnswerMode, ItemKey } from '../../lib/srs.ts'
 import { GLYPH_FONT, Glyph, ItemDetails, KindBadge } from './ItemCard.tsx'
@@ -262,6 +267,7 @@ function promptsFor(itemKey: ItemKey, course: Course) {
         label: 'Name',
         ask: 'What is this component called?',
         answer: component.name,
+        accepted: meaningAnswers(component.name),
         check: (typed: string) => checkMeaning(typed, component.name),
       },
     ]
@@ -273,6 +279,7 @@ function promptsFor(itemKey: ItemKey, course: Course) {
         label: 'Meaning',
         ask: 'What does this word mean?',
         answer: word.m,
+        accepted: meaningAnswers(word.m),
         check: (typed: string) => checkMeaning(typed, word.m),
       },
       {
@@ -281,6 +288,7 @@ function promptsFor(itemKey: ItemKey, course: Course) {
         // settles which of the kanji's readings is used here.
         ask: 'How is this word read? (kana or romaji)',
         answer: word.r.join(' / '),
+        accepted: word.r,
         check: (typed: string) => checkReading(typed, word.r.join(',')),
       },
     ]
@@ -292,12 +300,14 @@ function promptsFor(itemKey: ItemKey, course: Course) {
       label: 'Meaning',
       ask: 'What does it mean?',
       answer: kanji.m,
+      accepted: meaningAnswers(kanji.m),
       check: (typed: string) => checkMeaning(typed, kanji.m),
     },
     {
       label: 'Reading',
       ask: 'How is it read? (kana or romaji)',
       answer: [kanji.on, kanji.kun].filter(Boolean).join(' · '),
+      accepted: [...readingAnswers(kanji.on), ...readingAnswers(kanji.kun)],
       check: (typed: string) => checkReading(typed, kanji.on, kanji.kun),
     },
   ]
@@ -327,7 +337,8 @@ function TypedReviewSession({
   const [step, setStep] = useState(0)
   const [typed, setTyped] = useState('')
   const [hint, setHint] = useState<string | null>(null)
-  const [shown, setShown] = useState(false)
+  // null while answering; then how it was judged, with the card shown.
+  const [result, setResult] = useState<'right' | 'wrong' | null>(null)
   const [missed, setMissed] = useState(false)
   const [tally, setTally] = useState({ right: 0, wrong: 0 })
   const field = useRef<HTMLInputElement>(null)
@@ -343,7 +354,7 @@ function TypedReviewSession({
       const failed = missed || wrong
       setTyped('')
       setHint(null)
-      setShown(false)
+      setResult(null)
       if (step + 1 < prompts.length) {
         setMissed(failed)
         setStep(step + 1)
@@ -361,31 +372,39 @@ function TypedReviewSession({
     [missed, step, prompts.length, onAnswer, item],
   )
 
+  // The other accepted answers, so a right answer still teaches the rest.
+  const others =
+    result === null
+      ? []
+      : prompt.accepted.filter(
+          (other) => other.toLowerCase() !== typed.trim().toLowerCase(),
+        )
+
   const submit = () => {
-    if (shown) {
-      advance(true)
+    if (result !== null) {
+      advance(result === 'wrong')
       return
     }
     const verdict = prompt.check(typed)
-    if (verdict === 'yes') {
-      advance(false)
-    } else if (verdict === 'close') {
+    if (verdict === 'close') {
       setHint('Close — check your spelling.')
-    } else {
-      setShown(true)
-      setHint(null)
+      return
     }
+    // Right or wrong, the entry is shown before moving on: the other accepted
+    // answers are worth seeing even when you got this one.
+    setResult(verdict === 'yes' ? 'right' : 'wrong')
+    setHint(null)
   }
 
   // Focus follows the prompt, so answering never needs the mouse.
   useEffect(() => {
-    if (!shown) field.current?.focus()
-  }, [index, step, shown])
+    if (result === null) field.current?.focus()
+  }, [index, step, result])
 
   // While an answer is revealed the field is read-only, so "i" is free to
   // mean "that was a typo, count it right".
   useEffect(() => {
-    if (!shown) return
+    if (result !== 'wrong') return
     const onKey = (event: KeyboardEvent) => {
       if (aimedAtControl(event)) return
       if (event.key === 'i') {
@@ -395,7 +414,7 @@ function TypedReviewSession({
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [shown, advance])
+  }, [result, advance])
 
   if (done) {
     const total = tally.right + tally.wrong
@@ -441,15 +460,19 @@ function TypedReviewSession({
                 setTyped(e.target.value)
                 setHint(null)
               }}
-              readOnly={shown}
+              readOnly={result !== null}
               aria-label={prompt.label}
               autoComplete="off"
               autoCapitalize="off"
               spellCheck={false}
               className={`mt-3 w-full rounded-md border px-3 py-2 text-xl text-[var(--text-primary)] ${
-                shown
-                  ? 'border-[var(--series-kanji)] bg-[var(--surface-1)]'
-                  : 'border-[var(--border)] bg-[var(--surface-page)]'
+                result === null
+                  ? 'border-[var(--border)] bg-[var(--surface-page)]'
+                  : `bg-[var(--surface-1)] ${
+                      result === 'right'
+                        ? 'border-[var(--series-grammar)]'
+                        : 'border-[var(--series-kanji)]'
+                    }`
               }`}
             />
             {hint && (
@@ -457,22 +480,35 @@ function TypedReviewSession({
                 {hint}
               </p>
             )}
-            {shown && (
-              <p className="mt-2 text-sm text-[var(--text-primary)]">
-                {prompt.label}: {prompt.answer}
-              </p>
+            {result !== null && (
+              <div className="mt-2 space-y-1 text-sm">
+                <p className="text-[var(--text-primary)]">
+                  <span className="text-[var(--text-muted)]">
+                    {result === 'right' ? 'Right. ' : 'Not quite. '}
+                  </span>
+                  {prompt.label}: {prompt.answer}
+                </p>
+                {others.length > 0 && (
+                  <p className="text-[var(--text-secondary)]">
+                    Also accepted:{' '}
+                    <span style={{ fontFamily: GLYPH_FONT }}>
+                      {others.join(', ')}
+                    </span>
+                  </p>
+                )}
+              </div>
             )}
             <div className="mt-4 flex flex-wrap gap-2">
               <Button primary onClick={submit}>
-                {shown ? 'Next (enter)' : 'Answer (enter)'}
+                {result === null ? 'Answer (enter)' : 'Next (enter)'}
               </Button>
-              {shown && (
+              {result === 'wrong' && (
                 <Button onClick={() => advance(false)}>I was right (i)</Button>
               )}
-              {!shown && (
+              {result === null && (
                 <Button
                   onClick={() => {
-                    setShown(true)
+                    setResult('wrong')
                     setHint(null)
                   }}
                 >
@@ -483,7 +519,7 @@ function TypedReviewSession({
           </form>
         </div>
       </div>
-      {shown && (
+      {result !== null && (
         <div className="mt-8 border-t border-[var(--border)] pt-6">
           <ItemDetails itemKey={item} course={course} usedIn={usedIn} />
         </div>
