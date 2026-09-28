@@ -16865,11 +16865,11 @@
     },
     {
       "date": "2026-09-28",
-      "capturedAt": "2026-09-28T14:33:33.103Z",
+      "capturedAt": "2026-09-28T20:51:12.830Z",
       "adventureLevel": 192,
       "studiedToday": {
-        "all": 467,
-        "vocab": 456,
+        "all": 548,
+        "vocab": 537,
         "kanji": 11,
         "grammar": 0,
         "sent": 0,
@@ -16885,9 +16885,9 @@
       },
       "jlptProgress": {
         "vocab": {
-          "n1": 7,
-          "n2": 15,
-          "n3": 72,
+          "n1": 8,
+          "n2": 17,
+          "n3": 74,
           "n4": 100,
           "n5": 100,
           "n6": 100,
@@ -16956,7 +16956,7 @@
           "totalCount": 2473,
           "newToday": 20,
           "newThisWeek": 20,
-          "dueToday": 779
+          "dueToday": 690
         },
         {
           "id": "9216681",
