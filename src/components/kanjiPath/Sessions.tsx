@@ -342,6 +342,10 @@ function TypedReviewSession({
   const [missed, setMissed] = useState(false)
   const [tally, setTally] = useState({ right: 0, wrong: 0 })
   const field = useRef<HTMLInputElement>(null)
+  const next = useRef<HTMLButtonElement>(null)
+
+  const verdictColor =
+    result === 'right' ? 'var(--verdict-right)' : 'var(--verdict-wrong)'
 
   const done = index >= queue.length
   const item = queue[index]
@@ -373,12 +377,13 @@ function TypedReviewSession({
   )
 
   // The other accepted answers, so a right answer still teaches the rest.
+  // There is no prompt once the queue is finished, hence the optional call.
   const others =
     result === null
       ? []
-      : prompt.accepted.filter(
+      : (prompt?.accepted.filter(
           (other) => other.toLowerCase() !== typed.trim().toLowerCase(),
-        )
+        ) ?? [])
 
   const submit = () => {
     if (result !== null) {
@@ -396,9 +401,15 @@ function TypedReviewSession({
     setHint(null)
   }
 
-  // Focus follows the prompt, so answering never needs the mouse.
+  // Focus follows the prompt, so answering never needs the mouse. Once an
+  // answer is judged it moves off the field: a focused input keeps its focus
+  // ring and selection highlight, which paints over the verdict colour.
   useEffect(() => {
     if (result === null) field.current?.focus()
+    else {
+      field.current?.blur()
+      next.current?.focus()
+    }
   }, [index, step, result])
 
   // While an answer is revealed the field is read-only, so "i" is free to
@@ -465,15 +476,21 @@ function TypedReviewSession({
               autoComplete="off"
               autoCapitalize="off"
               spellCheck={false}
-              className={`mt-3 w-full rounded-md border px-3 py-2 text-xl text-[var(--text-primary)] ${
+              className={`mt-3 w-full rounded-md px-3 py-2 text-xl text-[var(--text-primary)] ${
                 result === null
-                  ? 'border-[var(--border)] bg-[var(--surface-page)]'
-                  : `bg-[var(--surface-1)] ${
-                      result === 'right'
-                        ? 'border-[var(--series-grammar)]'
-                        : 'border-[var(--series-kanji)]'
-                    }`
+                  ? 'border border-[var(--border)] bg-[var(--surface-page)]'
+                  : 'border-2'
               }`}
+              style={
+                result === null
+                  ? undefined
+                  : {
+                      borderColor: verdictColor,
+                      // A wash of the verdict colour, so the whole field
+                      // changes rather than a hairline nobody notices.
+                      background: `color-mix(in srgb, ${verdictColor} 12%, var(--surface-1))`,
+                    }
+              }
             />
             {hint && (
               <p className="mt-2 text-sm text-[var(--text-secondary)]">
@@ -481,11 +498,25 @@ function TypedReviewSession({
               </p>
             )}
             {result !== null && (
-              <div className="mt-2 space-y-1 text-sm">
-                <p className="text-[var(--text-primary)]">
-                  <span className="text-[var(--text-muted)]">
-                    {result === 'right' ? 'Right. ' : 'Not quite. '}
+              <div
+                className="mt-3 space-y-1 rounded-md border-l-4 px-3 py-2 text-sm"
+                style={{
+                  borderColor: verdictColor,
+                  background: `color-mix(in srgb, ${verdictColor} 10%, var(--surface-1))`,
+                }}
+              >
+                {/* 20px bold: the verdict hue sits near 4:1 on its own tint,
+                    which clears the bar for large text but not for body text. */}
+                <p
+                  className="flex items-center gap-2 text-xl font-bold"
+                  style={{ color: verdictColor }}
+                >
+                  <span aria-hidden="true" className="leading-none">
+                    {result === 'right' ? '✓' : '✗'}
                   </span>
+                  {result === 'right' ? 'Right' : 'Not quite'}
+                </p>
+                <p className="text-[var(--text-primary)]">
                   {prompt.label}: {prompt.answer}
                 </p>
                 {others.length > 0 && (
@@ -499,7 +530,7 @@ function TypedReviewSession({
               </div>
             )}
             <div className="mt-4 flex flex-wrap gap-2">
-              <Button primary onClick={submit}>
+              <Button primary onClick={submit} buttonRef={next}>
                 {result === null ? 'Answer (enter)' : 'Next (enter)'}
               </Button>
               {result === 'wrong' && (
@@ -590,15 +621,19 @@ export function Button({
   children,
   primary,
   disabled,
+  buttonRef,
 }: {
   onClick: () => void
   children: React.ReactNode
   primary?: boolean
   disabled?: boolean
+  /** For moving focus here, as the review does once an answer is judged. */
+  buttonRef?: React.Ref<HTMLButtonElement>
 }) {
   return (
     <button
       type="button"
+      ref={buttonRef}
       onClick={onClick}
       disabled={disabled}
       className={`rounded-md border border-[var(--border)] px-4 py-2 text-sm disabled:opacity-40 ${

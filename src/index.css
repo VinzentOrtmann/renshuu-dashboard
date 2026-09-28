@@ -82,6 +82,14 @@
      ramp rather than a neutral grey, so the whole bar reads as one scale. */
   --meter-fill: #2a78d6;
   --meter-track: #cde2fb;
+
+  /* Right / wrong on a review answer. The series aqua and orange in the same
+     hue families, darkened for this surface: these are read as *text*, so they
+     need 4.5:1 against the tinted block they sit on, where the chart values
+     manage 2.8:1. Colour is never the only signal — the verdict is spelled out
+     in words beside a tick or a cross. */
+  --verdict-right: #0f7a54;
+  --verdict-wrong: #b4471f;
 }
 
 /* Dark values are declared twice on purpose: the media query follows the OS
@@ -125,6 +133,10 @@
 
     --meter-fill: #3987e5;
     --meter-track: #184f95;
+
+    /* Lightened for the dark surface, same reasoning as the light values. */
+    --verdict-right: #35c48f;
+    --verdict-wrong: #f07a4a;
   }
 }
 
@@ -161,12 +173,19 @@
 
   --meter-fill: #3987e5;
   --meter-track: #184f95;
+
+  --verdict-right: #35c48f;
+  --verdict-wrong: #f07a4a;
 }
 
 body {
   background: var(--surface-page);
   color: var(--text-secondary);
-  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
 }
 
 /* Printing: only the worksheet sheets are meant to reach paper, and they must
