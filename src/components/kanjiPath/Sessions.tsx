@@ -550,7 +550,9 @@ function TypedReviewSession({
           </form>
         </div>
       </div>
-      {result !== null && (
+      {/* Only once the item's last prompt is answered: the card carries the
+          readings, which would otherwise hand you the next question. */}
+      {result !== null && step === prompts.length - 1 && (
         <div className="mt-8 border-t border-[var(--border)] pt-6">
           <ItemDetails itemKey={item} course={course} usedIn={usedIn} />
         </div>
