@@ -17160,11 +17160,11 @@
     },
     {
       "date": "2026-09-29",
-      "capturedAt": "2026-09-29T01:17:44.644Z",
+      "capturedAt": "2026-09-29T07:32:34.585Z",
       "adventureLevel": 192,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
+        "all": 67,
+        "vocab": 67,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -17229,18 +17229,7 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 434
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 151,
-          "totalCount": 151,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 25
+          "dueToday": 403
         },
         {
           "id": "9664895",
@@ -17251,7 +17240,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 117
+          "dueToday": 112
         },
         {
           "id": "8983851",
@@ -17262,18 +17251,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 927
-        },
-        {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 16
+          "dueToday": 921
         },
         {
           "id": "8375655",
@@ -17284,18 +17262,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 94
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 26
+          "dueToday": 91
         },
         {
           "id": "9216681",
@@ -17447,6 +17414,39 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 151,
+          "totalCount": 151,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
