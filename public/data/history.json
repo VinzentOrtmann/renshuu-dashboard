@@ -17160,11 +17160,11 @@
     },
     {
       "date": "2026-09-29",
-      "capturedAt": "2026-09-29T14:22:19.423Z",
+      "capturedAt": "2026-09-29T19:40:33.311Z",
       "adventureLevel": 193,
       "studiedToday": {
-        "all": 513,
-        "vocab": 394,
+        "all": 519,
+        "vocab": 400,
         "kanji": 112,
         "grammar": 0,
         "sent": 7,
@@ -17181,8 +17181,8 @@
       "jlptProgress": {
         "vocab": {
           "n1": 8,
-          "n2": 17,
-          "n3": 74,
+          "n2": 18,
+          "n3": 75,
           "n4": 100,
           "n5": 100,
           "n6": 100,
@@ -17229,7 +17229,7 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 303
+          "dueToday": 302
         },
         {
           "id": "8983851",
@@ -17240,7 +17240,7 @@
           "totalCount": 2473,
           "newToday": 20,
           "newThisWeek": 20,
-          "dueToday": 783
+          "dueToday": 777
         },
         {
           "id": "9216681",
