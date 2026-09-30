@@ -17455,11 +17455,11 @@
     },
     {
       "date": "2026-09-30",
-      "capturedAt": "2026-09-30T16:06:36.641Z",
+      "capturedAt": "2026-09-30T21:02:21.301Z",
       "adventureLevel": 194,
       "studiedToday": {
-        "all": 483,
-        "vocab": 394,
+        "all": 565,
+        "vocab": 476,
         "kanji": 89,
         "grammar": 0,
         "sent": 0,
@@ -17467,8 +17467,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 6340,
-        "vocab": 4531,
+        "all": 6342,
+        "vocab": 4533,
         "kanji": 631,
         "grammar": 234,
         "sent": 944
@@ -17524,29 +17524,29 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 291
+          "dueToday": 221
         },
         {
           "id": "9664895",
           "name": "Pre-Advanced Words (N2)",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 321,
+          "studiedCount": 323,
           "totalCount": 1738,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 101
+          "newToday": 1,
+          "newThisWeek": 1,
+          "dueToday": 89
         },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1876,
+          "studiedCount": 1877,
           "totalCount": 2473,
           "newToday": 20,
           "newThisWeek": 20,
-          "dueToday": 889
+          "dueToday": 831
         },
         {
           "id": "8260191",
