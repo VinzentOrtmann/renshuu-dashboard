@@ -18952,20 +18952,20 @@
     },
     {
       "date": "2026-10-05",
-      "capturedAt": "2026-10-05T01:18:44.042Z",
+      "capturedAt": "2026-10-05T16:25:51.733Z",
       "adventureLevel": 198,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
+        "all": 155,
+        "vocab": 150,
         "kanji": 0,
         "grammar": 0,
-        "sent": 0,
+        "sent": 5,
         "conj": 0,
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 6501,
-        "vocab": 4651,
+        "all": 6512,
+        "vocab": 4662,
         "kanji": 672,
         "grammar": 234,
         "sent": 944
@@ -19021,18 +19021,7 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 471
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 152,
-          "totalCount": 152,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 13
+          "dueToday": 435
         },
         {
           "id": "9664895",
@@ -19043,29 +19032,18 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 199
+          "dueToday": 194
         },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1969,
+          "studiedCount": 1980,
           "totalCount": 2473,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 1255
-        },
-        {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 17
+          "newToday": 10,
+          "newThisWeek": 10,
+          "dueToday": 1224
         },
         {
           "id": "8375655",
@@ -19076,7 +19054,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 159
+          "dueToday": 78
         },
         {
           "id": "7932506",
@@ -19087,7 +19065,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 12
+          "dueToday": 11
         },
         {
           "id": "9216681",
@@ -19200,17 +19178,6 @@
           "dueToday": 97
         },
         {
-          "id": "9178698",
-          "name": "Pre-Intermediate Sentences (N4)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 158,
-          "totalCount": 158,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 5
-        },
-        {
           "id": "9066023",
           "name": "Verb Conjugations",
           "booktype": "conj",
@@ -19244,12 +19211,45 @@
           "dueToday": 0
         },
         {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 152,
+          "totalCount": 152,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
           "id": "8376486",
           "name": "Beginner Sentences (N5)",
           "booktype": "sent",
           "isFrozen": false,
           "studiedCount": 672,
           "totalCount": 672,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9178698",
+          "name": "Pre-Intermediate Sentences (N4)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 158,
+          "totalCount": 158,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
