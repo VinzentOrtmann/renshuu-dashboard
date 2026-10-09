@@ -20176,8 +20176,8 @@
     },
     {
       "date": "2026-10-09",
-      "capturedAt": "2026-10-08T22:30:27.247Z",
-      "adventureLevel": 199,
+      "capturedAt": "2026-10-09T02:35:32.426Z",
+      "adventureLevel": 200,
       "studiedToday": {
         "all": 0,
         "vocab": 0,
@@ -20188,8 +20188,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 6543,
-        "vocab": 4693,
+        "all": 6566,
+        "vocab": 4716,
         "kanji": 672,
         "grammar": 234,
         "sent": 944
@@ -20228,10 +20228,10 @@
         }
       },
       "dayStreaks": {
-        "vocab": 126,
-        "kanji": 9,
-        "grammar": 1,
-        "sent": 4,
+        "vocab": 127,
+        "kanji": 10,
+        "grammar": 0,
+        "sent": 0,
         "conj": 0,
         "aconj": 0
       },
@@ -20245,29 +20245,51 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 415
+          "dueToday": 450
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 152,
+          "totalCount": 152,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 27
         },
         {
           "id": "9664895",
           "name": "Pre-Advanced Words (N2)",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 356,
+          "studiedCount": 358,
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 201
+          "dueToday": 204
         },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 2011,
+          "studiedCount": 2034,
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1370
+          "dueToday": 1398
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 16
         },
         {
           "id": "8375655",
@@ -20278,7 +20300,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 17
+          "dueToday": 69
         },
         {
           "id": "7932506",
@@ -20289,7 +20311,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 25
+          "dueToday": 12
         },
         {
           "id": "9216681",
@@ -20300,7 +20322,7 @@
           "totalCount": 379,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 333
+          "dueToday": 340
         },
         {
           "id": "9179012",
@@ -20311,7 +20333,7 @@
           "totalCount": 159,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 80
+          "dueToday": 79
         },
         {
           "id": "7932508",
@@ -20322,7 +20344,7 @@
           "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 3
+          "dueToday": 1
         },
         {
           "id": "9710674",
@@ -20344,7 +20366,7 @@
           "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 5
+          "dueToday": 3
         },
         {
           "id": "8983957",
@@ -20366,7 +20388,7 @@
           "totalCount": 138,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 117
+          "dueToday": 119
         },
         {
           "id": "8376486",
@@ -20377,7 +20399,7 @@
           "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 2
+          "dueToday": 1
         },
         {
           "id": "9275775",
@@ -20399,7 +20421,7 @@
           "totalCount": 158,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 2
+          "dueToday": 1
         },
         {
           "id": "9066023",
@@ -20430,28 +20452,6 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 152,
-          "totalCount": 152,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
