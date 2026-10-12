@@ -201,11 +201,37 @@ export function readingAnswers(readings: string): string[] {
  * types "(usu. money given to a child by relatives and visitors)".
  */
 export function meaningAnswers(meanings: string): string[] {
-  return meanings
-    .replace(/\([^)]*\)/g, ' ')
-    .split(/[;,]/)
-    .map((m) => m.trim().toLowerCase())
-    .filter(Boolean)
+  return (
+    stripNotes(meanings)
+      .split(/[;,]/)
+      // Removing a note leaves a gap where it stood, and these strings are shown
+      // back as the answers that would have counted.
+      .map((m) => m.replace(/\s+/g, ' ').trim().toLowerCase())
+      .filter(Boolean)
+  )
+}
+
+/** Brackets that fence off a dictionary note, in both widths. */
+const OPEN = '(（[［【'
+const CLOSE = ')）]］】'
+
+/**
+ * Drops bracketed notes, however they nest.
+ *
+ * "dog (Canis (lupus) familiaris)" has to come out as "dog": a regex stops at
+ * the first closing bracket and leaves "familiaris)" behind, which then counts
+ * as part of the answer. Depth is tracked instead, and a stray closing bracket
+ * with nothing open is dropped rather than kept.
+ */
+function stripNotes(text: string): string {
+  let depth = 0
+  let out = ''
+  for (const char of text) {
+    if (OPEN.includes(char)) depth++
+    else if (CLOSE.includes(char)) depth = Math.max(0, depth - 1)
+    else if (depth === 0) out += char
+  }
+  return out
 }
 
 /**

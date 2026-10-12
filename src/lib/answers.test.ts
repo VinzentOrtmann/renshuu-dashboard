@@ -72,6 +72,15 @@ describe('splitting dictionary fields', () => {
     assert.deepEqual(meaningAnswers('be (classical), other'), ['be', 'other'])
   })
 
+  it('drops a note however deeply it nests, and strays with it', () => {
+    assert.deepEqual(meaningAnswers('dog (Canis (lupus) familiaris)'), ['dog'])
+    assert.deepEqual(meaningAnswers('gift (money given) to a child'), [
+      'gift to a child',
+    ])
+    assert.deepEqual(meaningAnswers('rest（休み）, break'), ['rest', 'break'])
+    assert.deepEqual(meaningAnswers('dog familiaris)'), ['dog familiaris'])
+  })
+
   it('splits senses on semicolons as well as commas', () => {
     assert.deepEqual(meaningAnswers('year; year'), ['year', 'year'])
     assert.deepEqual(meaningAnswers('inside, interior; within'), [
