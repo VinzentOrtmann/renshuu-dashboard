@@ -219,9 +219,10 @@ Two things about it are non-obvious and worth preserving:
   a run at 21:58 local read 255, and the next at 00:40 read 0.
 - **A day can hold an estimate.** When a session falls in a gap no run covered,
   the entry may carry `source: "estimate"` and a note saying how the number was
-  arrived at. Those days are ringed in the heatmap and labelled in its table,
-  and projections ignore them by construction, since they read cumulative
-  totals rather than daily counts.
+  arrived at. Nothing renders that flag — one filled-in day moves no total worth
+  caring about, and marking it up cluttered the heatmap for a distinction that
+  only matters when you go looking. It lives in the file so the answer to "why
+  is this number 86" is written down.
 - **The snapshot workflow calls the deploy workflow explicitly.** GitHub does not
   fire workflows for pushes made with the built-in `GITHUB_TOKEN`. Relying on
   `on: push` would mean the archive grew daily while the deployed site silently

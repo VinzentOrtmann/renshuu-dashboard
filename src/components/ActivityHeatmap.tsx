@@ -51,8 +51,6 @@ interface Day {
   key: string
   /** Undefined when the archive has no entry for this date. */
   count: number | undefined
-  /** True when the count is a filled-in guess rather than a reading. */
-  estimated: boolean
   /** True for dates after today, which are rendered as blank spacers. */
   future: boolean
 }
@@ -64,12 +62,7 @@ interface Day {
  * which is what makes the shape read as a calendar rather than a bar chart.
  */
 function buildWeeks(snapshots: DailySnapshot[]): Day[][] {
-  const byDate = new Map(
-    snapshots.map((s) => [
-      s.date,
-      { count: s.studiedToday.all, estimated: s.source === 'estimate' },
-    ]),
-  )
+  const byDate = new Map(snapshots.map((s) => [s.date, s.studiedToday.all]))
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -91,13 +84,7 @@ function buildWeeks(snapshots: DailySnapshot[]): Day[][] {
     const days: Day[] = []
     for (let day = 0; day < 7; day++) {
       const key = toDateKey(cursor)
-      const entry = byDate.get(key)
-      days.push({
-        key,
-        count: entry?.count,
-        estimated: entry?.estimated ?? false,
-        future: key > todayKey,
-      })
+      days.push({ key, count: byDate.get(key), future: key > todayKey })
       cursor.setDate(cursor.getDate() + 1)
     }
     weeks.push(days)
@@ -184,9 +171,7 @@ function Cell({ day }: { day: Day }) {
   const known = day.count !== undefined
 
   const title = known
-    ? `${formatLongDate(day.key)} — ${day.count} ${day.count === 1 ? 'term' : 'terms'}${
-        day.estimated ? ', estimated: no snapshot ran that evening' : ''
-      }`
+    ? `${formatLongDate(day.key)} — ${day.count} ${day.count === 1 ? 'term' : 'terms'}`
     : `${formatLongDate(day.key)} — no snapshot`
 
   return (
@@ -194,12 +179,7 @@ function Cell({ day }: { day: Day }) {
       title={title}
       className={
         known
-          ? // An estimate is ringed, so a guess never passes for a reading.
-            `h-[14px] w-[14px] rounded-[3px] ${
-              day.estimated
-                ? 'outline-2 outline-offset-1 outline-dashed outline-[var(--text-muted)]'
-                : ''
-            }`
+          ? 'h-[14px] w-[14px] rounded-[3px]'
           : // Unknown days: an outline, never a fill. A filled cell at the
             // bottom of the ramp would read as a recorded zero.
             'h-[14px] w-[14px] rounded-[3px] border border-[var(--gridline)]'
@@ -232,12 +212,6 @@ function RampLegend() {
         />
       ))}
       <span>More</span>
-      <span
-        aria-hidden="true"
-        className="ml-2 h-[14px] w-[14px] rounded-[3px] outline-2 outline-offset-1 outline-dashed outline-[var(--text-muted)]"
-        style={{ background: heatmapColorVar(2) }}
-      />
-      <span>Estimated</span>
     </div>
   )
 }
@@ -268,17 +242,7 @@ function HeatmapTable({ snapshots }: { snapshots: DailySnapshot[] }) {
               <th scope="row" className="py-2 pr-4 font-normal">
                 {formatLongDate(snapshot.date)}
               </th>
-              <td className="py-2 pr-4">
-                {snapshot.studiedToday.all}
-                {snapshot.source === 'estimate' && (
-                  <span
-                    className="ml-2 text-xs text-[var(--text-muted)]"
-                    title={snapshot.note}
-                  >
-                    estimated
-                  </span>
-                )}
-              </td>
+              <td className="py-2 pr-4">{snapshot.studiedToday.all}</td>
             </tr>
           ))}
         </tbody>

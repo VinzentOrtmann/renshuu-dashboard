@@ -100,8 +100,11 @@ export interface DailySnapshot {
    * `estimate` marks a day the snapshot never observed — the API only reports
    * *today's* counter, so a session after the last run of the day is invisible
    * once midnight resets it — where a plausible figure was filled in instead.
-   * An estimate is a guess about the past, not a measurement, so it is drawn
-   * differently and left out of pace and projection maths.
+   *
+   * Provenance only: nothing renders it. A single estimated day moves no total
+   * worth caring about, and flagging it in the UI was more clutter than the
+   * distinction was worth. It stays in the file so that anyone wondering why a
+   * number is what it is can find the answer in `note`.
    */
   source?: 'estimate'
   /** Why an estimated day holds the number it does. */
