@@ -33,6 +33,25 @@ on:
     # when you weren't studying produce no commit and no redeploy.
     - cron: '50 * * * *'
 
+    # "Hourly" is a request, not a promise. In practice GitHub runs this four
+    # to eight times a day: on 13 October 2026 it ran at 03:55, 12:13, 19:33
+    # and 23:26 UTC, so the last look at that Tuesday was 21:33 local, an
+    # evening session went unseen, and the day recorded a zero it had not
+    # earned.
+    #
+    # Repeating the attempt through the hour before local midnight is the
+    # answer: individual runs get dropped, four in a row rarely do. Berlin is
+    # UTC+2 in summer and UTC+1 in winter, so 21:xx and 22:xx UTC between them
+    # always cover 23:xx local, whichever side of the DST switch we're on. The
+    # runs that land on the far side of midnight simply open the next day.
+    - cron: '5,20,35,47 21,22 * * *'
+
+    # And one pair just after renshuu's own 03:00 schedule refresh, which is a
+    # different boundary from the counter reset above: it governs when reviews
+    # come due, so this is the run that captures what a day actually has to do
+    # (03:xx local in both summer and winter).
+    - cron: '10,25 1,2 * * *'
+
   # Lets you trigger a snapshot by hand from the Actions tab.
   workflow_dispatch:
 

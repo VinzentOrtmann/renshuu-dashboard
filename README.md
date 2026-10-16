@@ -176,7 +176,7 @@ The dashboard is careful about the difference between *no data* and *zero*:
 ## How it works
 
 ```
-GitHub Action (cron, every 3 hours)
+GitHub Action (cron, hourly + clusters at local 23:xx and 03:xx)
   └─ scripts/snapshot.ts   fetches /v1/profile and /v1/schedule
        ├─ upserts a dated entry into public/data/history.json
        └─ regenerates public/badge-{light,dark}.svg
@@ -202,10 +202,26 @@ Two things about it are non-obvious and worth preserving:
   guard exists because a run captured at 00:40 once overwrote a completed day
   with zero, destroying it; correctness no longer depends on getting the day
   boundary exactly right.
-- **It runs hourly.** A day is only as complete as its last capture before
-  midnight, and everything after that is lost permanently. Three-hourly left too
-  wide a gap in practice. Runs that find nothing new write nothing, so quiet
+- **It runs hourly, and repeatedly in the last hour of the day.** A day is only
+  as complete as its last capture before midnight, and everything after that is
+  lost permanently. "Hourly" turned out to be a request rather than a promise:
+  GitHub actually fires it four to eight times a day, which on 13 October 2026
+  left a 21:33 reading standing as the whole of a Tuesday that had an evening
+  session in it. Extra crons now cluster at 23:05, 23:20, 23:35 and 23:47 local
+  — individual runs get dropped, four in a row rarely do — with a second
+  cluster just after 03:00. Runs that find nothing new write nothing, so quiet
   hours cost no commit and no redeploy.
+- **Two different day boundaries.** The `today_*` counters reset at local
+  midnight; renshuu's own 03:00 schedule refresh governs when reviews come due,
+  which is a separate thing. Assuming they were the same, and setting the
+  snapshot's day start to 03:00 on that basis, corrupted two days of the
+  archive. The evidence for midnight is in the archive itself: on 3 August 2026
+  a run at 21:58 local read 255, and the next at 00:40 read 0.
+- **A day can hold an estimate.** When a session falls in a gap no run covered,
+  the entry may carry `source: "estimate"` and a note saying how the number was
+  arrived at. Those days are ringed in the heatmap and labelled in its table,
+  and projections ignore them by construction, since they read cumulative
+  totals rather than daily counts.
 - **The snapshot workflow calls the deploy workflow explicitly.** GitHub does not
   fire workflows for pushes made with the built-in `GITHUB_TOKEN`. Relying on
   `on: push` would mean the archive grew daily while the deployed site silently
