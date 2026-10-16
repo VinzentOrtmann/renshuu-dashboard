@@ -22318,7 +22318,7 @@
     },
     {
       "date": "2026-10-16",
-      "capturedAt": "2026-10-16T11:56:38.702Z",
+      "capturedAt": "2026-10-16T20:06:53.779Z",
       "adventureLevel": 206,
       "studiedToday": {
         "all": 160,
@@ -22390,6 +22390,17 @@
           "dueToday": 183
         },
         {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 155,
+          "totalCount": 158,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
           "id": "9664895",
           "name": "Pre-Advanced Words (N2)",
           "booktype": "vocab",
@@ -22410,6 +22421,17 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 1498
+        },
+        {
+          "id": "9813776",
+          "name": "できる日本語中級",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 957,
+          "totalCount": 2386,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 394
         },
         {
           "id": "9216681",
@@ -22467,6 +22489,17 @@
           "dueToday": 24
         },
         {
+          "id": "9814047",
+          "name": "できる日本語中級",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 390,
+          "totalCount": 832,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 308
+        },
+        {
           "id": "8983957",
           "name": "Intermediate Japanese",
           "booktype": "grammar",
@@ -22487,6 +22520,17 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 123
+        },
+        {
+          "id": "9814051",
+          "name": "できる日本語中級",
+          "booktype": "grammar",
+          "isFrozen": false,
+          "studiedCount": 26,
+          "totalCount": 217,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 18
         },
         {
           "id": "9275775",
@@ -22539,17 +22583,6 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 155,
-          "totalCount": 155,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
