@@ -41,7 +41,9 @@ export type DailyStudyCounts = Record<StudyCategory | 'all', number>
 export type TotalStudyCounts = Record<TotalledCategory | 'all', number>
 
 /** Percentage complete (0-100) per JLPT level, for one category. */
-export type JlptProgress = Partial<Record<JlptLevel | 'n6' | 'kana' | 'kata', number>>
+export type JlptProgress = Partial<
+  Record<JlptLevel | 'n6' | 'kana' | 'kata', number>
+>
 
 /** A study schedule as captured on one day. */
 export interface ScheduleSnapshot {
@@ -91,6 +93,19 @@ export interface DailySnapshot {
   dayStreaks: Partial<Record<StudyCategory, number>>
   /** Per-schedule progress. */
   schedules: ScheduleSnapshot[]
+  /**
+   * Where `studiedToday` came from. Absent means the API, which is the normal
+   * case and keeps every existing entry valid.
+   *
+   * `estimate` marks a day the snapshot never observed — the API only reports
+   * *today's* counter, so a session after the last run of the day is invisible
+   * once midnight resets it — where a plausible figure was filled in instead.
+   * An estimate is a guess about the past, not a measurement, so it is drawn
+   * differently and left out of pace and projection maths.
+   */
+  source?: 'estimate'
+  /** Why an estimated day holds the number it does. */
+  note?: string
 }
 
 /** The top level of `data/history.json`. */
