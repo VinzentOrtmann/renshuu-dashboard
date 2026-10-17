@@ -22998,7 +22998,7 @@
     },
     {
       "date": "2026-10-18",
-      "capturedAt": "2026-10-17T23:02:22.425Z",
+      "capturedAt": "2026-10-17T23:30:13.659Z",
       "adventureLevel": 209,
       "studiedToday": {
         "all": 0,
@@ -23010,8 +23010,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 6634,
-        "vocab": 4774,
+        "all": 6644,
+        "vocab": 4784,
         "kanji": 672,
         "grammar": 234,
         "sent": 954
