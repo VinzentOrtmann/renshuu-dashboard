@@ -22659,14 +22659,14 @@
     },
     {
       "date": "2026-10-17",
-      "capturedAt": "2026-10-17T14:27:50.717Z",
-      "adventureLevel": 207,
+      "capturedAt": "2026-10-17T17:33:37.457Z",
+      "adventureLevel": 208,
       "studiedToday": {
-        "all": 68,
-        "vocab": 68,
+        "all": 156,
+        "vocab": 129,
         "kanji": 0,
         "grammar": 0,
-        "sent": 0,
+        "sent": 27,
         "conj": 0,
         "aconj": 0
       },
@@ -22728,7 +22728,7 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 225
+          "dueToday": 183
         },
         {
           "id": "9664895",
@@ -22739,7 +22739,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 185
+          "dueToday": 182
         },
         {
           "id": "8983851",
@@ -22750,18 +22750,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1501
-        },
-        {
-          "id": "8375655",
-          "name": "Words for Pre-Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1074,
-          "totalCount": 1074,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 25
+          "dueToday": 1473
         },
         {
           "id": "9813776",
@@ -22772,7 +22761,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 413
+          "dueToday": 393
         },
         {
           "id": "9216681",
@@ -22874,17 +22863,6 @@
           "dueToday": 18
         },
         {
-          "id": "8376486",
-          "name": "Beginner Sentences (N5)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 672,
-          "totalCount": 672,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 27
-        },
-        {
           "id": "9275775",
           "name": "Intermediate Sentences (N3)",
           "booktype": "sent",
@@ -22962,6 +22940,17 @@
           "dueToday": 0
         },
         {
+          "id": "8375655",
+          "name": "Words for Pre-Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1074,
+          "totalCount": 1074,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
           "id": "7932506",
           "name": "Wörter für Japanisch-Anfänger",
           "booktype": "vocab",
@@ -22990,6 +22979,17 @@
           "isFrozen": false,
           "studiedCount": 63,
           "totalCount": 63,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8376486",
+          "name": "Beginner Sentences (N5)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 672,
+          "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
