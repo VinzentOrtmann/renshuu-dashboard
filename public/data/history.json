@@ -22659,12 +22659,12 @@
     },
     {
       "date": "2026-10-17",
-      "capturedAt": "2026-10-17T17:33:37.457Z",
+      "capturedAt": "2026-10-17T19:43:38.738Z",
       "adventureLevel": 208,
       "studiedToday": {
-        "all": 156,
-        "vocab": 129,
-        "kanji": 0,
+        "all": 198,
+        "vocab": 168,
+        "kanji": 3,
         "grammar": 0,
         "sent": 27,
         "conj": 0,
@@ -22728,7 +22728,7 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 183
+          "dueToday": 143
         },
         {
           "id": "9664895",
@@ -22739,7 +22739,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 182
+          "dueToday": 177
         },
         {
           "id": "8983851",
@@ -22750,7 +22750,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1473
+          "dueToday": 1452
         },
         {
           "id": "9813776",
@@ -22761,7 +22761,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 393
+          "dueToday": 380
         },
         {
           "id": "9216681",
@@ -22783,18 +22783,7 @@
           "totalCount": 170,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 87
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 3
+          "dueToday": 86
         },
         {
           "id": "9710674",
@@ -22957,6 +22946,17 @@
           "isFrozen": false,
           "studiedCount": 685,
           "totalCount": 685,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 80,
+          "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
