@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-12T11:41:51.047Z",
+  "generatedAt": "2026-10-19T09:38:44.430Z",
   "ceilings": {
     "vocab": {
       "n2": {
@@ -47,14 +47,6 @@
       }
     },
     "sent": {
-      "n5": {
-        "total": 689,
-        "blocked": 17,
-        "ceilingPercent": 97,
-        "sources": [
-          "Beginner Sentences (N5)"
-        ]
-      },
       "n3": {
         "total": 196,
         "blocked": 0,
@@ -69,6 +61,14 @@
         "ceilingPercent": 98,
         "sources": [
           "Pre-Intermediate Sentences (N4)"
+        ]
+      },
+      "n5": {
+        "total": 689,
+        "blocked": 17,
+        "ceilingPercent": 97,
+        "sources": [
+          "Beginner Sentences (N5)"
         ]
       }
     },
