@@ -23337,11 +23337,11 @@
     },
     {
       "date": "2026-10-19",
-      "capturedAt": "2026-10-19T06:03:50.206Z",
+      "capturedAt": "2026-10-19T15:00:22.331Z",
       "adventureLevel": 209,
       "studiedToday": {
-        "all": 49,
-        "vocab": 49,
+        "all": 151,
+        "vocab": 151,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -23406,7 +23406,7 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 226
+          "dueToday": 167
         },
         {
           "id": "9664895",
@@ -23417,7 +23417,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 197
+          "dueToday": 182
         },
         {
           "id": "8983851",
@@ -23428,7 +23428,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1502
+          "dueToday": 1477
         },
         {
           "id": "8375655",
@@ -23439,18 +23439,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 79
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 14
+          "dueToday": 30
         },
         {
           "id": "9813776",
@@ -23461,7 +23450,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 407
+          "dueToday": 377
         },
         {
           "id": "9216681",
@@ -23635,6 +23624,17 @@
           "isFrozen": false,
           "studiedCount": 507,
           "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
