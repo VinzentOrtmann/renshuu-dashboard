@@ -24015,20 +24015,20 @@
     },
     {
       "date": "2026-10-21",
-      "capturedAt": "2026-10-21T12:28:21.354Z",
+      "capturedAt": "2026-10-21T17:41:44.414Z",
       "adventureLevel": 212,
       "studiedToday": {
-        "all": 286,
-        "vocab": 286,
-        "kanji": 0,
+        "all": 659,
+        "vocab": 646,
+        "kanji": 13,
         "grammar": 0,
         "sent": 0,
         "conj": 0,
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 6673,
-        "vocab": 4808,
+        "all": 6679,
+        "vocab": 4814,
         "kanji": 672,
         "grammar": 234,
         "sent": 959
@@ -24061,7 +24061,7 @@
         "sent": {
           "n1": 0,
           "n2": 0,
-          "n3": 21,
+          "n3": 22,
           "n4": 99,
           "n5": 97
         }
@@ -24084,7 +24084,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 174
+          "dueToday": 150
         },
         {
           "id": "8983851",
@@ -24095,7 +24095,7 @@
           "totalCount": 2473,
           "newToday": 20,
           "newThisWeek": 20,
-          "dueToday": 1343
+          "dueToday": 992
         },
         {
           "id": "9813776",
@@ -24106,7 +24106,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 316
+          "dueToday": 247
         },
         {
           "id": "9216681",
@@ -24124,22 +24124,11 @@
           "name": "Kanji for Mining",
           "booktype": "kanji",
           "isFrozen": false,
-          "studiedCount": 141,
-          "totalCount": 170,
+          "studiedCount": 146,
+          "totalCount": 180,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 77
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 2
+          "dueToday": 74
         },
         {
           "id": "9710674",
@@ -24153,17 +24142,6 @@
           "dueToday": 25
         },
         {
-          "id": "8277523",
-          "name": "Pre-Intermediate Kanji (N4)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 168,
-          "totalCount": 168,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 11
-        },
-        {
           "id": "9814047",
           "name": "できる日本語中級",
           "booktype": "kanji",
@@ -24172,7 +24150,7 @@
           "totalCount": 832,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 269
+          "dueToday": 267
         },
         {
           "id": "8983957",
@@ -24278,10 +24256,10 @@
           "name": "Mining",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 158,
-          "totalCount": 158,
-          "newToday": 0,
-          "newThisWeek": 0,
+          "studiedCount": 164,
+          "totalCount": 164,
+          "newToday": 6,
+          "newThisWeek": 6,
           "dueToday": 0
         },
         {
@@ -24313,6 +24291,28 @@
           "isFrozen": false,
           "studiedCount": 685,
           "totalCount": 685,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 80,
+          "totalCount": 80,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8277523",
+          "name": "Pre-Intermediate Kanji (N4)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 168,
+          "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
