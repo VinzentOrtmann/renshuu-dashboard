@@ -25371,7 +25371,7 @@
     },
     {
       "date": "2026-10-25",
-      "capturedAt": "2026-10-24T23:06:36.243Z",
+      "capturedAt": "2026-10-25T00:34:20.338Z",
       "adventureLevel": 216,
       "studiedToday": {
         "all": 0,
@@ -25440,7 +25440,7 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 93
+          "dueToday": 51
         },
         {
           "id": "9664895",
@@ -25451,7 +25451,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 173
+          "dueToday": 168
         },
         {
           "id": "8983851",
@@ -25462,7 +25462,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1206
+          "dueToday": 1179
         },
         {
           "id": "9813776",
@@ -25473,7 +25473,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 322
+          "dueToday": 302
         },
         {
           "id": "9216681",
