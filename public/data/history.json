@@ -26727,7 +26727,7 @@
     },
     {
       "date": "2026-10-29",
-      "capturedAt": "2026-10-28T23:38:03.729Z",
+      "capturedAt": "2026-10-29T00:48:50.510Z",
       "adventureLevel": 219,
       "studiedToday": {
         "all": 0,
@@ -26898,17 +26898,6 @@
           "dueToday": 17
         },
         {
-          "id": "8376486",
-          "name": "Beginner Sentences (N5)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 672,
-          "totalCount": 672,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 27
-        },
-        {
           "id": "9275775",
           "name": "Intermediate Sentences (N3)",
           "booktype": "sent",
@@ -27058,6 +27047,17 @@
           "isFrozen": false,
           "studiedCount": 63,
           "totalCount": 63,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8376486",
+          "name": "Beginner Sentences (N5)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 672,
+          "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
