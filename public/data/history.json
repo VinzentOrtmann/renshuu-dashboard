@@ -27066,20 +27066,20 @@
     },
     {
       "date": "2026-10-30",
-      "capturedAt": "2026-10-30T09:03:12.215Z",
-      "adventureLevel": 220,
+      "capturedAt": "2026-10-30T16:16:15.900Z",
+      "adventureLevel": 221,
       "studiedToday": {
-        "all": 45,
-        "vocab": 45,
-        "kanji": 0,
+        "all": 433,
+        "vocab": 377,
+        "kanji": 5,
         "grammar": 0,
-        "sent": 0,
+        "sent": 51,
         "conj": 0,
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 6734,
-        "vocab": 4869,
+        "all": 6761,
+        "vocab": 4896,
         "kanji": 672,
         "grammar": 234,
         "sent": 959
@@ -27088,7 +27088,7 @@
         "vocab": {
           "n1": 8,
           "n2": 21,
-          "n3": 88,
+          "n3": 89,
           "n4": 100,
           "n5": 100,
           "n6": 100,
@@ -27127,48 +27127,37 @@
       },
       "schedules": [
         {
-          "id": "9501014",
-          "name": "Kaishi1.5K",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1479,
-          "totalCount": 1479,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 92
-        },
-        {
           "id": "9664895",
           "name": "Pre-Advanced Words (N2)",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 366,
+          "studiedCount": 367,
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 166
+          "dueToday": 153
         },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 2169,
+          "studiedCount": 2196,
           "totalCount": 2473,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 1076
+          "newToday": 20,
+          "newThisWeek": 20,
+          "dueToday": 795
         },
         {
           "id": "9813776",
           "name": "できる日本語中級",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 977,
+          "studiedCount": 985,
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 284
+          "dueToday": 198
         },
         {
           "id": "9216681",
@@ -27190,18 +27179,7 @@
           "totalCount": 180,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 85
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 5
+          "dueToday": 84
         },
         {
           "id": "9710674",
@@ -27213,6 +27191,17 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 25
+        },
+        {
+          "id": "8277523",
+          "name": "Pre-Intermediate Kanji (N4)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 168,
+          "totalCount": 168,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 1
         },
         {
           "id": "9814047",
@@ -27281,17 +27270,6 @@
           "dueToday": 112
         },
         {
-          "id": "9178698",
-          "name": "Pre-Intermediate Sentences (N4)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 158,
-          "totalCount": 158,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 51
-        },
-        {
           "id": "9066023",
           "name": "Verb Conjugations",
           "booktype": "conj",
@@ -27309,6 +27287,17 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9501014",
+          "name": "Kaishi1.5K",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1479,
+          "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
@@ -27369,12 +27358,12 @@
           "dueToday": 0
         },
         {
-          "id": "8277523",
-          "name": "Pre-Intermediate Kanji (N4)",
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
           "booktype": "kanji",
           "isFrozen": false,
-          "studiedCount": 168,
-          "totalCount": 168,
+          "studiedCount": 80,
+          "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
@@ -27397,6 +27386,17 @@
           "isFrozen": false,
           "studiedCount": 672,
           "totalCount": 672,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9178698",
+          "name": "Pre-Intermediate Sentences (N4)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 158,
+          "totalCount": 158,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
