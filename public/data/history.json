@@ -28422,7 +28422,7 @@
     },
     {
       "date": "2026-11-03",
-      "capturedAt": "2026-11-03T00:04:19.128Z",
+      "capturedAt": "2026-11-03T02:52:29.217Z",
       "adventureLevel": 222,
       "studiedToday": {
         "all": 0,
@@ -28474,10 +28474,10 @@
         }
       },
       "dayStreaks": {
-        "vocab": 151,
-        "kanji": 1,
+        "vocab": 152,
+        "kanji": 0,
         "grammar": 0,
-        "sent": 1,
+        "sent": 0,
         "conj": 0,
         "aconj": 0
       },
@@ -28491,7 +28491,18 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 190
+          "dueToday": 286
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 164,
+          "totalCount": 164,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 9
         },
         {
           "id": "9664895",
@@ -28502,7 +28513,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 175
+          "dueToday": 194
         },
         {
           "id": "8983851",
@@ -28513,7 +28524,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1174
+          "dueToday": 1270
         },
         {
           "id": "8260191",
@@ -28524,7 +28535,7 @@
           "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 15
+          "dueToday": 24
         },
         {
           "id": "8375655",
@@ -28535,7 +28546,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 24
+          "dueToday": 41
         },
         {
           "id": "7932506",
@@ -28546,7 +28557,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 12
+          "dueToday": 14
         },
         {
           "id": "9813776",
@@ -28557,7 +28568,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 342
+          "dueToday": 399
         },
         {
           "id": "9216681",
@@ -28568,7 +28579,7 @@
           "totalCount": 379,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 341
+          "dueToday": 343
         },
         {
           "id": "9179012",
@@ -28579,7 +28590,7 @@
           "totalCount": 180,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 86
+          "dueToday": 90
         },
         {
           "id": "7932508",
@@ -28590,7 +28601,7 @@
           "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1
+          "dueToday": 7
         },
         {
           "id": "9710674",
@@ -28623,7 +28634,7 @@
           "totalCount": 832,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 328
+          "dueToday": 331
         },
         {
           "id": "8983957",
@@ -28656,7 +28667,7 @@
           "totalCount": 138,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 123
+          "dueToday": 125
         },
         {
           "id": "9814051",
@@ -28668,6 +28679,17 @@
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 19
+        },
+        {
+          "id": "8376486",
+          "name": "Beginner Sentences (N5)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 672,
+          "totalCount": 672,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 63
         },
         {
           "id": "9275775",
@@ -28714,34 +28736,12 @@
           "dueToday": 0
         },
         {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 164,
-          "totalCount": 164,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
           "id": "8260192",
           "name": "Japanese Basics",
           "booktype": "grammar",
           "isFrozen": false,
           "studiedCount": 35,
           "totalCount": 35,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8376486",
-          "name": "Beginner Sentences (N5)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 672,
-          "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
