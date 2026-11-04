@@ -28761,7 +28761,7 @@
     },
     {
       "date": "2026-11-04",
-      "capturedAt": "2026-11-04T01:15:02.196Z",
+      "capturedAt": "2026-11-04T07:27:27.894Z",
       "adventureLevel": 222,
       "studiedToday": {
         "all": 0,
@@ -28813,7 +28813,7 @@
         }
       },
       "dayStreaks": {
-        "vocab": 152,
+        "vocab": 153,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -28830,7 +28830,18 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 236
+          "dueToday": 310
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 164,
+          "totalCount": 164,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 9
         },
         {
           "id": "9664895",
@@ -28841,7 +28852,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 191
+          "dueToday": 207
         },
         {
           "id": "8983851",
@@ -28852,7 +28863,40 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1264
+          "dueToday": 1364
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 17
+        },
+        {
+          "id": "8375655",
+          "name": "Words for Pre-Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1074,
+          "totalCount": 1074,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 34
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 21
         },
         {
           "id": "9813776",
@@ -28863,7 +28907,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 377
+          "dueToday": 415
         },
         {
           "id": "9216681",
@@ -28874,7 +28918,7 @@
           "totalCount": 379,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 343
+          "dueToday": 356
         },
         {
           "id": "9179012",
@@ -28885,7 +28929,7 @@
           "totalCount": 180,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 90
+          "dueToday": 92
         },
         {
           "id": "7932508",
@@ -28896,7 +28940,7 @@
           "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 7
+          "dueToday": 10
         },
         {
           "id": "9710674",
@@ -28918,7 +28962,7 @@
           "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 2
+          "dueToday": 8
         },
         {
           "id": "9814047",
@@ -28929,7 +28973,7 @@
           "totalCount": 832,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 331
+          "dueToday": 345
         },
         {
           "id": "8983957",
@@ -28951,7 +28995,7 @@
           "totalCount": 63,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 5
+          "dueToday": 6
         },
         {
           "id": "8375656",
@@ -28962,7 +29006,7 @@
           "totalCount": 138,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 125
+          "dueToday": 126
         },
         {
           "id": "9814051",
@@ -28984,7 +29028,7 @@
           "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 63
+          "dueToday": 158
         },
         {
           "id": "9275775",
@@ -29026,50 +29070,6 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 164,
-          "totalCount": 164,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8375655",
-          "name": "Words for Pre-Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1074,
-          "totalCount": 1074,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
