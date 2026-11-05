@@ -29100,11 +29100,11 @@
     },
     {
       "date": "2026-11-05",
-      "capturedAt": "2026-11-05T02:52:04.279Z",
+      "capturedAt": "2026-11-05T11:37:28.820Z",
       "adventureLevel": 223,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
+        "all": 18,
+        "vocab": 18,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -29169,18 +29169,7 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 238
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 164,
-          "totalCount": 164,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 13
+          "dueToday": 233
         },
         {
           "id": "9664895",
@@ -29191,7 +29180,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 204
+          "dueToday": 202
         },
         {
           "id": "8983851",
@@ -29202,7 +29191,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1349
+          "dueToday": 1347
         },
         {
           "id": "8260191",
@@ -29213,7 +29202,7 @@
           "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 14
+          "dueToday": 9
         },
         {
           "id": "8375655",
@@ -29224,7 +29213,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 42
+          "dueToday": 41
         },
         {
           "id": "7932506",
@@ -29246,7 +29235,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 400
+          "dueToday": 399
         },
         {
           "id": "9216681",
@@ -29409,6 +29398,17 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 164,
+          "totalCount": 164,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
