@@ -29439,11 +29439,11 @@
     },
     {
       "date": "2026-11-06",
-      "capturedAt": "2026-11-06T15:24:21.731Z",
+      "capturedAt": "2026-11-06T21:05:48.233Z",
       "adventureLevel": 224,
       "studiedToday": {
-        "all": 192,
-        "vocab": 192,
+        "all": 275,
+        "vocab": 275,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -29451,8 +29451,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 6761,
-        "vocab": 4896,
+        "all": 6765,
+        "vocab": 4900,
         "kanji": 672,
         "grammar": 234,
         "sent": 959
@@ -29500,17 +29500,6 @@
       },
       "schedules": [
         {
-          "id": "9501014",
-          "name": "Kaishi1.5K",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1479,
-          "totalCount": 1479,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 84
-        },
-        {
           "id": "9664895",
           "name": "Pre-Advanced Words (N2)",
           "booktype": "vocab",
@@ -29519,7 +29508,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 191
+          "dueToday": 177
         },
         {
           "id": "8983851",
@@ -29530,7 +29519,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1337
+          "dueToday": 1274
         },
         {
           "id": "9813776",
@@ -29541,7 +29530,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 337
+          "dueToday": 294
         },
         {
           "id": "9216681",
@@ -29704,6 +29693,17 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9501014",
+          "name": "Kaishi1.5K",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1479,
+          "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
