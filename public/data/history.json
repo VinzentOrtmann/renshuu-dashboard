@@ -30456,11 +30456,11 @@
     },
     {
       "date": "2026-11-09",
-      "capturedAt": "2026-11-09T00:08:17.503Z",
+      "capturedAt": "2026-11-09T07:15:17.713Z",
       "adventureLevel": 226,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
+        "all": 55,
+        "vocab": 55,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -30508,14 +30508,25 @@
         }
       },
       "dayStreaks": {
-        "vocab": 157,
-        "kanji": 1,
+        "vocab": 158,
+        "kanji": 2,
         "grammar": 0,
-        "sent": 0,
+        "sent": 1,
         "conj": 0,
         "aconj": 0
       },
       "schedules": [
+        {
+          "id": "9501014",
+          "name": "Kaishi1.5K",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1479,
+          "totalCount": 1479,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 81
+        },
         {
           "id": "9664895",
           "name": "Pre-Advanced Words (N2)",
@@ -30525,7 +30536,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 181
+          "dueToday": 193
         },
         {
           "id": "8983851",
@@ -30536,7 +30547,18 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1325
+          "dueToday": 1369
+        },
+        {
+          "id": "8375655",
+          "name": "Words for Pre-Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1074,
+          "totalCount": 1074,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 47
         },
         {
           "id": "9813776",
@@ -30547,7 +30569,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 299
+          "dueToday": 346
         },
         {
           "id": "9216681",
@@ -30558,7 +30580,7 @@
           "totalCount": 379,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 355
+          "dueToday": 356
         },
         {
           "id": "9179012",
@@ -30569,7 +30591,18 @@
           "totalCount": 185,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 88
+          "dueToday": 89
+        },
+        {
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 80,
+          "totalCount": 80,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 2
         },
         {
           "id": "9710674",
@@ -30668,7 +30701,7 @@
           "totalCount": 158,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1
+          "dueToday": 2
         },
         {
           "id": "9066023",
@@ -30688,17 +30721,6 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "9501014",
-          "name": "Kaishi1.5K",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1479,
-          "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
@@ -30737,34 +30759,12 @@
           "dueToday": 0
         },
         {
-          "id": "8375655",
-          "name": "Words for Pre-Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1074,
-          "totalCount": 1074,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
           "id": "7932506",
           "name": "Wörter für Japanisch-Anfänger",
           "booktype": "vocab",
           "isFrozen": false,
           "studiedCount": 685,
           "totalCount": 685,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
