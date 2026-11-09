@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-02T12:02:04.707Z",
+  "generatedAt": "2026-11-09T12:34:55.998Z",
   "ceilings": {
     "vocab": {
       "n2": {
@@ -21,20 +21,20 @@
           "Intermediate Kanji (N3)"
         ]
       },
-      "n5": {
-        "total": 80,
-        "blocked": 0,
-        "ceilingPercent": 100,
-        "sources": [
-          "Kanji für Anfänger (N5)"
-        ]
-      },
       "n2": {
         "total": 359,
         "blocked": 0,
         "ceilingPercent": 100,
         "sources": [
           "Pre-Advanced Kanji (N2)"
+        ]
+      },
+      "n5": {
+        "total": 80,
+        "blocked": 0,
+        "ceilingPercent": 100,
+        "sources": [
+          "Kanji für Anfänger (N5)"
         ]
       },
       "n4": {
@@ -65,20 +65,20 @@
           "Intermediate Sentences (N3)"
         ]
       },
-      "n5": {
-        "total": 689,
-        "blocked": 17,
-        "ceilingPercent": 97,
-        "sources": [
-          "Beginner Sentences (N5)"
-        ]
-      },
       "n4": {
         "total": 160,
         "blocked": 2,
         "ceilingPercent": 98,
         "sources": [
           "Pre-Intermediate Sentences (N4)"
+        ]
+      },
+      "n5": {
+        "total": 689,
+        "blocked": 17,
+        "ceilingPercent": 97,
+        "sources": [
+          "Beginner Sentences (N5)"
         ]
       }
     }
