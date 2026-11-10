@@ -30795,11 +30795,11 @@
     },
     {
       "date": "2026-11-10",
-      "capturedAt": "2026-11-10T17:18:57.507Z",
+      "capturedAt": "2026-11-10T22:33:24.859Z",
       "adventureLevel": 229,
       "studiedToday": {
-        "all": 161,
-        "vocab": 161,
+        "all": 202,
+        "vocab": 202,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -30807,8 +30807,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 6790,
-        "vocab": 4925,
+        "all": 6794,
+        "vocab": 4929,
         "kanji": 672,
         "grammar": 234,
         "sent": 959
@@ -30856,17 +30856,6 @@
       },
       "schedules": [
         {
-          "id": "9501014",
-          "name": "Kaishi1.5K",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1479,
-          "totalCount": 1479,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 41
-        },
-        {
           "id": "9664895",
           "name": "Pre-Advanced Words (N2)",
           "booktype": "vocab",
@@ -30875,18 +30864,18 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 166
+          "dueToday": 164
         },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 2221,
+          "studiedCount": 2225,
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1172
+          "dueToday": 1135
         },
         {
           "id": "9813776",
@@ -30897,7 +30886,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 289
+          "dueToday": 270
         },
         {
           "id": "9216681",
@@ -31049,6 +31038,17 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "9501014",
+          "name": "Kaishi1.5K",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1479,
+          "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
