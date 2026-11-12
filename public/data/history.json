@@ -31473,7 +31473,7 @@
     },
     {
       "date": "2026-11-12",
-      "capturedAt": "2026-11-12T02:12:53.647Z",
+      "capturedAt": "2026-11-12T08:12:49.289Z",
       "adventureLevel": 229,
       "studiedToday": {
         "all": 0,
@@ -31525,10 +31525,10 @@
         }
       },
       "dayStreaks": {
-        "vocab": 160,
+        "vocab": 161,
         "kanji": 0,
         "grammar": 0,
-        "sent": 3,
+        "sent": 0,
         "conj": 0,
         "aconj": 0
       },
