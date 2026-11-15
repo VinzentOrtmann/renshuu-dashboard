@@ -32490,7 +32490,7 @@
     },
     {
       "date": "2026-11-15",
-      "capturedAt": "2026-11-14T23:25:27.779Z",
+      "capturedAt": "2026-11-15T03:08:40.550Z",
       "adventureLevel": 231,
       "studiedToday": {
         "all": 0,
@@ -32542,8 +32542,8 @@
         }
       },
       "dayStreaks": {
-        "vocab": 163,
-        "kanji": 0,
+        "vocab": 164,
+        "kanji": 1,
         "grammar": 0,
         "sent": 0,
         "conj": 0,
@@ -32559,7 +32559,18 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 111
+          "dueToday": 164
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 174,
+          "totalCount": 174,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 28
         },
         {
           "id": "9664895",
@@ -32570,7 +32581,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 186
+          "dueToday": 198
         },
         {
           "id": "8983851",
@@ -32581,7 +32592,18 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1343
+          "dueToday": 1446
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 15
         },
         {
           "id": "8375655",
@@ -32592,7 +32614,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 59
+          "dueToday": 69
         },
         {
           "id": "7932506",
@@ -32603,7 +32625,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 18
+          "dueToday": 35
         },
         {
           "id": "9813776",
@@ -32614,7 +32636,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 351
+          "dueToday": 384
         },
         {
           "id": "9216681",
@@ -32625,7 +32647,7 @@
           "totalCount": 379,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 293
+          "dueToday": 358
         },
         {
           "id": "9179012",
@@ -32636,7 +32658,7 @@
           "totalCount": 193,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 87
+          "dueToday": 92
         },
         {
           "id": "9710674",
@@ -32658,7 +32680,7 @@
           "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 4
+          "dueToday": 5
         },
         {
           "id": "9814047",
@@ -32669,7 +32691,7 @@
           "totalCount": 832,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 285
+          "dueToday": 339
         },
         {
           "id": "8983957",
@@ -32713,7 +32735,7 @@
           "totalCount": 138,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 128
+          "dueToday": 129
         },
         {
           "id": "9814051",
@@ -32777,28 +32799,6 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 174,
-          "totalCount": 174,
-          "newToday": 6,
-          "newThisWeek": 6,
-          "dueToday": 0
-        },
-        {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
