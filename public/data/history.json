@@ -32829,7 +32829,7 @@
     },
     {
       "date": "2026-11-16",
-      "capturedAt": "2026-11-15T23:11:52.423Z",
+      "capturedAt": "2026-11-16T03:14:32.792Z",
       "adventureLevel": 231,
       "studiedToday": {
         "all": 0,
@@ -32881,8 +32881,8 @@
         }
       },
       "dayStreaks": {
-        "vocab": 164,
-        "kanji": 1,
+        "vocab": 165,
+        "kanji": 0,
         "grammar": 0,
         "sent": 0,
         "conj": 0,
@@ -32898,7 +32898,7 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 141
+          "dueToday": 207
         },
         {
           "id": "9179005",
@@ -32909,7 +32909,7 @@
           "totalCount": 174,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 28
+          "dueToday": 53
         },
         {
           "id": "9664895",
@@ -32920,7 +32920,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 198
+          "dueToday": 212
         },
         {
           "id": "8983851",
@@ -32931,7 +32931,18 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1446
+          "dueToday": 1477
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 17
         },
         {
           "id": "8375655",
@@ -32942,7 +32953,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 67
+          "dueToday": 94
         },
         {
           "id": "7932506",
@@ -32953,7 +32964,7 @@
           "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 9
+          "dueToday": 19
         },
         {
           "id": "9813776",
@@ -32964,7 +32975,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 379
+          "dueToday": 405
         },
         {
           "id": "9216681",
@@ -32975,7 +32986,7 @@
           "totalCount": 379,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 358
+          "dueToday": 363
         },
         {
           "id": "9179012",
@@ -32986,7 +32997,18 @@
           "totalCount": 193,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 92
+          "dueToday": 93
+        },
+        {
+          "id": "7932508",
+          "name": "Kanji für Anfänger (N5)",
+          "booktype": "kanji",
+          "isFrozen": false,
+          "studiedCount": 80,
+          "totalCount": 80,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 4
         },
         {
           "id": "9710674",
@@ -33008,7 +33030,7 @@
           "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 5
+          "dueToday": 9
         },
         {
           "id": "9814047",
@@ -33019,7 +33041,7 @@
           "totalCount": 832,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 339
+          "dueToday": 344
         },
         {
           "id": "8983957",
@@ -33052,7 +33074,7 @@
           "totalCount": 63,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 11
+          "dueToday": 12
         },
         {
           "id": "8375656",
@@ -33063,7 +33085,7 @@
           "totalCount": 138,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 129
+          "dueToday": 130
         },
         {
           "id": "9814051",
@@ -33074,7 +33096,18 @@
           "totalCount": 217,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 19
+          "dueToday": 20
+        },
+        {
+          "id": "8376486",
+          "name": "Beginner Sentences (N5)",
+          "booktype": "sent",
+          "isFrozen": false,
+          "studiedCount": 672,
+          "totalCount": 672,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 2
         },
         {
           "id": "9275775",
@@ -33127,39 +33160,6 @@
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "7932508",
-          "name": "Kanji für Anfänger (N5)",
-          "booktype": "kanji",
-          "isFrozen": false,
-          "studiedCount": 80,
-          "totalCount": 80,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8376486",
-          "name": "Beginner Sentences (N5)",
-          "booktype": "sent",
-          "isFrozen": false,
-          "studiedCount": 672,
-          "totalCount": 672,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
