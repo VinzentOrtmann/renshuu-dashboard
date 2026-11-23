@@ -35202,11 +35202,11 @@
     },
     {
       "date": "2026-11-23",
-      "capturedAt": "2026-11-23T08:55:43.957Z",
-      "adventureLevel": 237,
+      "capturedAt": "2026-11-23T20:36:52.381Z",
+      "adventureLevel": 238,
       "studiedToday": {
-        "all": 70,
-        "vocab": 70,
+        "all": 364,
+        "vocab": 364,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -35214,8 +35214,8 @@
         "aconj": 0
       },
       "studiedTotal": {
-        "all": 6870,
-        "vocab": 5005,
+        "all": 6894,
+        "vocab": 5029,
         "kanji": 672,
         "grammar": 234,
         "sent": 959
@@ -35224,7 +35224,7 @@
         "vocab": {
           "n1": 9,
           "n2": 22,
-          "n3": 92,
+          "n3": 94,
           "n4": 100,
           "n5": 100,
           "n6": 100,
@@ -35263,17 +35263,6 @@
       },
       "schedules": [
         {
-          "id": "9501014",
-          "name": "Kaishi1.5K",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1479,
-          "totalCount": 1479,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 82
-        },
-        {
           "id": "9664895",
           "name": "Pre-Advanced Words (N2)",
           "booktype": "vocab",
@@ -35282,51 +35271,29 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 158
+          "dueToday": 139
         },
         {
           "id": "8983851",
           "name": "Words for Intermediate",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 2294,
+          "studiedCount": 2318,
           "totalCount": 2473,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 1138
-        },
-        {
-          "id": "8375655",
-          "name": "Words for Pre-Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1074,
-          "totalCount": 1074,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 134
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 18
+          "newToday": 20,
+          "newThisWeek": 20,
+          "dueToday": 1036
         },
         {
           "id": "9813776",
           "name": "できる日本語中級",
           "booktype": "vocab",
           "isFrozen": false,
-          "studiedCount": 1001,
+          "studiedCount": 1008,
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 310
+          "dueToday": 253
         },
         {
           "id": "9216681",
@@ -35483,6 +35450,17 @@
           "dueToday": 0
         },
         {
+          "id": "9501014",
+          "name": "Kaishi1.5K",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1479,
+          "totalCount": 1479,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
           "id": "8187284",
           "name": "Katakana",
           "booktype": "vocab",
@@ -35511,6 +35489,28 @@
           "isFrozen": false,
           "studiedCount": 507,
           "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8375655",
+          "name": "Words for Pre-Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1074,
+          "totalCount": 1074,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
