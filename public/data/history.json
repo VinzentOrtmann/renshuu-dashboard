@@ -35880,7 +35880,7 @@
     },
     {
       "date": "2026-11-25",
-      "capturedAt": "2026-11-25T01:07:34.974Z",
+      "capturedAt": "2026-11-25T04:05:32.225Z",
       "adventureLevel": 239,
       "studiedToday": {
         "all": 0,
@@ -35932,14 +35932,36 @@
         }
       },
       "dayStreaks": {
-        "vocab": 173,
-        "kanji": 1,
+        "vocab": 174,
+        "kanji": 0,
         "grammar": 0,
         "sent": 0,
         "conj": 0,
         "aconj": 0
       },
       "schedules": [
+        {
+          "id": "9501014",
+          "name": "Kaishi1.5K",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1479,
+          "totalCount": 1479,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 94
+        },
+        {
+          "id": "9179005",
+          "name": "Mining",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 175,
+          "totalCount": 175,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 17
+        },
         {
           "id": "9664895",
           "name": "Pre-Advanced Words (N2)",
@@ -35949,7 +35971,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 140
+          "dueToday": 169
         },
         {
           "id": "8983851",
@@ -35958,9 +35980,42 @@
           "isFrozen": false,
           "studiedCount": 2341,
           "totalCount": 2473,
-          "newToday": 20,
-          "newThisWeek": 20,
-          "dueToday": 969
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 1140
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 8
+        },
+        {
+          "id": "8375655",
+          "name": "Words for Pre-Intermediate",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 1074,
+          "totalCount": 1074,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 86
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 32
         },
         {
           "id": "9813776",
@@ -35971,7 +36026,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 240
+          "dueToday": 325
         },
         {
           "id": "9216681",
@@ -35993,7 +36048,7 @@
           "totalCount": 195,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 102
+          "dueToday": 106
         },
         {
           "id": "7932508",
@@ -36004,7 +36059,7 @@
           "totalCount": 80,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 2
+          "dueToday": 4
         },
         {
           "id": "9710674",
@@ -36026,7 +36081,7 @@
           "totalCount": 168,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 24
+          "dueToday": 36
         },
         {
           "id": "9814047",
@@ -36037,7 +36092,7 @@
           "totalCount": 832,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 358
+          "dueToday": 359
         },
         {
           "id": "8983957",
@@ -36128,67 +36183,12 @@
           "dueToday": 0
         },
         {
-          "id": "9501014",
-          "name": "Kaishi1.5K",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1479,
-          "totalCount": 1479,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
           "id": "8187284",
           "name": "Katakana",
           "booktype": "vocab",
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "9179005",
-          "name": "Mining",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 175,
-          "totalCount": 175,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "8375655",
-          "name": "Words for Pre-Intermediate",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 1074,
-          "totalCount": 1074,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 0
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
