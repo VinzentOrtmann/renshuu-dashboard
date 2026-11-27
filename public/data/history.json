@@ -36558,13 +36558,13 @@
     },
     {
       "date": "2026-11-27",
-      "capturedAt": "2026-11-27T14:26:04.063Z",
-      "adventureLevel": 243,
+      "capturedAt": "2026-11-27T22:59:49.830Z",
+      "adventureLevel": 244,
       "studiedToday": {
-        "all": 184,
-        "vocab": 169,
-        "kanji": 15,
-        "grammar": 0,
+        "all": 391,
+        "vocab": 243,
+        "kanji": 135,
+        "grammar": 13,
         "sent": 0,
         "conj": 0,
         "aconj": 0
@@ -36638,7 +36638,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 161
+          "dueToday": 158
         },
         {
           "id": "8983851",
@@ -36649,7 +36649,7 @@
           "totalCount": 2473,
           "newToday": 20,
           "newThisWeek": 20,
-          "dueToday": 1066
+          "dueToday": 993
         },
         {
           "id": "9813776",
@@ -36660,7 +36660,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 264
+          "dueToday": 253
         },
         {
           "id": "9216681",
@@ -36671,7 +36671,7 @@
           "totalCount": 379,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 359
+          "dueToday": 239
         },
         {
           "id": "9179012",
@@ -36682,7 +36682,7 @@
           "totalCount": 196,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 90
+          "dueToday": 79
         },
         {
           "id": "9710674",
@@ -36704,7 +36704,7 @@
           "totalCount": 832,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 341
+          "dueToday": 237
         },
         {
           "id": "8983957",
@@ -36729,17 +36729,6 @@
           "dueToday": 1
         },
         {
-          "id": "7932507",
-          "name": "Japanisch für Anfänger/N5",
-          "booktype": "grammar",
-          "isFrozen": false,
-          "studiedCount": 63,
-          "totalCount": 63,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 13
-        },
-        {
           "id": "8375656",
           "name": "Pre-Intermediate Japanese",
           "booktype": "grammar",
@@ -36759,7 +36748,7 @@
           "totalCount": 217,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 22
+          "dueToday": 21
         },
         {
           "id": "9275775",
@@ -36867,6 +36856,17 @@
           "isFrozen": false,
           "studiedCount": 168,
           "totalCount": 168,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932507",
+          "name": "Japanisch für Anfänger/N5",
+          "booktype": "grammar",
+          "isFrozen": false,
+          "studiedCount": 63,
+          "totalCount": 63,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
