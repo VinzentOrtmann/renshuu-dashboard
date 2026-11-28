@@ -36897,11 +36897,11 @@
     },
     {
       "date": "2026-11-28",
-      "capturedAt": "2026-11-28T03:13:46.716Z",
+      "capturedAt": "2026-11-28T14:34:19.358Z",
       "adventureLevel": 244,
       "studiedToday": {
-        "all": 0,
-        "vocab": 0,
+        "all": 92,
+        "vocab": 92,
         "kanji": 0,
         "grammar": 0,
         "sent": 0,
@@ -36958,17 +36958,6 @@
       },
       "schedules": [
         {
-          "id": "8260190",
-          "name": "Hiragana",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 104,
-          "totalCount": 104,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 1
-        },
-        {
           "id": "9501014",
           "name": "Kaishi1.5K",
           "booktype": "vocab",
@@ -36977,7 +36966,7 @@
           "totalCount": 1479,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 108
+          "dueToday": 64
         },
         {
           "id": "9179005",
@@ -36999,7 +36988,7 @@
           "totalCount": 1738,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 174
+          "dueToday": 173
         },
         {
           "id": "8983851",
@@ -37010,18 +36999,7 @@
           "totalCount": 2473,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 1129
-        },
-        {
-          "id": "8260191",
-          "name": "Words for Japanese Basics",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 507,
-          "totalCount": 507,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 3
+          "dueToday": 1128
         },
         {
           "id": "8375655",
@@ -37032,18 +37010,7 @@
           "totalCount": 1074,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 49
-        },
-        {
-          "id": "7932506",
-          "name": "Wörter für Japanisch-Anfänger",
-          "booktype": "vocab",
-          "isFrozen": false,
-          "studiedCount": 685,
-          "totalCount": 685,
-          "newToday": 0,
-          "newThisWeek": 0,
-          "dueToday": 44
+          "dueToday": 1
         },
         {
           "id": "9813776",
@@ -37054,7 +37021,7 @@
           "totalCount": 2386,
           "newToday": 0,
           "newThisWeek": 0,
-          "dueToday": 324
+          "dueToday": 299
         },
         {
           "id": "9216681",
@@ -37211,12 +37178,45 @@
           "dueToday": 37
         },
         {
+          "id": "8260190",
+          "name": "Hiragana",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 104,
+          "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
           "id": "8187284",
           "name": "Katakana",
           "booktype": "vocab",
           "isFrozen": false,
           "studiedCount": 104,
           "totalCount": 104,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "8260191",
+          "name": "Words for Japanese Basics",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 507,
+          "totalCount": 507,
+          "newToday": 0,
+          "newThisWeek": 0,
+          "dueToday": 0
+        },
+        {
+          "id": "7932506",
+          "name": "Wörter für Japanisch-Anfänger",
+          "booktype": "vocab",
+          "isFrozen": false,
+          "studiedCount": 685,
+          "totalCount": 685,
           "newToday": 0,
           "newThisWeek": 0,
           "dueToday": 0
